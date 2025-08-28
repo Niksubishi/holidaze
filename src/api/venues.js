@@ -25,12 +25,17 @@ export const venuesAPI = {
     );
   },
 
-  search: async (query) => {
-    return makeRequest(
-      `${apiConfig.endpoints.holidaze.venues}/search?q=${encodeURIComponent(
-        query
-      )}&_owner=true`
-    );
+  search: async (query, page = 1, limit = 12, sort = "created", sortOrder = "desc") => {
+    const params = new URLSearchParams({
+      q: query,
+      page: page.toString(),
+      limit: limit.toString(),
+      sort: sort,
+      sortOrder: sortOrder,
+      _owner: "true",
+    });
+
+    return makeRequest(`${apiConfig.endpoints.holidaze.venues}/search?${params}`);
   },
 
   create: async (venueData) => {

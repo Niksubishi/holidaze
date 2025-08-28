@@ -1,0 +1,226 @@
+import React, { useState, useEffect } from "react";
+import { venuesAPI } from "../../api/venues.js";
+import VenueCard from "./VenueCard";
+import LoadingSpinner from "../UI/LoadingSpinner";
+import ErrorMessage from "../UI/ErrorMessage";
+
+const VenuesList = () => {
+  const [venues, setVenues] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("created");
+  const [sortOrder, setSortOrder] = useState("desc");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
+
+  const venuesPerPage = 12;
+
+  const fetchVenues = async (page = 1, isNewSearch = false) => {
+    try {
+      if (page === 1) setLoading(true);
+
+      let response;
+      if (searchQuery.trim()) {
+        setIsSearching(true);
+        response = await venuesAPI.search(
+          searchQuery,
+          page,
+          venuesPerPage,
+          sortBy,
+          sortOrder
+        );
+      } else {
+        setIsSearching(false);
+        response = await venuesAPI.getAll(
+          page,
+          venuesPerPage,
+          sortBy,
+          sortOrder
+        );
+      }
+
+      if (isNewSearch || page === 1) {
+        setVenues(response.data || []);
+      } else {
+        setVenues((prev) => [...prev, ...(response.data || [])]);
+      }
+
+      setHasMore(response.meta && !response.meta.isLastPage);
+
+      setError("");
+    } catch (err) {
+      console.error("Failed to fetch venues:", err);
+      setError(err.message || "Failed to load venues");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setCurrentPage(1);
+    fetchVenues(1, true);
+  }, [sortBy, sortOrder, searchQuery]);
+
+
+  const handleClearSearch = () => {
+    setSearchQuery("");
+    setCurrentPage(1);
+    setIsSearching(false);
+    setSortBy("created");
+    setSortOrder("desc");
+  };
+
+  const handleLoadMore = () => {
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+    fetchVenues(nextPage, false);
+  };
+
+
+  const handleSortChange = (newSort, newOrder = "desc") => {
+    setSortBy(newSort);
+    setSortOrder(newOrder);
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* Search and Filter Section */}
+      <div className="mb-8">
+        <div className="mb-6">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex-1">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search venues by name or location..."
+                className="w-full px-4 py-3 bg-transparent border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary font-lora"
+              />
+            </div>
+            {searchQuery && (
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={handleClearSearch}
+                  className="px-4 py-3 bg-gray-600 text-white font-chivo rounded-lg hover:bg-gray-500 transition-colors"
+                >
+                  Clear
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Sort Options */}
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => handleSortChange("created", "desc")}
+            className={`px-4 py-2 rounded-lg font-chivo text-sm transition-colors ${
+              sortBy === "created" && sortOrder === "desc"
+                ? "bg-primary text-white"
+                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+            }`}
+          >
+            Newest
+          </button>
+          <button
+            onClick={() => handleSortChange("created", "asc")}
+            className={`px-4 py-2 rounded-lg font-chivo text-sm transition-colors ${
+              sortBy === "created" && sortOrder === "asc"
+                ? "bg-primary text-white"
+                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+            }`}
+          >
+            Oldest
+          </button>
+          <button
+            onClick={() => handleSortChange("price", "asc")}
+            className={`px-4 py-2 rounded-lg font-chivo text-sm transition-colors ${
+              sortBy === "price" && sortOrder === "asc"
+                ? "bg-primary text-white"
+                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+            }`}
+          >
+            Cheapest
+          </button>
+          <button
+            onClick={() => handleSortChange("price", "desc")}
+            className={`px-4 py-2 rounded-lg font-chivo text-sm transition-colors ${
+              sortBy === "price" && sortOrder === "desc"
+                ? "bg-primary text-white"
+                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+            }`}
+          >
+            Most Expensive
+          </button>
+          <button
+            onClick={() => handleSortChange("rating", "desc")}
+            className={`px-4 py-2 rounded-lg font-chivo text-sm transition-colors ${
+              sortBy === "rating" && sortOrder === "desc"
+                ? "bg-primary text-white"
+                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+            }`}
+          >
+            Highest Rated
+          </button>
+        </div>
+      </div>
+
+      {/* Error Display */}
+      {error && <ErrorMessage message={error} className="mb-6" />}
+
+      {/* Loading Spinner */}
+      {loading && venues.length === 0 && (
+        <div className="flex justify-center py-12">
+          <LoadingSpinner size="large" />
+        </div>
+      )}
+
+      {/* Venues Grid */}
+      {!loading && venues.length === 0 && !error && (
+        <div className="text-center py-12">
+          <h3 className="font-chivo text-xl text-white mb-2">
+            No venues found
+          </h3>
+          <p className="font-lora text-gray-300">
+            {searchQuery
+              ? "Try adjusting your search terms."
+              : "No venues are available at the moment."}
+          </p>
+        </div>
+      )}
+
+      {venues.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+          {venues.map((venue) => (
+            <VenueCard key={venue.id} venue={venue} />
+          ))}
+        </div>
+      )}
+
+      {/* Load More Button */}
+      {hasMore && venues.length > 0 && (
+        <div className="text-center">
+          <button
+            onClick={handleLoadMore}
+            disabled={loading}
+            className="px-8 py-3 bg-primary text-white font-chivo rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50"
+          >
+            {loading ? (
+              <div className="flex items-center space-x-2">
+                <LoadingSpinner size="small" />
+                <span>Loading...</span>
+              </div>
+            ) : (
+              "Load More"
+            )}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default VenuesList;

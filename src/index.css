@@ -1,6 +1,19 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #489da6;
+  --color-dark: #383838;
+  --font-family-chivo: "Chivo-Light", sans-serif;
+  --font-family-lora: "Lora-Regular", serif;
+}
+
+.font-chivo {
+  font-family: "Chivo-Light", sans-serif !important;
+}
+
+.font-lora {
+  font-family: "Lora-Regular", serif !important;
+}
 
 @font-face {
   font-family: "Chivo-Light";
@@ -18,8 +31,8 @@
 
 body {
   margin: 0;
-  background-color: #383838;
-  color: white;
+  background-color: #F5EBDD;
+  color: #132F3D;
   font-family: "Lora-Regular", serif;
 }
 
@@ -32,7 +45,6 @@ h6 {
   font-family: "Chivo-Light", sans-serif;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }

@@ -1,35 +1,120 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import { ThemeProvider, useTheme } from "./context/ThemeContext";
+import Layout from "./components/Layout/Layout";
 
-function App() {
-  const [count, setCount] = useState(0)
+// Pages
+import Home from "./pages/Home";
+import VenuesPage from "./pages/VenuesPage";
+import VenueDetailsPage from "./pages/VenueDetailsPage";
+import AuthPage from "./pages/AuthPage";
+import MyBookings from "./pages/MyBookings";
+import MyVenues from "./pages/MyVenues";
+import CreateVenuePage from "./pages/CreateVenuePage";
+import ProfilePage from "./pages/ProfilePage";
+import PublicProfilePage from "./pages/PublicProfilePage";
+import NotFound from "./pages/NotFound";
+
+// Protected Route Component
+const ProtectedRoute = ({ children, requireVenueManager = false }) => {
+  const { isAuthenticated, isVenueManager, loading } = useAuth();
+  const { theme } = useTheme();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: theme.colors.background }}>
+        <div className="animate-spin rounded-full h-12 w-12 border-2 border-gray-300" style={{ borderTopColor: theme.colors.primary }}></div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/auth" replace />;
+  }
+
+  if (requireVenueManager && !isVenueManager) {
+    return <Navigate to="/venues" replace />;
+  }
+
+  return children;
+};
+
+const AppRoutes = () => {
+  const { isAuthenticated } = useAuth();
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Routes>
+      {/* Public routes */}
+      <Route
+        path="/"
+        element={isAuthenticated ? <Navigate to="/venues" replace /> : <Home />}
+      />
+      <Route path="/venues" element={<VenuesPage />} />
+      <Route path="/venues/:id" element={<VenueDetailsPage />} />
+      <Route path="/profile/:username" element={<PublicProfilePage />} />
+      <Route path="/auth" element={<AuthPage />} />
+
+      {/* Protected customer routes */}
+      <Route
+        path="/my-bookings"
+        element={
+          <ProtectedRoute>
+            <MyBookings />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Protected venue manager routes */}
+      <Route
+        path="/my-venues"
+        element={
+          <ProtectedRoute requireVenueManager={true}>
+            <MyVenues />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/create-venue"
+        element={
+          <ProtectedRoute requireVenueManager={true}>
+            <CreateVenuePage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* 404 and catch-all */}
+      <Route path="/404" element={<NotFound />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+};
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <Layout>
+            <AppRoutes />
+          </Layout>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
