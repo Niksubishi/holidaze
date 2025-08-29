@@ -19,13 +19,13 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
   if (!isAuthenticated) {
     return (
       <div className="bg-gray-800 p-6 rounded-lg">
-        <h3 className="font-chivo text-xl text-white mb-4">Book This Venue</h3>
-        <p className="font-lora text-gray-300 mb-4">
+        <h3 className="font-poppins text-xl text-white mb-4">Book This Venue</h3>
+        <p className="font-poppins text-gray-300 mb-4">
           Please sign up or log in to book this venue.
         </p>
         <a
           href="/auth"
-          className="inline-block px-6 py-3 bg-primary text-white font-chivo rounded-lg hover:bg-opacity-90 transition-colors"
+          className="inline-block px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors"
         >
           Sign Up / Login
         </a>
@@ -135,12 +135,12 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
 
   return (
     <div className="bg-gray-800 p-6 rounded-lg">
-      <h3 className="font-chivo text-xl text-white mb-4">Book This Venue</h3>
+      <h3 className="font-poppins text-xl text-white mb-4">Book This Venue</h3>
 
       <div className="mb-4">
         <div className="flex items-center justify-between">
-          <span className="font-chivo text-lg text-white">${venue.price}</span>
-          <span className="font-lora text-gray-300 text-sm">per night</span>
+          <span className="font-poppins text-lg text-white">${venue.price}</span>
+          <span className="font-poppins text-gray-300 text-sm">per night</span>
         </div>
       </div>
 
@@ -148,7 +148,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
         <div>
           <label
             htmlFor="dateFrom"
-            className="block font-lora text-sm text-gray-300 mb-2"
+            className="block font-poppins text-sm text-gray-300 mb-2"
           >
             Check-in Date
           </label>
@@ -159,7 +159,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
             value={formData.dateFrom}
             onChange={handleInputChange}
             min={new Date().toISOString().split("T")[0]}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-primary font-lora"
+            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-primary font-poppins"
             required
           />
         </div>
@@ -167,7 +167,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
         <div>
           <label
             htmlFor="dateTo"
-            className="block font-lora text-sm text-gray-300 mb-2"
+            className="block font-poppins text-sm text-gray-300 mb-2"
           >
             Check-out Date
           </label>
@@ -178,7 +178,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
             value={formData.dateTo}
             onChange={handleInputChange}
             min={formData.dateFrom || new Date().toISOString().split("T")[0]}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-primary font-lora"
+            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-primary font-poppins"
             required
           />
         </div>
@@ -186,7 +186,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
         <div>
           <label
             htmlFor="guests"
-            className="block font-lora text-sm text-gray-300 mb-2"
+            className="block font-poppins text-sm text-gray-300 mb-2"
           >
             Number of Guests
           </label>
@@ -198,10 +198,10 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
             onChange={handleInputChange}
             min="1"
             max={venue.maxGuests}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-primary font-lora"
+            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-primary font-poppins"
             required
           />
-          <p className="font-lora text-gray-400 text-xs mt-1">
+          <p className="font-poppins text-gray-400 text-xs mt-1">
             Maximum {venue.maxGuests} guests allowed
           </p>
         </div>
@@ -209,15 +209,15 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
         {totalPrice > 0 && (
           <div className="bg-gray-700 p-4 rounded-lg">
             <div className="flex justify-between items-center mb-2">
-              <span className="font-lora text-gray-300">
+              <span className="font-poppins text-gray-300">
                 ${venue.price} x {nights} night{nights !== 1 ? "s" : ""}
               </span>
-              <span className="font-lora text-white">${totalPrice}</span>
+              <span className="font-poppins text-white">${totalPrice}</span>
             </div>
             <div className="border-t border-gray-600 pt-2">
               <div className="flex justify-between items-center">
-                <span className="font-chivo text-lg text-white">Total</span>
-                <span className="font-chivo text-lg text-white">
+                <span className="font-poppins text-lg text-white">Total</span>
+                <span className="font-poppins text-lg text-white">
                   ${totalPrice}
                 </span>
               </div>
@@ -231,7 +231,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full px-6 py-3 bg-primary text-white font-chivo rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50"
+          className="w-full px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50"
         >
           {loading ? (
             <div className="flex items-center justify-center space-x-2">

@@ -41,21 +41,21 @@ const UserDropdown = () => {
         ) : (
           <img src="/images/user-icon.svg" alt="User" className="h-6 w-6" />
         )}
-        <span className="font-chivo hidden sm:block">{user?.name}</span>
+        <span className="font-poppins hidden sm:block">{user?.name}</span>
       </button>
 
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
           <Link
             to="/profile"
-            className="block px-4 py-2 text-gray-800 hover:bg-gray-100 font-lora text-sm transition-colors"
+            className="block px-4 py-2 text-gray-800 hover:bg-gray-100 font-poppins text-sm transition-colors"
             onClick={() => setIsOpen(false)}
           >
             Profile Settings
           </Link>
           <button
             onClick={handleLogout}
-            className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100 font-lora text-sm transition-colors"
+            className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100 font-poppins text-sm transition-colors"
           >
             Logout
           </button>

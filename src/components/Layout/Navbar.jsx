@@ -16,7 +16,7 @@ const Navbar = () => {
   const NavLink = ({ to, children, className = "" }) => (
     <Link
       to={to}
-      className={`font-chivo hover:opacity-75 transition-colors relative ${className}`}
+      className={`font-poppins hover:opacity-75 transition-colors relative ${className}`}
       style={{ color: theme.colors.navLinks }}
       onClick={() => setIsMobileMenuOpen(false)}
     >
@@ -80,7 +80,7 @@ const Navbar = () => {
             <div className="hidden md:flex items-center">
               <Link
                 to="/auth"
-                className="font-chivo hover:opacity-75 transition-colors"
+                className="font-poppins hover:opacity-75 transition-colors"
                 style={{ color: theme.colors.navLinks }}
               >
                 Sign Up / Login

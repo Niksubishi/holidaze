@@ -66,16 +66,16 @@ const MyVenues = () => {
         <div className="mb-8">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="font-chivo text-3xl md:text-4xl mb-2" style={{ color: theme.colors.text }}>
+              <h1 className="font-poppins text-3xl md:text-4xl mb-2" style={{ color: theme.colors.text }}>
                 My Venues
               </h1>
-              <p className="font-lora" style={{ color: theme.colors.text, opacity: 0.7 }}>
+              <p className="font-poppins" style={{ color: theme.colors.text, opacity: 0.7 }}>
                 Manage your properties and bookings
               </p>
             </div>
             <Link
               to="/create-venue"
-              className="px-6 py-3 bg-primary text-white font-chivo rounded-lg hover:bg-opacity-90 transition-colors"
+              className="px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors"
             >
               Create New Venue
             </Link>
@@ -102,15 +102,15 @@ const MyVenues = () => {
                 />
               </svg>
             </div>
-            <h3 className="font-chivo text-xl mb-2" style={{ color: theme.colors.text }}>
+            <h3 className="font-poppins text-xl mb-2" style={{ color: theme.colors.text }}>
               No venues created yet
             </h3>
-            <p className="font-lora mb-6" style={{ color: theme.colors.text, opacity: 0.7 }}>
+            <p className="font-poppins mb-6" style={{ color: theme.colors.text, opacity: 0.7 }}>
               Start by creating your first venue to begin hosting guests.
             </p>
             <Link
               to="/create-venue"
-              className="inline-block px-6 py-3 bg-primary text-white font-chivo rounded-lg hover:bg-opacity-90 transition-colors"
+              className="inline-block px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors"
             >
               Create Your First Venue
             </Link>
@@ -149,33 +149,33 @@ const MyVenues = () => {
                 {/* Venue Details */}
                 <div className="p-6">
                   <div className="mb-4">
-                    <h3 className="font-chivo text-xl mb-2" style={{ color: theme.colors.text }}>
+                    <h3 className="font-poppins text-xl mb-2" style={{ color: theme.colors.text }}>
                       {venue.name}
                     </h3>
-                    <p className="font-lora text-sm mb-2" style={{ color: theme.colors.text, opacity: 0.7 }}>
+                    <p className="font-poppins text-sm mb-2" style={{ color: theme.colors.text, opacity: 0.7 }}>
                       {venue.location?.city && venue.location?.country
                         ? `${venue.location.city}, ${venue.location.country}`
                         : "Location not specified"}
                     </p>
-                    <p className="font-lora text-sm line-clamp-2" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                    <p className="font-poppins text-sm line-clamp-2" style={{ color: theme.colors.text, opacity: 0.6 }}>
                       {venue.description}
                     </p>
                   </div>
 
                   <div className="flex justify-between items-center mb-4">
                     <div>
-                      <p className="font-chivo text-lg" style={{ color: theme.colors.text }}>
+                      <p className="font-poppins text-lg" style={{ color: theme.colors.text }}>
                         ${venue.price}
                       </p>
-                      <p className="font-lora text-sm" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                      <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.6 }}>
                         per night
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="font-lora text-sm" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                      <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.6 }}>
                         Max guests
                       </p>
-                      <p className="font-chivo" style={{ color: theme.colors.text }}>
+                      <p className="font-poppins" style={{ color: theme.colors.text }}>
                         {venue.maxGuests}
                       </p>
                     </div>
@@ -197,10 +197,10 @@ const MyVenues = () => {
                       )}
                     </div>
                     <div className="text-right">
-                      <p className="font-lora text-sm" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                      <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.6 }}>
                         Bookings
                       </p>
-                      <p className="font-chivo" style={{ color: theme.colors.text }}>
+                      <p className="font-poppins" style={{ color: theme.colors.text }}>
                         {venue._count?.bookings || 0}
                       </p>
                     </div>
@@ -209,7 +209,7 @@ const MyVenues = () => {
                   <div className="flex space-x-2">
                     <Link
                       to={`/venues/${venue.id}`}
-                      className="flex-1 px-4 py-2 border font-chivo rounded-lg transition-colors text-center"
+                      className="flex-1 px-4 py-2 border font-poppins rounded-lg transition-colors text-center"
                       style={{ 
                         borderColor: theme.isDarkMode ? '#4b5563' : '#d1d5db',
                         color: theme.colors.text,
@@ -226,13 +226,13 @@ const MyVenues = () => {
                     </Link>
                     <Link
                       to={`/venues/${venue.id}/edit`}
-                      className="flex-1 px-4 py-2 bg-primary text-white font-chivo rounded-lg hover:bg-opacity-90 transition-colors text-center"
+                      className="flex-1 px-4 py-2 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors text-center"
                     >
                       Edit
                     </Link>
                     <button
                       onClick={() => handleDeleteVenue(venue.id)}
-                      className="px-4 py-2 bg-red-600 text-white font-chivo rounded-lg hover:bg-red-700 transition-colors"
+                      className="px-4 py-2 bg-red-600 text-white font-poppins rounded-lg hover:bg-red-700 transition-colors"
                     >
                       Delete
                     </button>

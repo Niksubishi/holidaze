@@ -3,29 +3,17 @@
 @theme {
   --color-primary: #489da6;
   --color-dark: #383838;
-  --font-family-chivo: "Chivo-Light", sans-serif;
-  --font-family-lora: "Lora-Regular", serif;
+  --font-family-poppins: "Poppins-Light", sans-serif;
 }
 
-.font-chivo {
-  font-family: "Chivo-Light", sans-serif !important;
-}
-
-.font-lora {
-  font-family: "Lora-Regular", serif !important;
+.font-poppins {
+  font-family: "Poppins-Light", sans-serif !important;
 }
 
 @font-face {
-  font-family: "Chivo-Light";
-  src: url("/fonts/Chivo-Light.ttf") format("truetype");
+  font-family: "Poppins-Light";
+  src: url("/fonts/Poppins-Light.ttf") format("truetype");
   font-weight: 300;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Lora-Regular";
-  src: url("/fonts/Lora-Regular.ttf") format("truetype");
-  font-weight: 400;
   font-style: normal;
 }
 
@@ -33,7 +21,7 @@ body {
   margin: 0;
   background-color: #F5EBDD;
   color: #132F3D;
-  font-family: "Lora-Regular", serif;
+  font-family: "Poppins-Light", sans-serif;
 }
 
 h1,
@@ -42,7 +30,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Chivo-Light", sans-serif;
+  font-family: "Poppins-Light", sans-serif;
 }
 
 ::-webkit-scrollbar {

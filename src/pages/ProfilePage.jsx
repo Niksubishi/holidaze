@@ -142,10 +142,10 @@ const ProfilePage = () => {
     <div className="min-h-screen py-8" style={{ backgroundColor: theme.colors.background }}>
       <div className="max-w-2xl mx-auto px-4">
         <div className="mb-8">
-          <h1 className="font-chivo text-3xl md:text-4xl mb-2" style={{ color: theme.colors.text }}>
+          <h1 className="font-poppins text-3xl md:text-4xl mb-2" style={{ color: theme.colors.text }}>
             Profile Settings
           </h1>
-          <p className="font-lora" style={{ color: theme.colors.text, opacity: 0.7 }}>
+          <p className="font-poppins" style={{ color: theme.colors.text, opacity: 0.7 }}>
             Update your account information and preferences
           </p>
         </div>
@@ -165,15 +165,15 @@ const ProfilePage = () => {
                 />
               ) : (
                 <div className="h-16 w-16 rounded-full bg-primary flex items-center justify-center">
-                  <span className="font-chivo text-white text-xl">
+                  <span className="font-poppins text-white text-xl">
                     {user?.name?.charAt(0).toUpperCase()}
                   </span>
                 </div>
               )}
               <div>
-                <h3 className="font-chivo text-lg" style={{ color: theme.colors.text }}>{user?.name}</h3>
-                <p className="font-lora text-sm" style={{ color: theme.colors.text, opacity: 0.7 }}>{user?.email}</p>
-                <p className="font-lora text-xs" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                <h3 className="font-poppins text-lg" style={{ color: theme.colors.text }}>{user?.name}</h3>
+                <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.7 }}>{user?.email}</p>
+                <p className="font-poppins text-xs" style={{ color: theme.colors.text, opacity: 0.6 }}>
                   {user?.venueManager ? "Venue Manager" : "Customer"}
                 </p>
               </div>
@@ -185,7 +185,7 @@ const ProfilePage = () => {
             <div>
               <label
                 htmlFor="bio"
-                className="block font-lora text-sm mb-2"
+                className="block font-poppins text-sm mb-2"
                 style={{ color: theme.colors.text, opacity: 0.8 }}
               >
                 Bio
@@ -197,14 +197,14 @@ const ProfilePage = () => {
                 onChange={handleInputChange}
                 placeholder="Tell us about yourself..."
                 maxLength="160"
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-lora resize-none h-24"
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins resize-none h-24"
                 style={{
                   backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
                   borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
-                  color: theme.colors.text
+                  color: theme.isDarkMode ? '#ffffff' : '#132F3D'
                 }}
               />
-              <p className="font-lora text-xs mt-1" style={{ color: theme.colors.text, opacity: 0.6 }}>
+              <p className="font-poppins text-xs mt-1" style={{ color: theme.colors.text, opacity: 0.6 }}>
                 {formData.bio.length}/160 characters
               </p>
             </div>
@@ -213,7 +213,7 @@ const ProfilePage = () => {
             <div>
               <label
                 htmlFor="avatar-url"
-                className="block font-lora text-sm mb-2"
+                className="block font-poppins text-sm mb-2"
                 style={{ color: theme.colors.text, opacity: 0.8 }}
               >
                 Avatar Image URL
@@ -225,11 +225,11 @@ const ProfilePage = () => {
                 value={formData.avatar.url}
                 onChange={handleInputChange}
                 placeholder="https://example.com/your-avatar.jpg"
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-lora"
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                 style={{
                   backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
                   borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
-                  color: theme.colors.text
+                  color: theme.isDarkMode ? '#ffffff' : '#132F3D'
                 }}
               />
             </div>
@@ -238,7 +238,7 @@ const ProfilePage = () => {
               <div>
                 <label
                   htmlFor="avatar-alt"
-                  className="block font-lora text-sm mb-2"
+                  className="block font-poppins text-sm mb-2"
                   style={{ color: theme.colors.text, opacity: 0.8 }}
                 >
                   Avatar Alt Text
@@ -251,14 +251,14 @@ const ProfilePage = () => {
                   onChange={handleInputChange}
                   placeholder="Description of your avatar"
                   maxLength="120"
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-lora"
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
                     backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
                     borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
                 />
-                <p className="font-lora text-xs mt-1" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                <p className="font-poppins text-xs mt-1" style={{ color: theme.colors.text, opacity: 0.6 }}>
                   {formData.avatar.alt.length}/120 characters
                 </p>
               </div>
@@ -268,7 +268,7 @@ const ProfilePage = () => {
             <div>
               <label
                 htmlFor="banner-url"
-                className="block font-lora text-sm mb-2"
+                className="block font-poppins text-sm mb-2"
                 style={{ color: theme.colors.text, opacity: 0.8 }}
               >
                 Banner Image URL
@@ -280,11 +280,11 @@ const ProfilePage = () => {
                 value={formData.banner.url}
                 onChange={handleInputChange}
                 placeholder="https://example.com/your-banner.jpg"
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-lora"
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                 style={{
                   backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
                   borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
-                  color: theme.colors.text
+                  color: theme.isDarkMode ? '#ffffff' : '#132F3D'
                 }}
               />
             </div>
@@ -293,7 +293,7 @@ const ProfilePage = () => {
               <div>
                 <label
                   htmlFor="banner-alt"
-                  className="block font-lora text-sm mb-2"
+                  className="block font-poppins text-sm mb-2"
                   style={{ color: theme.colors.text, opacity: 0.8 }}
                 >
                   Banner Alt Text
@@ -306,14 +306,14 @@ const ProfilePage = () => {
                   onChange={handleInputChange}
                   placeholder="Description of your banner"
                   maxLength="120"
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-lora"
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
                     backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
                     borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
                 />
-                <p className="font-lora text-xs mt-1" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                <p className="font-poppins text-xs mt-1" style={{ color: theme.colors.text, opacity: 0.6 }}>
                   {formData.banner.alt.length}/120 characters
                 </p>
               </div>
@@ -331,18 +331,19 @@ const ProfilePage = () => {
                   className="h-4 w-4 text-primary focus:ring-primary rounded"
                   style={{
                     backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db'
+                    borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
+                    color: theme.isDarkMode ? '#ffffff' : '#132F3D'
                   }}
                 />
                 <label
                   htmlFor="venue-manager"
-                  className="ml-2 font-lora text-sm"
+                  className="ml-2 font-poppins text-sm"
                   style={{ color: theme.colors.text, opacity: 0.8 }}
                 >
                   {user?.venueManager ? "I am a venue manager" : "Become a venue manager"}
                 </label>
               </div>
-              <p className="font-lora text-xs mt-2" style={{ color: theme.colors.text, opacity: 0.6 }}>
+              <p className="font-poppins text-xs mt-2" style={{ color: theme.colors.text, opacity: 0.6 }}>
                 {user?.venueManager 
                   ? "Uncheck this to stop being a venue manager. This will remove your access to venue management features."
                   : "This will allow you to create and manage venue listings. You can always change this later."
@@ -350,7 +351,7 @@ const ProfilePage = () => {
               </p>
               {user?.venueManager && !formData.venueManager && (
                 <div className="mt-3 p-3 rounded-lg" style={{ backgroundColor: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
-                  <p className="font-lora text-xs" style={{ color: '#fca5a5' }}>
+                  <p className="font-poppins text-xs" style={{ color: '#fca5a5' }}>
                     <strong>Warning:</strong> Removing venue manager status will prevent you from accessing 
                     venue management features, but your existing venues will remain active.
                   </p>
@@ -361,13 +362,13 @@ const ProfilePage = () => {
             {/* Preview Section */}
             {(formData.avatar.url || formData.banner.url) && (
               <div className="rounded-lg p-4" style={{ backgroundColor: theme.isDarkMode ? '#4b5563' : '#f3f4f6' }}>
-                <h4 className="font-chivo text-sm mb-3" style={{ color: theme.colors.text, opacity: 0.8 }}>
+                <h4 className="font-poppins text-sm mb-3" style={{ color: theme.colors.text, opacity: 0.8 }}>
                   Preview
                 </h4>
                 <div className="space-y-3">
                   {formData.banner.url && (
                     <div>
-                      <p className="font-lora text-xs mb-1" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                      <p className="font-poppins text-xs mb-1" style={{ color: theme.colors.text, opacity: 0.6 }}>
                         Banner:
                       </p>
                       <img
@@ -382,7 +383,7 @@ const ProfilePage = () => {
                   )}
                   {formData.avatar.url && (
                     <div>
-                      <p className="font-lora text-xs mb-1" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                      <p className="font-poppins text-xs mb-1" style={{ color: theme.colors.text, opacity: 0.6 }}>
                         Avatar:
                       </p>
                       <img
@@ -418,7 +419,7 @@ const ProfilePage = () => {
                   setError("");
                   setSuccess("");
                 }}
-                className="px-6 py-3 border font-chivo rounded-lg transition-colors"
+                className="px-6 py-3 border font-poppins rounded-lg transition-colors"
                 style={{
                   borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
                   color: theme.colors.text,
@@ -436,7 +437,7 @@ const ProfilePage = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-3 bg-primary text-white font-chivo rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50"
+                className="px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50"
               >
                 {loading ? (
                   <div className="flex items-center space-x-2">

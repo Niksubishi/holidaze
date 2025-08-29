@@ -96,7 +96,7 @@ const VenuesList = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search venues by name or location..."
-                className="w-full px-4 py-3 bg-transparent border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary font-lora"
+                className="w-full px-4 py-3 bg-transparent border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary font-poppins"
               />
             </div>
             {searchQuery && (
@@ -104,7 +104,7 @@ const VenuesList = () => {
                 <button
                   type="button"
                   onClick={handleClearSearch}
-                  className="px-4 py-3 bg-gray-600 text-white font-chivo rounded-lg hover:bg-gray-500 transition-colors"
+                  className="px-4 py-3 bg-gray-600 text-white font-poppins rounded-lg hover:bg-gray-500 transition-colors"
                 >
                   Clear
                 </button>
@@ -117,7 +117,7 @@ const VenuesList = () => {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => handleSortChange("created", "desc")}
-            className={`px-4 py-2 rounded-lg font-chivo text-sm transition-colors ${
+            className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors ${
               sortBy === "created" && sortOrder === "desc"
                 ? "bg-primary text-white"
                 : "bg-gray-700 text-gray-300 hover:bg-gray-600"
@@ -127,7 +127,7 @@ const VenuesList = () => {
           </button>
           <button
             onClick={() => handleSortChange("created", "asc")}
-            className={`px-4 py-2 rounded-lg font-chivo text-sm transition-colors ${
+            className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors ${
               sortBy === "created" && sortOrder === "asc"
                 ? "bg-primary text-white"
                 : "bg-gray-700 text-gray-300 hover:bg-gray-600"
@@ -137,7 +137,7 @@ const VenuesList = () => {
           </button>
           <button
             onClick={() => handleSortChange("price", "asc")}
-            className={`px-4 py-2 rounded-lg font-chivo text-sm transition-colors ${
+            className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors ${
               sortBy === "price" && sortOrder === "asc"
                 ? "bg-primary text-white"
                 : "bg-gray-700 text-gray-300 hover:bg-gray-600"
@@ -147,7 +147,7 @@ const VenuesList = () => {
           </button>
           <button
             onClick={() => handleSortChange("price", "desc")}
-            className={`px-4 py-2 rounded-lg font-chivo text-sm transition-colors ${
+            className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors ${
               sortBy === "price" && sortOrder === "desc"
                 ? "bg-primary text-white"
                 : "bg-gray-700 text-gray-300 hover:bg-gray-600"
@@ -157,7 +157,7 @@ const VenuesList = () => {
           </button>
           <button
             onClick={() => handleSortChange("rating", "desc")}
-            className={`px-4 py-2 rounded-lg font-chivo text-sm transition-colors ${
+            className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors ${
               sortBy === "rating" && sortOrder === "desc"
                 ? "bg-primary text-white"
                 : "bg-gray-700 text-gray-300 hover:bg-gray-600"
@@ -181,10 +181,10 @@ const VenuesList = () => {
       {/* Venues Grid */}
       {!loading && venues.length === 0 && !error && (
         <div className="text-center py-12">
-          <h3 className="font-chivo text-xl text-white mb-2">
+          <h3 className="font-poppins text-xl text-white mb-2">
             No venues found
           </h3>
-          <p className="font-lora text-gray-300">
+          <p className="font-poppins text-gray-300">
             {searchQuery
               ? "Try adjusting your search terms."
               : "No venues are available at the moment."}
@@ -206,7 +206,7 @@ const VenuesList = () => {
           <button
             onClick={handleLoadMore}
             disabled={loading}
-            className="px-8 py-3 bg-primary text-white font-chivo rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50"
+            className="px-8 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50"
           >
             {loading ? (
               <div className="flex items-center space-x-2">

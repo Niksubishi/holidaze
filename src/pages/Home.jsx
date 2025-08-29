@@ -29,7 +29,7 @@ const Home = () => {
         <div className="text-center py-16">
           <Link
             to="/auth"
-            className="inline-block font-lora text-4xl hover:opacity-75 transition-colors cursor-pointer"
+            className="inline-block font-poppins text-4xl hover:opacity-75 transition-colors cursor-pointer"
             style={{ color: theme.colors.secondary }}
           >
             Get started now...

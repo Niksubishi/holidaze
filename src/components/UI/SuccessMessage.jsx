@@ -20,7 +20,7 @@ const SuccessMessage = ({ message, className = "" }) => {
             clipRule="evenodd"
           />
         </svg>
-        <span className="font-lora text-sm">{message}</span>
+        <span className="font-poppins text-sm">{message}</span>
       </div>
     </div>
   );

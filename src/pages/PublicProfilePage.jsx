@@ -49,7 +49,7 @@ const PublicProfilePage = () => {
           <div className="text-center">
             <Link
               to="/venues"
-              className="inline-block px-6 py-3 bg-primary text-white font-chivo rounded-lg hover:bg-opacity-90 transition-colors"
+              className="inline-block px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors"
             >
               Back to Venues
             </Link>
@@ -63,15 +63,15 @@ const PublicProfilePage = () => {
     return (
       <div className="min-h-screen py-8" style={{ backgroundColor: theme.colors.background }}>
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <h1 className="font-chivo text-3xl mb-4" style={{ color: theme.colors.text }}>
+          <h1 className="font-poppins text-3xl mb-4" style={{ color: theme.colors.text }}>
             Profile not found
           </h1>
-          <p className="font-lora mb-6" style={{ color: theme.colors.text, opacity: 0.7 }}>
+          <p className="font-poppins mb-6" style={{ color: theme.colors.text, opacity: 0.7 }}>
             The user profile you're looking for doesn't exist.
           </p>
           <Link
             to="/venues"
-            className="inline-block px-6 py-3 bg-primary text-white font-chivo rounded-lg hover:bg-opacity-90 transition-colors"
+            className="inline-block px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors"
           >
             Back to Venues
           </Link>
@@ -107,7 +107,7 @@ const PublicProfilePage = () => {
               />
             ) : (
               <div className="h-24 w-24 rounded-full bg-primary flex items-center justify-center">
-                <span className="font-chivo text-white text-2xl">
+                <span className="font-poppins text-white text-2xl">
                   {profile.name?.charAt(0).toUpperCase()}
                 </span>
               </div>
@@ -115,17 +115,17 @@ const PublicProfilePage = () => {
 
             {/* Name and Bio */}
             <div className="flex-1">
-              <h1 className="font-chivo text-3xl mb-2" style={{ color: theme.colors.text }}>
+              <h1 className="font-poppins text-3xl mb-2" style={{ color: theme.colors.text }}>
                 {profile.name}
               </h1>
-              <p className="font-lora mb-2" style={{ color: theme.colors.text, opacity: 0.7 }}>
+              <p className="font-poppins mb-2" style={{ color: theme.colors.text, opacity: 0.7 }}>
                 {profile.email}
               </p>
-              <p className="font-lora text-sm mb-4" style={{ color: theme.colors.text, opacity: 0.6 }}>
+              <p className="font-poppins text-sm mb-4" style={{ color: theme.colors.text, opacity: 0.6 }}>
                 {profile.venueManager ? "Venue Manager" : "Customer"}
               </p>
               {profile.bio && (
-                <p className="font-lora leading-relaxed" style={{ color: theme.colors.text, opacity: 0.8 }}>
+                <p className="font-poppins leading-relaxed" style={{ color: theme.colors.text, opacity: 0.8 }}>
                   {profile.bio}
                 </p>
               )}
@@ -137,10 +137,10 @@ const PublicProfilePage = () => {
         {profile.venues && profile.venues.length > 0 && (
           <div>
             <div className="mb-6">
-              <h2 className="font-chivo text-2xl mb-2" style={{ color: theme.colors.text }}>
+              <h2 className="font-poppins text-2xl mb-2" style={{ color: theme.colors.text }}>
                 {profile.name}'s Venues
               </h2>
-              <p className="font-lora" style={{ color: theme.colors.text, opacity: 0.7 }}>
+              <p className="font-poppins" style={{ color: theme.colors.text, opacity: 0.7 }}>
                 {profile.venues.length} venue{profile.venues.length !== 1 ? "s" : ""} available
               </p>
             </div>
@@ -171,10 +171,10 @@ const PublicProfilePage = () => {
                 />
               </svg>
             </div>
-            <h3 className="font-chivo text-xl mb-2" style={{ color: theme.colors.text }}>
+            <h3 className="font-poppins text-xl mb-2" style={{ color: theme.colors.text }}>
               No venues listed
             </h3>
-            <p className="font-lora" style={{ color: theme.colors.text, opacity: 0.7 }}>
+            <p className="font-poppins" style={{ color: theme.colors.text, opacity: 0.7 }}>
               {profile.name} hasn't created any venue listings yet.
             </p>
           </div>

@@ -201,7 +201,7 @@ const CreateVenue = () => {
         <div className="mb-8">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center space-x-2 hover:opacity-75 transition-colors font-lora mb-4"
+            className="flex items-center space-x-2 hover:opacity-75 transition-colors font-poppins mb-4"
             style={{ color: theme.colors.text }}
           >
             <svg
@@ -220,10 +220,10 @@ const CreateVenue = () => {
             <span>Back</span>
           </button>
 
-          <h1 className="font-chivo text-3xl md:text-4xl mb-2" style={{ color: theme.colors.text }}>
+          <h1 className="font-poppins text-3xl md:text-4xl mb-2" style={{ color: theme.colors.text }}>
             Create New Venue
           </h1>
-          <p className="font-lora" style={{ color: theme.colors.text, opacity: 0.7 }}>
+          <p className="font-poppins" style={{ color: theme.colors.text, opacity: 0.7 }}>
             Add a new venue to your listings
           </p>
         </div>
@@ -238,7 +238,7 @@ const CreateVenue = () => {
               <div>
                 <label
                   htmlFor="name"
-                  className="block font-lora text-sm mb-2"
+                  className="block font-poppins text-sm mb-2"
                   style={{ color: theme.colors.text, opacity: 0.8 }}
                 >
                   Venue Name *
@@ -250,7 +250,7 @@ const CreateVenue = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Enter venue name"
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-lora"
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
                     backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
                     borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
@@ -263,7 +263,7 @@ const CreateVenue = () => {
               <div>
                 <label
                   htmlFor="price"
-                  className="block font-lora text-sm mb-2"
+                  className="block font-poppins text-sm mb-2"
                   style={{ color: theme.colors.text, opacity: 0.8 }}
                 >
                   Price per Night ($) *
@@ -277,7 +277,7 @@ const CreateVenue = () => {
                   placeholder="0"
                   min="0"
                   step="0.01"
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-lora"
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
                     backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
                     borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
@@ -292,7 +292,7 @@ const CreateVenue = () => {
               <div>
                 <label
                   htmlFor="maxGuests"
-                  className="block font-lora text-sm mb-2"
+                  className="block font-poppins text-sm mb-2"
                   style={{ color: theme.colors.text, opacity: 0.8 }}
                 >
                   Maximum Guests *
@@ -305,7 +305,7 @@ const CreateVenue = () => {
                   onChange={handleInputChange}
                   placeholder="1"
                   min="1"
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-lora"
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
                     backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
                     borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
@@ -318,7 +318,7 @@ const CreateVenue = () => {
               <div>
                 <label
                   htmlFor="rating"
-                  className="block font-lora text-sm mb-2"
+                  className="block font-poppins text-sm mb-2"
                   style={{ color: theme.colors.text, opacity: 0.8 }}
                 >
                   Initial Rating (0-5)
@@ -333,7 +333,7 @@ const CreateVenue = () => {
                   min="0"
                   max="5"
                   step="0.1"
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-lora"
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
                     backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
                     borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
@@ -347,7 +347,7 @@ const CreateVenue = () => {
             <div>
               <label
                 htmlFor="description"
-                className="block font-lora text-sm text-gray-300 mb-2"
+                className="block font-poppins text-sm text-gray-300 mb-2"
               >
                 Description *
               </label>
@@ -358,14 +358,14 @@ const CreateVenue = () => {
                 onChange={handleInputChange}
                 placeholder="Describe your venue..."
                 rows="4"
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary font-lora resize-none"
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary font-poppins resize-none"
                 required
               />
             </div>
 
             {/* Media */}
             <div>
-              <label className="block font-lora text-sm mb-2" style={{ color: theme.colors.text, opacity: 0.8 }}>
+              <label className="block font-poppins text-sm mb-2" style={{ color: theme.colors.text, opacity: 0.8 }}>
                 Images *
               </label>
               {formData.media.map((item, index) => (
@@ -381,7 +381,7 @@ const CreateVenue = () => {
                         handleMediaChange(index, "url", e.target.value)
                       }
                       placeholder="Image URL"
-                      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-lora"
+                      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
                     backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
                     borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
@@ -398,7 +398,7 @@ const CreateVenue = () => {
                         handleMediaChange(index, "alt", e.target.value)
                       }
                       placeholder="Alt text (optional)"
-                      className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary font-lora"
+                      className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary font-poppins"
                     />
                     {formData.media.length > 1 && (
                       <button
@@ -415,7 +415,7 @@ const CreateVenue = () => {
               <button
                 type="button"
                 onClick={addMediaField}
-                className="px-4 py-2 border font-chivo rounded-lg hover:opacity-75 transition-colors"
+                className="px-4 py-2 border font-poppins rounded-lg hover:opacity-75 transition-colors"
                 style={{
                   borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
                   color: theme.colors.text,
@@ -428,7 +428,7 @@ const CreateVenue = () => {
 
             {/* Amenities */}
             <div>
-              <label className="block font-lora text-sm text-gray-300 mb-3">
+              <label className="block font-poppins text-sm text-gray-300 mb-3">
                 Amenities
               </label>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -444,7 +444,7 @@ const CreateVenue = () => {
                     />
                     <label
                       htmlFor={`meta.${key}`}
-                      className="ml-2 font-lora text-sm capitalize"
+                      className="ml-2 font-poppins text-sm capitalize"
                       style={{ color: theme.colors.text, opacity: 0.8 }}
                     >
                       {key === "wifi" ? "WiFi" : key}
@@ -456,12 +456,12 @@ const CreateVenue = () => {
 
             {/* Location */}
             <div>
-              <h3 className="font-chivo text-lg mb-4" style={{ color: theme.colors.text }}>Location</h3>
+              <h3 className="font-poppins text-lg mb-4" style={{ color: theme.colors.text }}>Location</h3>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
                   <label
                     htmlFor="location.address"
-                    className="block font-lora text-sm mb-2"
+                    className="block font-poppins text-sm mb-2"
                   style={{ color: theme.colors.text, opacity: 0.8 }}
                   >
                     Address
@@ -473,7 +473,7 @@ const CreateVenue = () => {
                     value={formData.location.address}
                     onChange={handleInputChange}
                     placeholder="Street address"
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-lora"
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
                     backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
                     borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
@@ -485,7 +485,7 @@ const CreateVenue = () => {
                 <div>
                   <label
                     htmlFor="location.city"
-                    className="block font-lora text-sm mb-2"
+                    className="block font-poppins text-sm mb-2"
                   style={{ color: theme.colors.text, opacity: 0.8 }}
                   >
                     City
@@ -497,7 +497,7 @@ const CreateVenue = () => {
                     value={formData.location.city}
                     onChange={handleInputChange}
                     placeholder="City name"
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-lora"
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
                     backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
                     borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
@@ -509,7 +509,7 @@ const CreateVenue = () => {
                 <div>
                   <label
                     htmlFor="location.zip"
-                    className="block font-lora text-sm mb-2"
+                    className="block font-poppins text-sm mb-2"
                   style={{ color: theme.colors.text, opacity: 0.8 }}
                   >
                     ZIP Code
@@ -521,7 +521,7 @@ const CreateVenue = () => {
                     value={formData.location.zip}
                     onChange={handleInputChange}
                     placeholder="ZIP code"
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-lora"
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
                     backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
                     borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
@@ -533,7 +533,7 @@ const CreateVenue = () => {
                 <div>
                   <label
                     htmlFor="location.country"
-                    className="block font-lora text-sm mb-2"
+                    className="block font-poppins text-sm mb-2"
                   style={{ color: theme.colors.text, opacity: 0.8 }}
                   >
                     Country
@@ -545,7 +545,7 @@ const CreateVenue = () => {
                     value={formData.location.country}
                     onChange={handleInputChange}
                     placeholder="Country name"
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-lora"
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
                     backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
                     borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
@@ -557,7 +557,7 @@ const CreateVenue = () => {
                 <div>
                   <label
                     htmlFor="location.continent"
-                    className="block font-lora text-sm mb-2"
+                    className="block font-poppins text-sm mb-2"
                   style={{ color: theme.colors.text, opacity: 0.8 }}
                   >
                     Continent
@@ -569,7 +569,7 @@ const CreateVenue = () => {
                     value={formData.location.continent}
                     onChange={handleInputChange}
                     placeholder="Continent name"
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-lora"
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
                     backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
                     borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
@@ -581,7 +581,7 @@ const CreateVenue = () => {
                 <div>
                   <label
                     htmlFor="location.lat"
-                    className="block font-lora text-sm mb-2"
+                    className="block font-poppins text-sm mb-2"
                   style={{ color: theme.colors.text, opacity: 0.8 }}
                   >
                     Latitude
@@ -594,7 +594,7 @@ const CreateVenue = () => {
                     onChange={handleInputChange}
                     placeholder="0.0"
                     step="any"
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-lora"
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
                     backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
                     borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
@@ -606,7 +606,7 @@ const CreateVenue = () => {
                 <div>
                   <label
                     htmlFor="location.lng"
-                    className="block font-lora text-sm mb-2"
+                    className="block font-poppins text-sm mb-2"
                   style={{ color: theme.colors.text, opacity: 0.8 }}
                   >
                     Longitude
@@ -619,7 +619,7 @@ const CreateVenue = () => {
                     onChange={handleInputChange}
                     placeholder="0.0"
                     step="any"
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-lora"
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
                     backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
                     borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
@@ -635,7 +635,7 @@ const CreateVenue = () => {
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="px-6 py-3 border font-chivo rounded-lg hover:opacity-75 transition-colors"
+                className="px-6 py-3 border font-poppins rounded-lg hover:opacity-75 transition-colors"
                 style={{
                   borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
                   color: theme.colors.text,
@@ -647,7 +647,7 @@ const CreateVenue = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-3 bg-primary text-white font-chivo rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50"
+                className="px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50"
               >
                 {loading ? (
                   <div className="flex items-center space-x-2">

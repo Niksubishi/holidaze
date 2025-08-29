@@ -93,10 +93,10 @@ const MyBookings = () => {
     <div className="min-h-screen py-8" style={{ backgroundColor: theme.colors.background }}>
       <div className="max-w-6xl mx-auto px-4">
         <div className="mb-8">
-          <h1 className="font-chivo text-3xl md:text-4xl mb-2" style={{ color: theme.colors.text }}>
+          <h1 className="font-poppins text-3xl md:text-4xl mb-2" style={{ color: theme.colors.text }}>
             My Bookings
           </h1>
-          <p className="font-lora" style={{ color: theme.colors.text, opacity: 0.7 }}>
+          <p className="font-poppins" style={{ color: theme.colors.text, opacity: 0.7 }}>
             Manage your upcoming reservations
           </p>
         </div>
@@ -121,15 +121,15 @@ const MyBookings = () => {
                 />
               </svg>
             </div>
-            <h3 className="font-chivo text-xl mb-2" style={{ color: theme.colors.text }}>
+            <h3 className="font-poppins text-xl mb-2" style={{ color: theme.colors.text }}>
               No upcoming bookings
             </h3>
-            <p className="font-lora mb-6" style={{ color: theme.colors.text, opacity: 0.7 }}>
+            <p className="font-poppins mb-6" style={{ color: theme.colors.text, opacity: 0.7 }}>
               Ready to plan your next getaway?
             </p>
             <Link
               to="/venues"
-              className="inline-block px-6 py-3 text-white font-chivo rounded-lg hover:bg-opacity-90 transition-colors"
+              className="inline-block px-6 py-3 text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors"
               style={{ backgroundColor: theme.colors.primary }}
             >
               Browse Venues
@@ -173,12 +173,12 @@ const MyBookings = () => {
                           <div>
                             <Link
                               to={`/venues/${booking.venue.id}`}
-                              className="font-chivo text-xl hover:opacity-75 transition-colors"
+                              className="font-poppins text-xl hover:opacity-75 transition-colors"
                               style={{ color: theme.colors.text }}
                             >
                               {booking.venue.name}
                             </Link>
-                            <p className="font-lora text-sm mt-1" style={{ color: theme.colors.text, opacity: 0.7 }}>
+                            <p className="font-poppins text-sm mt-1" style={{ color: theme.colors.text, opacity: 0.7 }}>
                               {booking.venue.location?.city &&
                               booking.venue.location?.country
                                 ? `${booking.venue.location.city}, ${booking.venue.location.country}`
@@ -186,10 +186,10 @@ const MyBookings = () => {
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className="font-chivo text-lg" style={{ color: theme.colors.text }}>
+                            <p className="font-poppins text-lg" style={{ color: theme.colors.text }}>
                               ${calculateTotalPrice(booking)}
                             </p>
-                            <p className="font-lora text-sm" style={{ color: theme.colors.text, opacity: 0.7 }}>
+                            <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.7 }}>
                               total for{" "}
                               {calculateNights(
                                 booking.dateFrom,
@@ -208,35 +208,35 @@ const MyBookings = () => {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                           <div>
-                            <p className="font-lora text-sm" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                            <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.6 }}>
                               Check-in
                             </p>
-                            <p className="font-lora" style={{ color: theme.colors.text }}>
+                            <p className="font-poppins" style={{ color: theme.colors.text }}>
                               {formatDate(booking.dateFrom)}
                             </p>
                           </div>
                           <div>
-                            <p className="font-lora text-sm" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                            <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.6 }}>
                               Check-out
                             </p>
-                            <p className="font-lora" style={{ color: theme.colors.text }}>
+                            <p className="font-poppins" style={{ color: theme.colors.text }}>
                               {formatDate(booking.dateTo)}
                             </p>
                           </div>
                           <div>
-                            <p className="font-lora text-sm" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                            <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.6 }}>
                               Guests
                             </p>
-                            <p className="font-lora" style={{ color: theme.colors.text }}>
+                            <p className="font-poppins" style={{ color: theme.colors.text }}>
                               {booking.guests} guest
                               {booking.guests !== 1 ? "s" : ""}
                             </p>
                           </div>
                           <div>
-                            <p className="font-lora text-sm" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                            <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.6 }}>
                               Booking ID
                             </p>
-                            <p className="font-lora text-sm" style={{ color: theme.colors.text }}>
+                            <p className="font-poppins text-sm" style={{ color: theme.colors.text }}>
                               {booking.id.slice(0, 8)}...
                             </p>
                           </div>
@@ -246,7 +246,7 @@ const MyBookings = () => {
                       <div className="flex justify-end space-x-3">
                         <Link
                           to={`/venues/${booking.venue.id}`}
-                          className="px-4 py-2 border font-chivo rounded-lg hover:opacity-75 transition-colors"
+                          className="px-4 py-2 border font-poppins rounded-lg hover:opacity-75 transition-colors"
                           style={{ 
                             borderColor: theme.colors.text + '40',
                             color: theme.colors.text + 'CC'
@@ -256,7 +256,7 @@ const MyBookings = () => {
                         </Link>
                         <button
                           onClick={() => handleCancelBooking(booking.id)}
-                          className="px-4 py-2 bg-red-600 text-white font-chivo rounded-lg hover:bg-red-700 transition-colors cursor-pointer"
+                          className="px-4 py-2 bg-red-600 text-white font-poppins rounded-lg hover:bg-red-700 transition-colors cursor-pointer"
                         >
                           Cancel Booking
                         </button>

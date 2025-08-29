@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className="py-4 mt-auto" style={{ backgroundColor: theme.colors.secondary }}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center">
-          <p className="font-lora text-white text-sm">
+          <p className="font-poppins text-white text-sm">
             Copyright Nik Bishop 2025
           </p>
         </div>

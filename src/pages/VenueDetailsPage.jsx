@@ -58,7 +58,7 @@ const VenueDetailsPage = () => {
           <ErrorMessage message={error} className="mb-4" />
           <button
             onClick={() => navigate("/venues")}
-            className="px-6 py-3 bg-primary text-white font-chivo rounded-lg hover:bg-opacity-90 transition-colors"
+            className="px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors"
           >
             Back to Venues
           </button>
@@ -71,12 +71,12 @@ const VenueDetailsPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: theme.colors.background }}>
         <div className="text-center">
-          <h2 className="font-chivo text-2xl mb-4" style={{ color: theme.colors.text }}>
+          <h2 className="font-poppins text-2xl mb-4" style={{ color: theme.colors.text }}>
             Venue not found
           </h2>
           <button
             onClick={() => navigate("/venues")}
-            className="px-6 py-3 bg-primary text-white font-chivo rounded-lg hover:bg-opacity-90 transition-colors"
+            className="px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors"
           >
             Back to Venues
           </button>
@@ -91,7 +91,7 @@ const VenueDetailsPage = () => {
       <div className="max-w-7xl mx-auto px-4 py-4">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center space-x-2 transition-colors font-lora"
+          className="flex items-center space-x-2 transition-colors font-poppins"
           style={{ color: theme.colors.text, opacity: 0.7 }}
           onMouseEnter={(e) => {
             e.target.style.color = theme.colors.text;
