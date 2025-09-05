@@ -154,7 +154,7 @@ const MyBookings = () => {
                         <img
                           src={
                             booking.venue.media?.[0]?.url ||
-                            "/images/placeholder-venue.jpg"
+                            "/images/default.jpg"
                           }
                           alt={
                             booking.venue.media?.[0]?.alt || booking.venue.name
@@ -248,8 +248,8 @@ const MyBookings = () => {
                           to={`/venues/${booking.venue.id}`}
                           className="px-4 py-2 border font-poppins rounded-lg hover:opacity-75 transition-colors"
                           style={{ 
-                            borderColor: theme.colors.text + '40',
-                            color: theme.colors.text + 'CC'
+                            borderColor: theme.isDarkMode ? '#ffffff' : '#132F3D66',
+                            color: theme.isDarkMode ? '#ffffff' : '#132F3Dcc'
                           }}
                         >
                           View Venue

@@ -186,9 +186,15 @@ const AuthForms = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8" style={{ backgroundColor: theme.colors.background }}>
+    <div
+      className="min-h-screen flex items-center justify-center px-4 py-8"
+      style={{ backgroundColor: theme.colors.background }}
+    >
       <div className="w-full max-w-md">
-        <div className="rounded-lg p-8 shadow-lg" style={{ backgroundColor: theme.isDarkMode ? '#374151' : '#f9fafb' }}>
+        <div
+          className="rounded-lg p-8 shadow-lg"
+          style={{ backgroundColor: theme.isDarkMode ? "#374151" : "#f9fafb" }}
+        >
           {/* Toggle Buttons */}
           <div className="flex mb-8">
             <button
@@ -198,13 +204,15 @@ const AuthForms = () => {
                 setSuccess("");
               }}
               className={`flex-1 py-2 px-4 font-poppins text-center transition-colors ${
-                isLogin
-                  ? "bg-primary text-white"
-                  : `hover:opacity-80`
+                isLogin ? "bg-primary" : `hover:opacity-80`
               }`}
               style={{
-                backgroundColor: isLogin ? "#489DA6" : (theme.isDarkMode ? '#4b5563' : '#e5e7eb'),
-                color: isLogin ? "white" : theme.colors.text
+                backgroundColor: isLogin
+                  ? "#489DA6"
+                  : theme.isDarkMode
+                  ? "#4b5563"
+                  : "#e5e7eb",
+                color: isLogin ? "white" : theme.colors.text,
               }}
             >
               Login
@@ -216,13 +224,15 @@ const AuthForms = () => {
                 setSuccess("");
               }}
               className={`flex-1 py-2 px-4 font-poppins text-center transition-colors ${
-                !isLogin
-                  ? "bg-primary text-white"
-                  : `hover:opacity-80`
+                !isLogin ? "bg-primary" : `hover:opacity-80`
               }`}
               style={{
-                backgroundColor: !isLogin ? "#489DA6" : (theme.isDarkMode ? '#4b5563' : '#e5e7eb'),
-                color: !isLogin ? "white" : theme.colors.text
+                backgroundColor: !isLogin
+                  ? "#489DA6"
+                  : theme.isDarkMode
+                  ? "#4b5563"
+                  : "#e5e7eb",
+                color: !isLogin ? "white" : theme.colors.text,
               }}
             >
               Sign Up
@@ -240,7 +250,7 @@ const AuthForms = () => {
                 <label
                   htmlFor="login-email"
                   className="block font-poppins text-sm mb-2"
-                  style={{ color: theme.colors.text, opacity: 0.8 }}
+                  style={{ color: "#132F3D", opacity: 0.8 }}
                 >
                   Email
                 </label>
@@ -253,9 +263,9 @@ const AuthForms = () => {
                   placeholder="your.name@stud.noroff.no"
                   className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
-                    backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
-                    color: theme.isDarkMode ? '#ffffff' : '#132F3D'
+                    backgroundColor: theme.isDarkMode ? "#4b5563" : "#ffffff",
+                    borderColor: theme.isDarkMode ? "#6b7280" : "#d1d5db",
+                    color: theme.isDarkMode ? "#ffffff" : "#132F3D",
                   }}
                   required
                 />
@@ -265,7 +275,7 @@ const AuthForms = () => {
                 <label
                   htmlFor="login-password"
                   className="block font-poppins text-sm mb-2"
-                  style={{ color: theme.colors.text, opacity: 0.8 }}
+                  style={{ color: "#132F3D", opacity: 0.8 }}
                 >
                   Password
                 </label>
@@ -278,9 +288,9 @@ const AuthForms = () => {
                   placeholder="Enter your password"
                   className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
-                    backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
-                    color: theme.isDarkMode ? '#ffffff' : '#132F3D'
+                    backgroundColor: theme.isDarkMode ? "#4b5563" : "#ffffff",
+                    borderColor: theme.isDarkMode ? "#6b7280" : "#d1d5db",
+                    color: theme.isDarkMode ? "#ffffff" : "#132F3D",
                   }}
                   required
                 />
@@ -310,7 +320,7 @@ const AuthForms = () => {
                 <label
                   htmlFor="signup-name"
                   className="block font-poppins text-sm mb-2"
-                  style={{ color: theme.colors.text, opacity: 0.8 }}
+                  style={{ color: "#132F3D", opacity: 0.8 }}
                 >
                   Username *
                 </label>
@@ -323,13 +333,16 @@ const AuthForms = () => {
                   placeholder="your_username"
                   className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
-                    backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
-                    color: theme.isDarkMode ? '#ffffff' : '#132F3D'
+                    backgroundColor: theme.isDarkMode ? "#4b5563" : "#ffffff",
+                    borderColor: theme.isDarkMode ? "#6b7280" : "#d1d5db",
+                    color: theme.isDarkMode ? "#ffffff" : "#132F3D",
                   }}
                   required
                 />
-                <p className="font-poppins text-xs mt-1" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                <p
+                  className="font-poppins text-xs mt-1"
+                  style={{ color: "#132F3D", opacity: 0.6 }}
+                >
                   Only letters, numbers, and underscores allowed
                 </p>
               </div>
@@ -338,7 +351,7 @@ const AuthForms = () => {
                 <label
                   htmlFor="signup-email"
                   className="block font-poppins text-sm mb-2"
-                  style={{ color: theme.colors.text, opacity: 0.8 }}
+                  style={{ color: "#132F3D", opacity: 0.8 }}
                 >
                   Email *
                 </label>
@@ -351,9 +364,9 @@ const AuthForms = () => {
                   placeholder="your.name@stud.noroff.no"
                   className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
-                    backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
-                    color: theme.isDarkMode ? '#ffffff' : '#132F3D'
+                    backgroundColor: theme.isDarkMode ? "#4b5563" : "#ffffff",
+                    borderColor: theme.isDarkMode ? "#6b7280" : "#d1d5db",
+                    color: theme.isDarkMode ? "#ffffff" : "#132F3D",
                   }}
                   required
                 />
@@ -363,7 +376,7 @@ const AuthForms = () => {
                 <label
                   htmlFor="signup-password"
                   className="block font-poppins text-sm mb-2"
-                  style={{ color: theme.colors.text, opacity: 0.8 }}
+                  style={{ color: "#132F3D", opacity: 0.8 }}
                 >
                   Password *
                 </label>
@@ -376,9 +389,9 @@ const AuthForms = () => {
                   placeholder="At least 8 characters"
                   className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
-                    backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
-                    color: theme.isDarkMode ? '#ffffff' : '#132F3D'
+                    backgroundColor: theme.isDarkMode ? "#4b5563" : "#ffffff",
+                    borderColor: theme.isDarkMode ? "#6b7280" : "#d1d5db",
+                    color: theme.isDarkMode ? "#ffffff" : "#132F3D",
                   }}
                   required
                 />
@@ -388,7 +401,7 @@ const AuthForms = () => {
                 <label
                   htmlFor="signup-bio"
                   className="block font-poppins text-sm mb-2"
-                  style={{ color: theme.colors.text, opacity: 0.8 }}
+                  style={{ color: "#132F3D", opacity: 0.8 }}
                 >
                   Bio (optional)
                 </label>
@@ -399,9 +412,17 @@ const AuthForms = () => {
                   onChange={handleSignupChange}
                   placeholder="Tell us about yourself (max 160 characters)"
                   maxLength="160"
-                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary font-poppins resize-none h-20"
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins resize-none h-20"
+                  style={{
+                    backgroundColor: theme.isDarkMode ? "#4b5563" : "#ffffff",
+                    borderColor: theme.isDarkMode ? "#6b7280" : "#d1d5db",
+                    color: theme.isDarkMode ? "#ffffff" : "#132F3D",
+                  }}
                 />
-                <p className="font-poppins text-xs mt-1" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                <p
+                  className="font-poppins text-xs mt-1"
+                  style={{ color: "#132F3D", opacity: 0.6 }}
+                >
                   {signupData.bio.length}/160 characters
                 </p>
               </div>
@@ -410,7 +431,7 @@ const AuthForms = () => {
                 <label
                   htmlFor="signup-avatar-url"
                   className="block font-poppins text-sm mb-2"
-                  style={{ color: theme.colors.text, opacity: 0.8 }}
+                  style={{ color: "#132F3D", opacity: 0.8 }}
                 >
                   Avatar URL (optional)
                 </label>
@@ -423,9 +444,9 @@ const AuthForms = () => {
                   placeholder="https://example.com/your-avatar.jpg"
                   className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
                   style={{
-                    backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
-                    color: theme.isDarkMode ? '#ffffff' : '#132F3D'
+                    backgroundColor: theme.isDarkMode ? "#4b5563" : "#ffffff",
+                    borderColor: theme.isDarkMode ? "#6b7280" : "#d1d5db",
+                    color: theme.isDarkMode ? "#ffffff" : "#132F3D",
                   }}
                 />
               </div>
@@ -435,7 +456,7 @@ const AuthForms = () => {
                   <label
                     htmlFor="signup-avatar-alt"
                     className="block font-poppins text-sm mb-2"
-                  style={{ color: theme.colors.text, opacity: 0.8 }}
+                    style={{ color: "#132F3D", opacity: 0.8 }}
                   >
                     Avatar Alt Text (optional)
                   </label>
@@ -448,11 +469,11 @@ const AuthForms = () => {
                     placeholder="Description of your avatar"
                     maxLength="120"
                     className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
-                  style={{
-                    backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
-                    color: theme.isDarkMode ? '#ffffff' : '#132F3D'
-                  }}
+                    style={{
+                      backgroundColor: theme.isDarkMode ? "#4b5563" : "#ffffff",
+                      borderColor: theme.isDarkMode ? "#6b7280" : "#d1d5db",
+                      color: theme.isDarkMode ? "#ffffff" : "#132F3D",
+                    }}
                   />
                 </div>
               )}
@@ -466,19 +487,22 @@ const AuthForms = () => {
                   onChange={handleSignupChange}
                   className="h-4 w-4 text-primary focus:ring-primary rounded"
                   style={{
-                    backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db'
+                    backgroundColor: theme.isDarkMode ? "#4b5563" : "#ffffff",
+                    borderColor: theme.isDarkMode ? "#6b7280" : "#d1d5db",
                   }}
                 />
                 <label
                   htmlFor="venue-manager"
                   className="ml-2 font-poppins text-sm"
-                  style={{ color: theme.colors.text, opacity: 0.8 }}
+                  style={{ color: "#132F3D", opacity: 0.8 }}
                 >
                   Register as venue manager
                 </label>
               </div>
-              <p className="font-poppins text-xs" style={{ color: theme.colors.text, opacity: 0.6 }}>
+              <p
+                className="font-poppins text-xs"
+                style={{ color: theme.colors.text, opacity: 0.6 }}
+              >
                 Venue managers can create and manage their own venues
               </p>
 

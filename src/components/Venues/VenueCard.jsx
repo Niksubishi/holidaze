@@ -5,7 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 const VenueCard = ({ venue }) => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const defaultImage = "/images/placeholder-venue.jpg";
+  const defaultImage = "/images/default.jpg";
   const imageUrl = venue.media?.[0]?.url || defaultImage;
   const imageAlt = venue.media?.[0]?.alt || venue.name;
 

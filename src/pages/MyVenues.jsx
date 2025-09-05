@@ -137,7 +137,7 @@ const MyVenues = () => {
                   <img
                     src={
                       venue.media?.[0]?.url ||
-                      "/images/placeholder-venue.jpg"
+                      "/images/default.jpg"
                     }
                     alt={
                       venue.media?.[0]?.alt || venue.name

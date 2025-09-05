@@ -347,7 +347,8 @@ const CreateVenue = () => {
             <div>
               <label
                 htmlFor="description"
-                className="block font-poppins text-sm text-gray-300 mb-2"
+                className="block font-poppins text-sm mb-2"
+                style={{ color: theme.colors.text, opacity: 0.8 }}
               >
                 Description *
               </label>
@@ -358,7 +359,12 @@ const CreateVenue = () => {
                 onChange={handleInputChange}
                 placeholder="Describe your venue..."
                 rows="4"
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary font-poppins resize-none"
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins resize-none"
+                style={{
+                  backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
+                  borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
+                  color: theme.colors.text
+                }}
                 required
               />
             </div>
@@ -398,7 +404,12 @@ const CreateVenue = () => {
                         handleMediaChange(index, "alt", e.target.value)
                       }
                       placeholder="Alt text (optional)"
-                      className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary font-poppins"
+                      className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+                      style={{
+                        backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
+                        borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
+                        color: theme.colors.text
+                      }}
                     />
                     {formData.media.length > 1 && (
                       <button
@@ -428,7 +439,7 @@ const CreateVenue = () => {
 
             {/* Amenities */}
             <div>
-              <label className="block font-poppins text-sm text-gray-300 mb-3">
+              <label className="block font-poppins text-sm mb-3" style={{ color: theme.colors.text, opacity: 0.8 }}>
                 Amenities
               </label>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">

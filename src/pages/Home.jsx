@@ -30,7 +30,7 @@ const Home = () => {
           <Link
             to="/auth"
             className="inline-block font-poppins text-4xl hover:opacity-75 transition-colors cursor-pointer"
-            style={{ color: theme.colors.secondary }}
+            style={{ color: theme.isDarkMode ? '#ffffff' : theme.colors.text }}
           >
             Get started now...
           </Link>

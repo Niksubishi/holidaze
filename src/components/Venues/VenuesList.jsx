@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { venuesAPI } from "../../api/venues.js";
+import { useTheme } from "../../context/ThemeContext";
 import VenueCard from "./VenueCard";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import ErrorMessage from "../UI/ErrorMessage";
 
 const VenuesList = () => {
+  const { theme } = useTheme();
   const [venues, setVenues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -96,7 +98,11 @@ const VenuesList = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search venues by name or location..."
-                className="w-full px-4 py-3 bg-transparent border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary font-poppins"
+                className={`w-full px-4 py-3 bg-transparent border rounded-lg focus:outline-none focus:border-primary font-poppins ${theme.isDarkMode ? 'placeholder-gray-400' : 'placeholder-gray-500'}`}
+                style={{
+                  borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
+                  color: theme.colors.navLinks
+                }}
               />
             </div>
             {searchQuery && (
@@ -104,7 +110,11 @@ const VenuesList = () => {
                 <button
                   type="button"
                   onClick={handleClearSearch}
-                  className="px-4 py-3 bg-gray-600 text-white font-poppins rounded-lg hover:bg-gray-500 transition-colors"
+                  className="px-4 py-3 font-poppins rounded-lg transition-colors"
+                  style={{
+                    backgroundColor: theme.isDarkMode ? '#4b5563' : '#e5e7eb',
+                    color: theme.colors.navLinks
+                  }}
                 >
                   Clear
                 </button>
@@ -120,8 +130,16 @@ const VenuesList = () => {
             className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors ${
               sortBy === "created" && sortOrder === "desc"
                 ? "bg-primary text-white"
-                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                : ""
             }`}
+            style={
+              sortBy === "created" && sortOrder === "desc"
+                ? {}
+                : {
+                    backgroundColor: theme.isDarkMode ? '#374151' : '#f3f4f6',
+                    color: theme.colors.navLinks
+                  }
+            }
           >
             Newest
           </button>
@@ -130,8 +148,16 @@ const VenuesList = () => {
             className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors ${
               sortBy === "created" && sortOrder === "asc"
                 ? "bg-primary text-white"
-                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                : ""
             }`}
+            style={
+              sortBy === "created" && sortOrder === "asc"
+                ? {}
+                : {
+                    backgroundColor: theme.isDarkMode ? '#374151' : '#f3f4f6',
+                    color: theme.colors.navLinks
+                  }
+            }
           >
             Oldest
           </button>
@@ -140,8 +166,16 @@ const VenuesList = () => {
             className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors ${
               sortBy === "price" && sortOrder === "asc"
                 ? "bg-primary text-white"
-                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                : ""
             }`}
+            style={
+              sortBy === "price" && sortOrder === "asc"
+                ? {}
+                : {
+                    backgroundColor: theme.isDarkMode ? '#374151' : '#f3f4f6',
+                    color: theme.colors.navLinks
+                  }
+            }
           >
             Cheapest
           </button>
@@ -150,8 +184,16 @@ const VenuesList = () => {
             className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors ${
               sortBy === "price" && sortOrder === "desc"
                 ? "bg-primary text-white"
-                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                : ""
             }`}
+            style={
+              sortBy === "price" && sortOrder === "desc"
+                ? {}
+                : {
+                    backgroundColor: theme.isDarkMode ? '#374151' : '#f3f4f6',
+                    color: theme.colors.navLinks
+                  }
+            }
           >
             Most Expensive
           </button>
@@ -160,8 +202,16 @@ const VenuesList = () => {
             className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors ${
               sortBy === "rating" && sortOrder === "desc"
                 ? "bg-primary text-white"
-                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                : ""
             }`}
+            style={
+              sortBy === "rating" && sortOrder === "desc"
+                ? {}
+                : {
+                    backgroundColor: theme.isDarkMode ? '#374151' : '#f3f4f6',
+                    color: theme.colors.navLinks
+                  }
+            }
           >
             Highest Rated
           </button>
@@ -181,10 +231,10 @@ const VenuesList = () => {
       {/* Venues Grid */}
       {!loading && venues.length === 0 && !error && (
         <div className="text-center py-12">
-          <h3 className="font-poppins text-xl text-white mb-2">
+          <h3 className="font-poppins text-xl mb-2" style={{ color: theme.colors.text }}>
             No venues found
           </h3>
-          <p className="font-poppins text-gray-300">
+          <p className="font-poppins" style={{ color: theme.colors.text, opacity: 0.7 }}>
             {searchQuery
               ? "Try adjusting your search terms."
               : "No venues are available at the moment."}

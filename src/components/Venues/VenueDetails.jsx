@@ -5,7 +5,7 @@ import { useTheme } from "../../context/ThemeContext";
 import BookingForm from "./BookingForm";
 
 const VenueDetails = ({ venue, onBookingSuccess }) => {
-  const defaultImage = "/images/placeholder-venue.jpg";
+  const defaultImage = "/images/default.jpg";
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { isAuthenticated } = useAuth();
@@ -91,7 +91,7 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
                 key={index}
                 className={`aspect-square overflow-hidden rounded-lg cursor-pointer transition-all duration-300 ${
                   selectedImageIndex === index
-                    ? "ring-2 ring-primary scale-105"
+                    ? "scale-105"
                     : "hover:scale-105 hover:opacity-80"
                 }`}
                 onClick={() => setSelectedImageIndex(index)}

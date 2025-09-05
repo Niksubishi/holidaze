@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { bookingsAPI } from "../../api/bookings.js";
 import { useAuth } from "../../context/AuthContext";
+import { useTheme } from "../../context/ThemeContext";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import ErrorMessage from "../UI/ErrorMessage";
 import SuccessMessage from "../UI/SuccessMessage";
 
 const BookingForm = ({ venue, onBookingSuccess }) => {
   const { isAuthenticated } = useAuth();
+  const { theme } = useTheme();
   const [formData, setFormData] = useState({
     dateFrom: "",
     dateTo: "",
@@ -18,9 +20,9 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
 
   if (!isAuthenticated) {
     return (
-      <div className="bg-gray-800 p-6 rounded-lg">
-        <h3 className="font-poppins text-xl text-white mb-4">Book This Venue</h3>
-        <p className="font-poppins text-gray-300 mb-4">
+      <div className="p-6 rounded-lg" style={{ backgroundColor: theme.isDarkMode ? '#374151' : '#f9fafb' }}>
+        <h3 className="font-poppins text-xl mb-4" style={{ color: theme.colors.navLinks }}>Book This Venue</h3>
+        <p className="font-poppins mb-4" style={{ color: theme.colors.navLinks, opacity: 0.8 }}>
           Please sign up or log in to book this venue.
         </p>
         <a
@@ -134,13 +136,13 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
       : 0;
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg">
-      <h3 className="font-poppins text-xl text-white mb-4">Book This Venue</h3>
+    <div className="p-6 rounded-lg" style={{ backgroundColor: theme.isDarkMode ? '#374151' : '#f9fafb' }}>
+      <h3 className="font-poppins text-xl mb-4" style={{ color: theme.colors.navLinks }}>Book This Venue</h3>
 
       <div className="mb-4">
         <div className="flex items-center justify-between">
-          <span className="font-poppins text-lg text-white">${venue.price}</span>
-          <span className="font-poppins text-gray-300 text-sm">per night</span>
+          <span className="font-poppins text-lg" style={{ color: theme.colors.navLinks }}>${venue.price}</span>
+          <span className="font-poppins text-sm" style={{ color: theme.colors.navLinks, opacity: 0.8 }}>per night</span>
         </div>
       </div>
 
@@ -148,7 +150,8 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
         <div>
           <label
             htmlFor="dateFrom"
-            className="block font-poppins text-sm text-gray-300 mb-2"
+            className="block font-poppins text-sm mb-2"
+            style={{ color: theme.colors.navLinks, opacity: 0.8 }}
           >
             Check-in Date
           </label>
@@ -159,7 +162,12 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
             value={formData.dateFrom}
             onChange={handleInputChange}
             min={new Date().toISOString().split("T")[0]}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-primary font-poppins"
+            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+            style={{
+              backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
+              borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
+              color: theme.isDarkMode ? '#ffffff' : '#132F3D'
+            }}
             required
           />
         </div>
@@ -167,7 +175,8 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
         <div>
           <label
             htmlFor="dateTo"
-            className="block font-poppins text-sm text-gray-300 mb-2"
+            className="block font-poppins text-sm mb-2"
+            style={{ color: theme.colors.navLinks, opacity: 0.8 }}
           >
             Check-out Date
           </label>
@@ -178,7 +187,12 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
             value={formData.dateTo}
             onChange={handleInputChange}
             min={formData.dateFrom || new Date().toISOString().split("T")[0]}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-primary font-poppins"
+            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+            style={{
+              backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
+              borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
+              color: theme.isDarkMode ? '#ffffff' : '#132F3D'
+            }}
             required
           />
         </div>
@@ -186,7 +200,8 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
         <div>
           <label
             htmlFor="guests"
-            className="block font-poppins text-sm text-gray-300 mb-2"
+            className="block font-poppins text-sm mb-2"
+            style={{ color: theme.colors.navLinks, opacity: 0.8 }}
           >
             Number of Guests
           </label>
@@ -198,26 +213,31 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
             onChange={handleInputChange}
             min="1"
             max={venue.maxGuests}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-primary font-poppins"
+            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+            style={{
+              backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
+              borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
+              color: theme.isDarkMode ? '#ffffff' : '#132F3D'
+            }}
             required
           />
-          <p className="font-poppins text-gray-400 text-xs mt-1">
+          <p className="font-poppins text-xs mt-1" style={{ color: theme.colors.navLinks, opacity: 0.6 }}>
             Maximum {venue.maxGuests} guests allowed
           </p>
         </div>
 
         {totalPrice > 0 && (
-          <div className="bg-gray-700 p-4 rounded-lg">
+          <div className="p-4 rounded-lg" style={{ backgroundColor: theme.isDarkMode ? '#4b5563' : '#e5e7eb' }}>
             <div className="flex justify-between items-center mb-2">
-              <span className="font-poppins text-gray-300">
+              <span className="font-poppins" style={{ color: theme.colors.navLinks, opacity: 0.8 }}>
                 ${venue.price} x {nights} night{nights !== 1 ? "s" : ""}
               </span>
-              <span className="font-poppins text-white">${totalPrice}</span>
+              <span className="font-poppins" style={{ color: theme.colors.navLinks }}>${totalPrice}</span>
             </div>
-            <div className="border-t border-gray-600 pt-2">
+            <div className="border-t pt-2" style={{ borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db' }}>
               <div className="flex justify-between items-center">
-                <span className="font-poppins text-lg text-white">Total</span>
-                <span className="font-poppins text-lg text-white">
+                <span className="font-poppins text-lg" style={{ color: theme.colors.navLinks }}>Total</span>
+                <span className="font-poppins text-lg" style={{ color: theme.colors.navLinks }}>
                   ${totalPrice}
                 </span>
               </div>
