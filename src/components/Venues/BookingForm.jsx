@@ -8,7 +8,7 @@ import SuccessMessage from "../UI/SuccessMessage";
 
 const BookingForm = ({ venue, onBookingSuccess }) => {
   const { isAuthenticated } = useAuth();
-  const { theme } = useTheme();
+  const { theme, isDarkMode } = useTheme();
   const [formData, setFormData] = useState({
     dateFrom: "",
     dateTo: "",
@@ -20,9 +20,9 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
 
   if (!isAuthenticated) {
     return (
-      <div className="p-6 rounded-lg" style={{ backgroundColor: theme.isDarkMode ? '#374151' : '#f9fafb' }}>
-        <h3 className="font-poppins text-xl mb-4" style={{ color: theme.colors.navLinks }}>Book This Venue</h3>
-        <p className="font-poppins mb-4" style={{ color: theme.colors.navLinks, opacity: 0.8 }}>
+      <div className="p-6 rounded-lg" style={{ backgroundColor: isDarkMode ? '#3a3a3a' : '#f9fafb' }}>
+        <h3 className="font-poppins text-xl mb-4" style={{ color: theme.colors.text }}>Book This Venue</h3>
+        <p className="font-poppins mb-4" style={{ color: theme.colors.text, opacity: 0.8 }}>
           Please sign up or log in to book this venue.
         </p>
         <a
@@ -136,13 +136,13 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
       : 0;
 
   return (
-    <div className="p-6 rounded-lg" style={{ backgroundColor: theme.isDarkMode ? '#374151' : '#f9fafb' }}>
-      <h3 className="font-poppins text-xl mb-4" style={{ color: theme.colors.navLinks }}>Book This Venue</h3>
+    <div className="p-6 rounded-lg" style={{ backgroundColor: isDarkMode ? '#3a3a3a' : '#f9fafb' }}>
+      <h3 className="font-poppins text-xl mb-4" style={{ color: theme.colors.text }}>Book This Venue</h3>
 
       <div className="mb-4">
         <div className="flex items-center justify-between">
-          <span className="font-poppins text-lg" style={{ color: theme.colors.navLinks }}>${venue.price}</span>
-          <span className="font-poppins text-sm" style={{ color: theme.colors.navLinks, opacity: 0.8 }}>per night</span>
+          <span className="font-poppins text-lg" style={{ color: theme.colors.text }}>${venue.price}</span>
+          <span className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.8 }}>per night</span>
         </div>
       </div>
 
@@ -151,7 +151,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
           <label
             htmlFor="dateFrom"
             className="block font-poppins text-sm mb-2"
-            style={{ color: theme.colors.navLinks, opacity: 0.8 }}
+            style={{ color: theme.colors.text, opacity: 0.8 }}
           >
             Check-in Date
           </label>
@@ -162,11 +162,11 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
             value={formData.dateFrom}
             onChange={handleInputChange}
             min={new Date().toISOString().split("T")[0]}
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+            className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
             style={{
-              backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
-              borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
-              color: theme.isDarkMode ? '#ffffff' : '#132F3D'
+              backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+              borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
+              color: isDarkMode ? '#ffffff' : '#132F3D'
             }}
             required
           />
@@ -176,7 +176,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
           <label
             htmlFor="dateTo"
             className="block font-poppins text-sm mb-2"
-            style={{ color: theme.colors.navLinks, opacity: 0.8 }}
+            style={{ color: theme.colors.text, opacity: 0.8 }}
           >
             Check-out Date
           </label>
@@ -187,11 +187,11 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
             value={formData.dateTo}
             onChange={handleInputChange}
             min={formData.dateFrom || new Date().toISOString().split("T")[0]}
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+            className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
             style={{
-              backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
-              borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
-              color: theme.isDarkMode ? '#ffffff' : '#132F3D'
+              backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+              borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
+              color: isDarkMode ? '#ffffff' : '#132F3D'
             }}
             required
           />
@@ -201,7 +201,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
           <label
             htmlFor="guests"
             className="block font-poppins text-sm mb-2"
-            style={{ color: theme.colors.navLinks, opacity: 0.8 }}
+            style={{ color: theme.colors.text, opacity: 0.8 }}
           >
             Number of Guests
           </label>
@@ -213,31 +213,31 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
             onChange={handleInputChange}
             min="1"
             max={venue.maxGuests}
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+            className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
             style={{
-              backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
-              borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
-              color: theme.isDarkMode ? '#ffffff' : '#132F3D'
+              backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+              borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
+              color: isDarkMode ? '#ffffff' : '#132F3D'
             }}
             required
           />
-          <p className="font-poppins text-xs mt-1" style={{ color: theme.colors.navLinks, opacity: 0.6 }}>
+          <p className="font-poppins text-xs mt-1" style={{ color: theme.colors.text, opacity: 0.6 }}>
             Maximum {venue.maxGuests} guests allowed
           </p>
         </div>
 
         {totalPrice > 0 && (
-          <div className="p-4 rounded-lg" style={{ backgroundColor: theme.isDarkMode ? '#4b5563' : '#e5e7eb' }}>
+          <div className="p-4 rounded-lg" style={{ backgroundColor: isDarkMode ? '#4b5563' : '#e5e7eb' }}>
             <div className="flex justify-between items-center mb-2">
-              <span className="font-poppins" style={{ color: theme.colors.navLinks, opacity: 0.8 }}>
+              <span className="font-poppins" style={{ color: theme.colors.text, opacity: 0.8 }}>
                 ${venue.price} x {nights} night{nights !== 1 ? "s" : ""}
               </span>
-              <span className="font-poppins" style={{ color: theme.colors.navLinks }}>${totalPrice}</span>
+              <span className="font-poppins" style={{ color: theme.colors.text }}>${totalPrice}</span>
             </div>
-            <div className="border-t pt-2" style={{ borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db' }}>
+            <div className="border-t pt-2" style={{ borderColor: isDarkMode ? '#6b7280' : '#d1d5db' }}>
               <div className="flex justify-between items-center">
-                <span className="font-poppins text-lg" style={{ color: theme.colors.navLinks }}>Total</span>
-                <span className="font-poppins text-lg" style={{ color: theme.colors.navLinks }}>
+                <span className="font-poppins text-lg" style={{ color: theme.colors.text }}>Total</span>
+                <span className="font-poppins text-lg" style={{ color: theme.colors.text }}>
                   ${totalPrice}
                 </span>
               </div>
@@ -251,7 +251,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50"
+          className="w-full px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50 cursor-pointer"
         >
           {loading ? (
             <div className="flex items-center justify-center space-x-2">

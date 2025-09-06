@@ -8,7 +8,7 @@ import VenueCard from "../components/Venues/VenueCard";
 
 const PublicProfilePage = () => {
   const { username } = useParams();
-  const { theme } = useTheme();
+  const { theme, isDarkMode } = useTheme();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -84,7 +84,7 @@ const PublicProfilePage = () => {
     <div className="min-h-screen py-8" style={{ backgroundColor: theme.colors.background }}>
       <div className="max-w-6xl mx-auto px-4">
         {/* Profile Header */}
-        <div className="rounded-lg p-6 mb-8" style={{ backgroundColor: theme.isDarkMode ? '#374151' : '#f9fafb' }}>
+        <div className="rounded-lg p-6 mb-8" style={{ backgroundColor: isDarkMode ? '#3a3a3a' : '#f9fafb' }}>
           {/* Banner */}
           {profile.banner?.url && (
             <div className="w-full h-48 mb-6 rounded-lg overflow-hidden">

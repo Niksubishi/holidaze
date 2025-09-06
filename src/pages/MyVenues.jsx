@@ -6,14 +6,17 @@ import { useTheme } from "../context/ThemeContext";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 import ErrorMessage from "../components/UI/ErrorMessage";
 import SuccessMessage from "../components/UI/SuccessMessage";
+import ConfirmationModal from "../components/UI/ConfirmationModal";
 
 const MyVenues = () => {
   const { user } = useAuth();
-  const { theme } = useTheme();
+  const { theme, isDarkMode } = useTheme();
   const [venues, setVenues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [venueToDelete, setVenueToDelete] = useState(null);
 
   useEffect(() => {
     const fetchVenues = async () => {
@@ -35,21 +38,31 @@ const MyVenues = () => {
     }
   }, [user]);
 
-  const handleDeleteVenue = async (venueId) => {
-    if (!window.confirm("Are you sure you want to delete this venue? This action cannot be undone.")) {
-      return;
-    }
+  const handleDeleteVenue = (venueId) => {
+    setVenueToDelete(venueId);
+    setShowConfirmModal(true);
+  };
 
+  const confirmDeleteVenue = async () => {
     try {
-      await venuesAPI.delete(venueId);
-      setVenues((prev) => prev.filter((venue) => venue.id !== venueId));
+      await venuesAPI.delete(venueToDelete);
+      setVenues((prev) => prev.filter((venue) => venue.id !== venueToDelete));
       setSuccess("Venue deleted successfully");
+      setShowConfirmModal(false);
+      setVenueToDelete(null);
 
       setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
       console.error("Failed to delete venue:", err);
       setError(err.message || "Failed to delete venue");
+      setShowConfirmModal(false);
+      setVenueToDelete(null);
     }
+  };
+
+  const handleCloseModal = () => {
+    setShowConfirmModal(false);
+    setVenueToDelete(null);
   };
 
   if (loading) {
@@ -122,14 +135,14 @@ const MyVenues = () => {
                 key={venue.id}
                 className="rounded-lg overflow-hidden transition-colors"
                 style={{ 
-                  backgroundColor: theme.isDarkMode ? '#374151' : '#f3f4f6',
-                  ':hover': { backgroundColor: theme.isDarkMode ? '#4b5563' : '#e5e7eb' }
+                  backgroundColor: isDarkMode ? '#132F3D' : '#f3f4f6',
+                  ':hover': { backgroundColor: isDarkMode ? '#4b5563' : '#e5e7eb' }
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = theme.isDarkMode ? '#4b5563' : '#e5e7eb';
+                  e.target.style.backgroundColor = isDarkMode ? '#4b5563' : '#e5e7eb';
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = theme.isDarkMode ? '#374151' : '#f3f4f6';
+                  e.target.style.backgroundColor = isDarkMode ? '#132F3D' : '#f3f4f6';
                 }}
               >
                 {/* Venue Image */}
@@ -209,14 +222,14 @@ const MyVenues = () => {
                   <div className="flex space-x-2">
                     <Link
                       to={`/venues/${venue.id}`}
-                      className="flex-1 px-4 py-2 border font-poppins rounded-lg transition-colors text-center"
+                      className="flex-1 px-4 py-2 font-poppins rounded-lg transition-colors text-center"
                       style={{ 
-                        borderColor: theme.isDarkMode ? '#4b5563' : '#d1d5db',
+                        borderColor: isDarkMode ? '#4b5563' : '#d1d5db',
                         color: theme.colors.text,
                         opacity: 0.8
                       }}
                       onMouseEnter={(e) => {
-                        e.target.style.backgroundColor = theme.isDarkMode ? '#4b5563' : '#f3f4f6';
+                        e.target.style.backgroundColor = isDarkMode ? '#4b5563' : '#f3f4f6';
                       }}
                       onMouseLeave={(e) => {
                         e.target.style.backgroundColor = 'transparent';
@@ -232,7 +245,7 @@ const MyVenues = () => {
                     </Link>
                     <button
                       onClick={() => handleDeleteVenue(venue.id)}
-                      className="px-4 py-2 bg-red-600 text-white font-poppins rounded-lg hover:bg-red-700 transition-colors"
+                      className="px-4 py-2 bg-red-600 text-white font-poppins rounded-lg hover:bg-red-700 transition-colors cursor-pointer"
                     >
                       Delete
                     </button>
@@ -243,6 +256,16 @@ const MyVenues = () => {
           </div>
         )}
       </div>
+
+      <ConfirmationModal
+        isOpen={showConfirmModal}
+        onClose={handleCloseModal}
+        onConfirm={confirmDeleteVenue}
+        title="Delete Venue"
+        message="Are you sure you want to delete this venue? This action cannot be undone."
+        confirmText="Delete Venue"
+        cancelText="Keep Venue"
+      />
     </div>
   );
 };

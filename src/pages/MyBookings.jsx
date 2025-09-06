@@ -6,14 +6,17 @@ import { useTheme } from "../context/ThemeContext";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 import ErrorMessage from "../components/UI/ErrorMessage";
 import SuccessMessage from "../components/UI/SuccessMessage";
+import ConfirmationModal from "../components/UI/ConfirmationModal";
 
 const MyBookings = () => {
   const { user } = useAuth();
-  const { theme } = useTheme();
+  const { theme, isDarkMode } = useTheme();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [bookingToCancel, setBookingToCancel] = useState(null);
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -42,23 +45,33 @@ const MyBookings = () => {
     }
   }, [user]);
 
-  const handleCancelBooking = async (bookingId) => {
-    if (!window.confirm("Are you sure you want to cancel this booking?")) {
-      return;
-    }
+  const handleCancelBooking = (bookingId) => {
+    setBookingToCancel(bookingId);
+    setShowConfirmModal(true);
+  };
 
+  const confirmCancelBooking = async () => {
     try {
       setError("");
-      await bookingsAPI.delete(bookingId);
-      setBookings((prev) => prev.filter((booking) => booking.id !== bookingId));
+      await bookingsAPI.delete(bookingToCancel);
+      setBookings((prev) => prev.filter((booking) => booking.id !== bookingToCancel));
       setSuccess("Booking cancelled successfully");
+      setShowConfirmModal(false);
+      setBookingToCancel(null);
 
       setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
       console.error("Failed to cancel booking:", err);
       setError(err.message || "Failed to cancel booking");
+      setShowConfirmModal(false);
+      setBookingToCancel(null);
       setTimeout(() => setError(""), 5000);
     }
+  };
+
+  const handleCloseModal = () => {
+    setShowConfirmModal(false);
+    setBookingToCancel(null);
   };
 
   const formatDate = (dateString) => {
@@ -83,20 +96,32 @@ const MyBookings = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: theme.colors.background }}>
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: theme.colors.background }}
+      >
         <LoadingSpinner size="large" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen py-8" style={{ backgroundColor: theme.colors.background }}>
+    <div
+      className="min-h-screen py-8"
+      style={{ backgroundColor: theme.colors.background }}
+    >
       <div className="max-w-6xl mx-auto px-4">
         <div className="mb-8">
-          <h1 className="font-poppins text-3xl md:text-4xl mb-2" style={{ color: theme.colors.text }}>
+          <h1
+            className="font-poppins text-3xl md:text-4xl mb-2"
+            style={{ color: theme.colors.text }}
+          >
             My Bookings
           </h1>
-          <p className="font-poppins" style={{ color: theme.colors.text, opacity: 0.7 }}>
+          <p
+            className="font-poppins"
+            style={{ color: theme.colors.text, opacity: 0.7 }}
+          >
             Manage your upcoming reservations
           </p>
         </div>
@@ -121,10 +146,16 @@ const MyBookings = () => {
                 />
               </svg>
             </div>
-            <h3 className="font-poppins text-xl mb-2" style={{ color: theme.colors.text }}>
+            <h3
+              className="font-poppins text-xl mb-2"
+              style={{ color: theme.colors.text }}
+            >
               No upcoming bookings
             </h3>
-            <p className="font-poppins mb-6" style={{ color: theme.colors.text, opacity: 0.7 }}>
+            <p
+              className="font-poppins mb-6"
+              style={{ color: theme.colors.text, opacity: 0.7 }}
+            >
               Ready to plan your next getaway?
             </p>
             <Link
@@ -141,9 +172,12 @@ const MyBookings = () => {
               <div
                 key={booking.id}
                 className="rounded-lg p-6 transition-colors"
-                style={{ 
-                  backgroundColor: theme.colors.background === '#2A2A2A' ? '#374151' : '#ffffff', 
-                  border: theme.colors.background === '#2A2A2A' ? 'none' : '1px solid #e5e7eb'
+                style={{
+                  backgroundColor:
+                    theme.colors.background === "#2A2A2A"
+                      ? "#3a3a3a"
+                      : "#ffffff",
+                  border: "none",
                 }}
               >
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -178,7 +212,10 @@ const MyBookings = () => {
                             >
                               {booking.venue.name}
                             </Link>
-                            <p className="font-poppins text-sm mt-1" style={{ color: theme.colors.text, opacity: 0.7 }}>
+                            <p
+                              className="font-poppins text-sm mt-1"
+                              style={{ color: theme.colors.text, opacity: 0.7 }}
+                            >
                               {booking.venue.location?.city &&
                               booking.venue.location?.country
                                 ? `${booking.venue.location.city}, ${booking.venue.location.country}`
@@ -186,10 +223,16 @@ const MyBookings = () => {
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className="font-poppins text-lg" style={{ color: theme.colors.text }}>
+                            <p
+                              className="font-poppins text-lg"
+                              style={{ color: theme.colors.text }}
+                            >
                               ${calculateTotalPrice(booking)}
                             </p>
-                            <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.7 }}>
+                            <p
+                              className="font-poppins text-sm"
+                              style={{ color: theme.colors.text, opacity: 0.7 }}
+                            >
                               total for{" "}
                               {calculateNights(
                                 booking.dateFrom,
@@ -208,35 +251,59 @@ const MyBookings = () => {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                           <div>
-                            <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                            <p
+                              className="font-poppins text-sm"
+                              style={{ color: theme.colors.text, opacity: 0.6 }}
+                            >
                               Check-in
                             </p>
-                            <p className="font-poppins" style={{ color: theme.colors.text }}>
+                            <p
+                              className="font-poppins"
+                              style={{ color: theme.colors.text }}
+                            >
                               {formatDate(booking.dateFrom)}
                             </p>
                           </div>
                           <div>
-                            <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                            <p
+                              className="font-poppins text-sm"
+                              style={{ color: theme.colors.text, opacity: 0.6 }}
+                            >
                               Check-out
                             </p>
-                            <p className="font-poppins" style={{ color: theme.colors.text }}>
+                            <p
+                              className="font-poppins"
+                              style={{ color: theme.colors.text }}
+                            >
                               {formatDate(booking.dateTo)}
                             </p>
                           </div>
                           <div>
-                            <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                            <p
+                              className="font-poppins text-sm"
+                              style={{ color: theme.colors.text, opacity: 0.6 }}
+                            >
                               Guests
                             </p>
-                            <p className="font-poppins" style={{ color: theme.colors.text }}>
+                            <p
+                              className="font-poppins"
+                              style={{ color: theme.colors.text }}
+                            >
                               {booking.guests} guest
                               {booking.guests !== 1 ? "s" : ""}
                             </p>
                           </div>
                           <div>
-                            <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                            <p
+                              className="font-poppins text-sm"
+                              style={{ color: theme.colors.text, opacity: 0.6 }}
+                            >
                               Booking ID
                             </p>
-                            <p className="font-poppins text-sm" style={{ color: theme.colors.text }}>
+                            <p
+                              className="font-poppins text-sm"
+                              style={{ color: theme.colors.text }}
+                            >
                               {booking.id.slice(0, 8)}...
                             </p>
                           </div>
@@ -246,10 +313,12 @@ const MyBookings = () => {
                       <div className="flex justify-end space-x-3">
                         <Link
                           to={`/venues/${booking.venue.id}`}
-                          className="px-4 py-2 border font-poppins rounded-lg hover:opacity-75 transition-colors"
-                          style={{ 
-                            borderColor: theme.isDarkMode ? '#ffffff' : '#132F3D66',
-                            color: theme.isDarkMode ? '#ffffff' : '#132F3Dcc'
+                          className="px-4 py-2 font-poppins rounded-lg hover:opacity-75 transition-colors"
+                          style={{
+                            borderColor: isDarkMode
+                              ? "#ffffff"
+                              : "#132F3D66",
+                            color: isDarkMode ? "#ffffff" : "#132F3Dcc",
                           }}
                         >
                           View Venue
@@ -269,6 +338,16 @@ const MyBookings = () => {
           </div>
         )}
       </div>
+
+      <ConfirmationModal
+        isOpen={showConfirmModal}
+        onClose={handleCloseModal}
+        onConfirm={confirmCancelBooking}
+        title="Cancel Booking"
+        message="Are you sure you want to cancel this booking? This action cannot be undone."
+        confirmText="Cancel Booking"
+        cancelText="Keep Booking"
+      />
     </div>
   );
 };

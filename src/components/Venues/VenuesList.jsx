@@ -6,7 +6,7 @@ import LoadingSpinner from "../UI/LoadingSpinner";
 import ErrorMessage from "../UI/ErrorMessage";
 
 const VenuesList = () => {
-  const { theme } = useTheme();
+  const { theme, isDarkMode } = useTheme();
   const [venues, setVenues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -65,7 +65,6 @@ const VenuesList = () => {
     fetchVenues(1, true);
   }, [sortBy, sortOrder, searchQuery]);
 
-
   const handleClearSearch = () => {
     setSearchQuery("");
     setCurrentPage(1);
@@ -80,7 +79,6 @@ const VenuesList = () => {
     fetchVenues(nextPage, false);
   };
 
-
   const handleSortChange = (newSort, newOrder = "desc") => {
     setSortBy(newSort);
     setSortOrder(newOrder);
@@ -89,45 +87,50 @@ const VenuesList = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* Search and Filter Section */}
-      <div className="mb-8">
-        <div className="mb-6">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search venues by name or location..."
-                className={`w-full px-4 py-3 bg-transparent border rounded-lg focus:outline-none focus:border-primary font-poppins ${theme.isDarkMode ? 'placeholder-gray-400' : 'placeholder-gray-500'}`}
-                style={{
-                  borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
-                  color: theme.colors.navLinks
-                }}
-              />
-            </div>
+      <div className="mb-8 flex flex-col items-center">
+        <div className="mb-6 w-full max-w-2xl">
+          <div className="relative w-full">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search venues by name or location..."
+              className="px-4 py-2 rounded-lg focus:outline-none font-poppins text-sm w-full max-w-2xl"
+              style={{
+                backgroundColor: "#ffffff",
+                border: "none",
+                color: "#000000",
+              }}
+            />
             {searchQuery && (
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={handleClearSearch}
-                  className="px-4 py-3 font-poppins rounded-lg transition-colors"
-                  style={{
-                    backgroundColor: theme.isDarkMode ? '#4b5563' : '#e5e7eb',
-                    color: theme.colors.navLinks
-                  }}
+              <button
+                type="button"
+                onClick={handleClearSearch}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+              >
+                <svg
+                  className="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  Clear
-                </button>
-              </div>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
             )}
           </div>
         </div>
 
         {/* Sort Options */}
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 justify-center">
           <button
             onClick={() => handleSortChange("created", "desc")}
-            className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors ${
+            className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer ${
               sortBy === "created" && sortOrder === "desc"
                 ? "bg-primary text-white"
                 : ""
@@ -136,8 +139,8 @@ const VenuesList = () => {
               sortBy === "created" && sortOrder === "desc"
                 ? {}
                 : {
-                    backgroundColor: theme.isDarkMode ? '#374151' : '#f3f4f6',
-                    color: theme.colors.navLinks
+                    backgroundColor: isDarkMode ? "#132F3D" : "#f3f4f6",
+                    color: isDarkMode ? "#9ca3af" : theme.colors.text,
                   }
             }
           >
@@ -145,7 +148,7 @@ const VenuesList = () => {
           </button>
           <button
             onClick={() => handleSortChange("created", "asc")}
-            className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors ${
+            className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer ${
               sortBy === "created" && sortOrder === "asc"
                 ? "bg-primary text-white"
                 : ""
@@ -154,8 +157,8 @@ const VenuesList = () => {
               sortBy === "created" && sortOrder === "asc"
                 ? {}
                 : {
-                    backgroundColor: theme.isDarkMode ? '#374151' : '#f3f4f6',
-                    color: theme.colors.navLinks
+                    backgroundColor: isDarkMode ? "#132F3D" : "#f3f4f6",
+                    color: isDarkMode ? "#9ca3af" : theme.colors.text,
                   }
             }
           >
@@ -163,7 +166,7 @@ const VenuesList = () => {
           </button>
           <button
             onClick={() => handleSortChange("price", "asc")}
-            className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors ${
+            className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer ${
               sortBy === "price" && sortOrder === "asc"
                 ? "bg-primary text-white"
                 : ""
@@ -172,8 +175,8 @@ const VenuesList = () => {
               sortBy === "price" && sortOrder === "asc"
                 ? {}
                 : {
-                    backgroundColor: theme.isDarkMode ? '#374151' : '#f3f4f6',
-                    color: theme.colors.navLinks
+                    backgroundColor: isDarkMode ? "#132F3D" : "#f3f4f6",
+                    color: isDarkMode ? "#9ca3af" : theme.colors.text,
                   }
             }
           >
@@ -181,7 +184,7 @@ const VenuesList = () => {
           </button>
           <button
             onClick={() => handleSortChange("price", "desc")}
-            className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors ${
+            className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer ${
               sortBy === "price" && sortOrder === "desc"
                 ? "bg-primary text-white"
                 : ""
@@ -190,8 +193,8 @@ const VenuesList = () => {
               sortBy === "price" && sortOrder === "desc"
                 ? {}
                 : {
-                    backgroundColor: theme.isDarkMode ? '#374151' : '#f3f4f6',
-                    color: theme.colors.navLinks
+                    backgroundColor: isDarkMode ? "#132F3D" : "#f3f4f6",
+                    color: isDarkMode ? "#9ca3af" : theme.colors.text,
                   }
             }
           >
@@ -199,7 +202,7 @@ const VenuesList = () => {
           </button>
           <button
             onClick={() => handleSortChange("rating", "desc")}
-            className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors ${
+            className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer ${
               sortBy === "rating" && sortOrder === "desc"
                 ? "bg-primary text-white"
                 : ""
@@ -208,8 +211,8 @@ const VenuesList = () => {
               sortBy === "rating" && sortOrder === "desc"
                 ? {}
                 : {
-                    backgroundColor: theme.isDarkMode ? '#374151' : '#f3f4f6',
-                    color: theme.colors.navLinks
+                    backgroundColor: isDarkMode ? "#132F3D" : "#f3f4f6",
+                    color: isDarkMode ? "#9ca3af" : theme.colors.text,
                   }
             }
           >
@@ -231,10 +234,16 @@ const VenuesList = () => {
       {/* Venues Grid */}
       {!loading && venues.length === 0 && !error && (
         <div className="text-center py-12">
-          <h3 className="font-poppins text-xl mb-2" style={{ color: theme.colors.text }}>
+          <h3
+            className="font-poppins text-xl mb-2"
+            style={{ color: theme.colors.text }}
+          >
             No venues found
           </h3>
-          <p className="font-poppins" style={{ color: theme.colors.text, opacity: 0.7 }}>
+          <p
+            className="font-poppins"
+            style={{ color: theme.colors.text, opacity: 0.7 }}
+          >
             {searchQuery
               ? "Try adjusting your search terms."
               : "No venues are available at the moment."}
@@ -250,13 +259,13 @@ const VenuesList = () => {
         </div>
       )}
 
-      {/* Load More Button */}
       {hasMore && venues.length > 0 && (
         <div className="text-center">
           <button
             onClick={handleLoadMore}
             disabled={loading}
-            className="px-8 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50"
+            className="px-8 py-3 text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors cursor-pointer disabled:opacity-50"
+            style={{ backgroundColor: theme.colors.primary }}
           >
             {loading ? (
               <div className="flex items-center space-x-2">

@@ -29,7 +29,7 @@ const UserDropdown = () => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 text-white hover:text-gray-200 transition-colors"
+        className="flex items-center space-x-2 text-white hover:text-gray-200 transition-colors cursor-pointer"
         aria-label="User menu"
       >
         {user?.avatar?.url ? (
@@ -47,6 +47,13 @@ const UserDropdown = () => {
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
           <Link
+            to={`/profile/${user?.name}`}
+            className="block px-4 py-2 text-gray-800 hover:bg-gray-100 font-poppins text-sm transition-colors"
+            onClick={() => setIsOpen(false)}
+          >
+            View My Profile
+          </Link>
+          <Link
             to="/profile"
             className="block px-4 py-2 text-gray-800 hover:bg-gray-100 font-poppins text-sm transition-colors"
             onClick={() => setIsOpen(false)}
@@ -55,7 +62,7 @@ const UserDropdown = () => {
           </Link>
           <button
             onClick={handleLogout}
-            className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100 font-poppins text-sm transition-colors"
+            className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100 font-poppins text-sm transition-colors cursor-pointer"
           >
             Logout
           </button>

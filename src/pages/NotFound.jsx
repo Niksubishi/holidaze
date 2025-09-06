@@ -29,7 +29,7 @@ const NotFound = () => {
           </Link>
           <button
             onClick={() => window.history.back()}
-            className="inline-block px-6 py-3 border border-gray-600 text-gray-300 font-poppins rounded-lg hover:bg-gray-700 transition-colors"
+            className="inline-block px-6 py-3 border border-gray-600 text-gray-300 font-poppins rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
           >
             Go Back
           </button>

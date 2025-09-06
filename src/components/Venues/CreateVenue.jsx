@@ -8,7 +8,7 @@ import SuccessMessage from "../UI/SuccessMessage";
 
 const CreateVenue = () => {
   const navigate = useNavigate();
-  const { theme } = useTheme();
+  const { theme, isDarkMode } = useTheme();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -228,7 +228,7 @@ const CreateVenue = () => {
           </p>
         </div>
 
-        <div className="rounded-lg p-6" style={{ backgroundColor: theme.colors.background === '#2A2A2A' ? '#374151' : '#f9fafb' }}>
+        <div className="rounded-lg p-6" style={{ backgroundColor: isDarkMode ? '#3a3a3a' : '#f9fafb' }}>
           <ErrorMessage message={error} className="mb-6" />
           <SuccessMessage message={success} className="mb-6" />
 
@@ -250,10 +250,10 @@ const CreateVenue = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Enter venue name"
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+                  className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
-                    borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
+                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
                   required
@@ -277,10 +277,10 @@ const CreateVenue = () => {
                   placeholder="0"
                   min="0"
                   step="0.01"
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+                  className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
-                    borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
+                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
                   required
@@ -305,10 +305,10 @@ const CreateVenue = () => {
                   onChange={handleInputChange}
                   placeholder="1"
                   min="1"
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+                  className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
-                    borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
+                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
                   required
@@ -333,10 +333,10 @@ const CreateVenue = () => {
                   min="0"
                   max="5"
                   step="0.1"
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+                  className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
-                    borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
+                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
                 />
@@ -359,10 +359,10 @@ const CreateVenue = () => {
                 onChange={handleInputChange}
                 placeholder="Describe your venue..."
                 rows="4"
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins resize-none"
+                className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins resize-none"
                 style={{
-                  backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
-                  borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
+                  backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                  borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                   color: theme.colors.text
                 }}
                 required
@@ -387,10 +387,10 @@ const CreateVenue = () => {
                         handleMediaChange(index, "url", e.target.value)
                       }
                       placeholder="Image URL"
-                      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+                      className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
-                    borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
+                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
                       required={index === 0}
@@ -404,10 +404,10 @@ const CreateVenue = () => {
                         handleMediaChange(index, "alt", e.target.value)
                       }
                       placeholder="Alt text (optional)"
-                      className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+                      className="flex-1 px-3 py-2 rounded-lg focus:outline-none font-poppins"
                       style={{
-                        backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
-                        borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
+                        backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                        borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                         color: theme.colors.text
                       }}
                     />
@@ -415,7 +415,7 @@ const CreateVenue = () => {
                       <button
                         type="button"
                         onClick={() => removeMediaField(index)}
-                        className="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                        className="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors cursor-pointer"
                       >
                         Remove
                       </button>
@@ -426,9 +426,9 @@ const CreateVenue = () => {
               <button
                 type="button"
                 onClick={addMediaField}
-                className="px-4 py-2 border font-poppins rounded-lg hover:opacity-75 transition-colors"
+                className="px-4 py-2 font-poppins rounded-lg hover:opacity-75 transition-colors cursor-pointer"
                 style={{
-                  borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
+                  borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                   color: theme.colors.text,
                   backgroundColor: 'transparent'
                 }}
@@ -484,10 +484,10 @@ const CreateVenue = () => {
                     value={formData.location.address}
                     onChange={handleInputChange}
                     placeholder="Street address"
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+                    className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
-                    borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
+                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
                   />
@@ -508,10 +508,10 @@ const CreateVenue = () => {
                     value={formData.location.city}
                     onChange={handleInputChange}
                     placeholder="City name"
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+                    className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
-                    borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
+                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
                   />
@@ -532,10 +532,10 @@ const CreateVenue = () => {
                     value={formData.location.zip}
                     onChange={handleInputChange}
                     placeholder="ZIP code"
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+                    className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
-                    borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
+                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
                   />
@@ -556,10 +556,10 @@ const CreateVenue = () => {
                     value={formData.location.country}
                     onChange={handleInputChange}
                     placeholder="Country name"
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+                    className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
-                    borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
+                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
                   />
@@ -580,10 +580,10 @@ const CreateVenue = () => {
                     value={formData.location.continent}
                     onChange={handleInputChange}
                     placeholder="Continent name"
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+                    className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
-                    borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
+                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
                   />
@@ -605,10 +605,10 @@ const CreateVenue = () => {
                     onChange={handleInputChange}
                     placeholder="0.0"
                     step="any"
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+                    className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
-                    borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
+                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
                   />
@@ -630,10 +630,10 @@ const CreateVenue = () => {
                     onChange={handleInputChange}
                     placeholder="0.0"
                     step="any"
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+                    className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: theme.colors.background === '#2A2A2A' ? '#4b5563' : '#ffffff',
-                    borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
+                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
                   />
@@ -646,9 +646,9 @@ const CreateVenue = () => {
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="px-6 py-3 border font-poppins rounded-lg hover:opacity-75 transition-colors"
+                className="px-6 py-3 font-poppins rounded-lg hover:opacity-75 transition-colors cursor-pointer"
                 style={{
-                  borderColor: theme.colors.background === '#2A2A2A' ? '#6b7280' : '#d1d5db',
+                  borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                   color: theme.colors.text,
                   backgroundColor: 'transparent'
                 }}
@@ -658,7 +658,7 @@ const CreateVenue = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50"
+                className="px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50 cursor-pointer"
               >
                 {loading ? (
                   <div className="flex items-center space-x-2">

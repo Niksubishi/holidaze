@@ -58,7 +58,7 @@ const VenueDetailsPage = () => {
           <ErrorMessage message={error} className="mb-4" />
           <button
             onClick={() => navigate("/venues")}
-            className="px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors"
+            className="px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors cursor-pointer"
           >
             Back to Venues
           </button>
@@ -76,7 +76,7 @@ const VenueDetailsPage = () => {
           </h2>
           <button
             onClick={() => navigate("/venues")}
-            className="px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors"
+            className="px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors cursor-pointer"
           >
             Back to Venues
           </button>
@@ -88,10 +88,10 @@ const VenueDetailsPage = () => {
   return (
     <div className="min-h-screen" style={{ backgroundColor: theme.colors.background }}>
       {/* Back button */}
-      <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className="max-w-7xl mx-auto px-4 py-6">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center space-x-2 transition-colors font-poppins"
+          className="flex items-center space-x-2 transition-colors font-poppins cursor-pointer"
           style={{ color: theme.colors.text, opacity: 0.7 }}
           onMouseEnter={(e) => {
             e.target.style.color = theme.colors.text;

@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 import BookingForm from "./BookingForm";
+import AmenityIcons from "../UI/AmenityIcons";
 
 const VenueDetails = ({ venue, onBookingSuccess }) => {
   const defaultImage = "/images/default.jpg";
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { isAuthenticated } = useAuth();
-  const { theme } = useTheme();
+  const { theme, isDarkMode } = useTheme();
   const navigate = useNavigate();
 
   const handleOwnerClick = (ownerName) => {
@@ -35,17 +36,18 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
   const renderAmenities = () => {
     if (!venue.meta) return null;
 
+    const greyColor = "#9ca3af";
     const amenities = [];
-    if (venue.meta.wifi) amenities.push({ name: "WiFi", icon: "📶" });
-    if (venue.meta.parking) amenities.push({ name: "Parking", icon: "🚗" });
-    if (venue.meta.breakfast) amenities.push({ name: "Breakfast", icon: "🍳" });
-    if (venue.meta.pets) amenities.push({ name: "Pets allowed", icon: "🐕" });
+    if (venue.meta.wifi) amenities.push({ name: "WiFi", icon: "WiFi" });
+    if (venue.meta.parking) amenities.push({ name: "Parking", icon: "Parking" });
+    if (venue.meta.breakfast) amenities.push({ name: "Breakfast", icon: "Breakfast" });
+    if (venue.meta.pets) amenities.push({ name: "Pets allowed", icon: "Pets" });
 
     if (amenities.length === 0) {
       return (
         <div className="mb-6">
-          <h3 className="font-poppins text-lg mb-3" style={{ color: theme.colors.navLinks }}>Amenities</h3>
-          <p className="font-poppins" style={{ color: theme.colors.navLinks, opacity: 0.7 }}>
+          <h3 className="font-poppins text-lg mb-3" style={{ color: theme.colors.text }}>Amenities</h3>
+          <p className="font-poppins" style={{ color: theme.colors.text, opacity: 0.7 }}>
             No specific amenities listed
           </p>
         </div>
@@ -54,14 +56,17 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
 
     return (
       <div className="mb-6">
-        <h3 className="font-poppins text-lg mb-3" style={{ color: theme.colors.navLinks }}>Amenities</h3>
+        <h3 className="font-poppins text-lg mb-3" style={{ color: theme.colors.text }}>Amenities</h3>
         <div className="grid grid-cols-2 gap-3">
-          {amenities.map((amenity, index) => (
-            <div key={index} className="flex items-center space-x-2">
-              <span className="text-lg">{amenity.icon}</span>
-              <span className="font-poppins" style={{ color: theme.colors.navLinks, opacity: 0.8 }}>{amenity.name}</span>
-            </div>
-          ))}
+          {amenities.map((amenity, index) => {
+            const IconComponent = AmenityIcons[amenity.icon];
+            return (
+              <div key={index} className="flex items-center space-x-3">
+                <IconComponent size={20} color={greyColor} />
+                <span className="font-poppins" style={{ color: theme.colors.text, opacity: 0.8 }}>{amenity.name}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     );
@@ -191,8 +196,8 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
     if (!venue.owner) return null;
 
     return (
-      <div className="mb-6 p-4 rounded-lg" style={{ backgroundColor: theme.isDarkMode ? '#374151' : '#f9fafb' }}>
-        <h3 className="font-poppins text-lg mb-3" style={{ color: theme.colors.navLinks }}>Hosted by</h3>
+      <div className="mb-6 p-4 rounded-lg" style={{ backgroundColor: isDarkMode ? '#3a3a3a' : '#f9fafb', border: 'none' }}>
+        <h3 className="font-poppins text-lg mb-3" style={{ color: theme.colors.text }}>Hosted by</h3>
         <div className="flex items-center space-x-3">
           {venue.owner.avatar?.url ? (
             <img
@@ -211,12 +216,12 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
             <button
               onClick={() => handleOwnerClick(venue.owner.name)}
               className="font-poppins hover:text-primary transition-colors cursor-pointer"
-              style={{ color: theme.colors.navLinks }}
+              style={{ color: theme.colors.text }}
             >
               {venue.owner.name}
             </button>
             {venue.owner.bio && (
-              <p className="font-poppins text-sm mt-1" style={{ color: theme.colors.navLinks, opacity: 0.8 }}>
+              <p className="font-poppins text-sm mt-1" style={{ color: theme.colors.text, opacity: 0.8 }}>
                 {venue.owner.bio}
               </p>
             )}
@@ -234,13 +239,13 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
           <div>
             {renderImageGallery()}
 
-            <div className="mb-6">
-              <h1 className="font-poppins text-3xl mb-2" style={{ color: theme.colors.navLinks }}>
+            <div className="mb-6 p-6 rounded-lg" style={{ backgroundColor: isDarkMode ? '#3a3a3a' : '#ffffff', border: 'none' }}>
+              <h1 className="font-poppins text-3xl mb-2" style={{ color: theme.colors.text }}>
                 {venue.name}
               </h1>
 
               <div className="flex items-center justify-between mb-4">
-                <p className="font-poppins" style={{ color: theme.colors.navLinks, opacity: 0.8 }}>{formatLocation()}</p>
+                <p className="font-poppins" style={{ color: theme.colors.text, opacity: 0.8 }}>{formatLocation()}</p>
                 {venue.rating > 0 && (
                   <div className="flex items-center">
                     <svg
@@ -250,7 +255,7 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
                     >
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                     </svg>
-                    <span className="font-poppins" style={{ color: theme.colors.navLinks }}>
+                    <span className="font-poppins" style={{ color: theme.colors.text }}>
                       {venue.rating.toFixed(1)} ({venue._count?.bookings || 0}{" "}
                       reviews)
                     </span>
@@ -259,25 +264,25 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
               </div>
 
               <div className="flex items-center space-x-4 mb-4">
-                <span className="font-poppins" style={{ color: theme.colors.navLinks, opacity: 0.8 }}>
+                <span className="font-poppins" style={{ color: theme.colors.text, opacity: 0.8 }}>
                   Max {venue.maxGuests} guest{venue.maxGuests !== 1 ? "s" : ""}
                 </span>
               </div>
+
+              {/* Description */}
+              {venue.description && (
+                <div className="mb-6">
+                  <h3 className="font-poppins text-lg mb-3" style={{ color: theme.colors.text }}>
+                    About this venue
+                  </h3>
+                  <p className="font-poppins leading-relaxed" style={{ color: theme.colors.text, opacity: 0.8 }}>
+                    {venue.description}
+                  </p>
+                </div>
+              )}
+
+              {renderAmenities()}
             </div>
-
-            {/* Description */}
-            {venue.description && (
-              <div className="mb-6">
-                <h3 className="font-poppins text-lg mb-3" style={{ color: theme.colors.navLinks }}>
-                  About this venue
-                </h3>
-                <p className="font-poppins leading-relaxed" style={{ color: theme.colors.navLinks, opacity: 0.8 }}>
-                  {venue.description}
-                </p>
-              </div>
-            )}
-
-            {renderAmenities()}
             {renderOwnerInfo()}
           </div>
 

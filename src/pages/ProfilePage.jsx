@@ -8,7 +8,7 @@ import SuccessMessage from "../components/UI/SuccessMessage";
 
 const ProfilePage = () => {
   const { user, updateUser } = useAuth();
-  const { theme } = useTheme();
+  const { theme, isDarkMode } = useTheme();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -150,12 +150,12 @@ const ProfilePage = () => {
           </p>
         </div>
 
-        <div className="rounded-lg p-6" style={{ backgroundColor: theme.isDarkMode ? '#374151' : '#f9fafb' }}>
+        <div className="rounded-lg p-6" style={{ backgroundColor: isDarkMode ? '#3a3a3a' : '#f9fafb' }}>
           <ErrorMessage message={error} className="mb-6" />
           <SuccessMessage message={success} className="mb-6" />
 
           {/* Current Profile Info */}
-          <div className="mb-6 pb-6 border-b" style={{ borderColor: theme.isDarkMode ? '#4b5563' : '#e5e7eb' }}>
+          <div className="mb-6 pb-6 border-b" style={{ borderColor: isDarkMode ? '#4b5563' : '#e5e7eb' }}>
             <div className="flex items-center space-x-4">
               {user?.avatar?.url ? (
                 <img
@@ -197,11 +197,11 @@ const ProfilePage = () => {
                 onChange={handleInputChange}
                 placeholder="Tell us about yourself..."
                 maxLength="160"
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins resize-none h-24"
+                className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins resize-none h-24"
                 style={{
-                  backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
-                  borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
-                  color: theme.isDarkMode ? '#ffffff' : '#132F3D'
+                  backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                  borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
+                  color: isDarkMode ? '#ffffff' : '#132F3D'
                 }}
               />
               <p className="font-poppins text-xs mt-1" style={{ color: theme.colors.text, opacity: 0.6 }}>
@@ -225,11 +225,11 @@ const ProfilePage = () => {
                 value={formData.avatar.url}
                 onChange={handleInputChange}
                 placeholder="https://example.com/your-avatar.jpg"
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+                className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                 style={{
-                  backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
-                  borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
-                  color: theme.isDarkMode ? '#ffffff' : '#132F3D'
+                  backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                  borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
+                  color: isDarkMode ? '#ffffff' : '#132F3D'
                 }}
               />
             </div>
@@ -251,10 +251,10 @@ const ProfilePage = () => {
                   onChange={handleInputChange}
                   placeholder="Description of your avatar"
                   maxLength="120"
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+                  className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
+                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
                 />
@@ -280,11 +280,11 @@ const ProfilePage = () => {
                 value={formData.banner.url}
                 onChange={handleInputChange}
                 placeholder="https://example.com/your-banner.jpg"
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+                className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                 style={{
-                  backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
-                  borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
-                  color: theme.isDarkMode ? '#ffffff' : '#132F3D'
+                  backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                  borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
+                  color: isDarkMode ? '#ffffff' : '#132F3D'
                 }}
               />
             </div>
@@ -306,10 +306,10 @@ const ProfilePage = () => {
                   onChange={handleInputChange}
                   placeholder="Description of your banner"
                   maxLength="120"
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary font-poppins"
+                  className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
+                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
                 />
@@ -320,7 +320,7 @@ const ProfilePage = () => {
             )}
 
             {/* Venue Manager Toggle */}
-            <div className="rounded-lg p-4" style={{ backgroundColor: theme.isDarkMode ? '#4b5563' : '#f3f4f6' }}>
+            <div className="rounded-lg p-4" style={{ backgroundColor: isDarkMode ? '#4b5563' : '#f3f4f6' }}>
               <div className="flex items-center">
                 <input
                   type="checkbox"
@@ -330,9 +330,9 @@ const ProfilePage = () => {
                   onChange={handleInputChange}
                   className="h-4 w-4 text-primary focus:ring-primary rounded"
                   style={{
-                    backgroundColor: theme.isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
-                    color: theme.isDarkMode ? '#ffffff' : '#132F3D'
+                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
+                    color: isDarkMode ? '#ffffff' : '#132F3D'
                   }}
                 />
                 <label
@@ -361,7 +361,7 @@ const ProfilePage = () => {
 
             {/* Preview Section */}
             {(formData.avatar.url || formData.banner.url) && (
-              <div className="rounded-lg p-4" style={{ backgroundColor: theme.isDarkMode ? '#4b5563' : '#f3f4f6' }}>
+              <div className="rounded-lg p-4" style={{ backgroundColor: isDarkMode ? '#4b5563' : '#f3f4f6' }}>
                 <h4 className="font-poppins text-sm mb-3" style={{ color: theme.colors.text, opacity: 0.8 }}>
                   Preview
                 </h4>
@@ -419,14 +419,14 @@ const ProfilePage = () => {
                   setError("");
                   setSuccess("");
                 }}
-                className="px-6 py-3 border font-poppins rounded-lg transition-colors"
+                className="px-6 py-3 font-poppins rounded-lg transition-colors cursor-pointer"
                 style={{
-                  borderColor: theme.isDarkMode ? '#6b7280' : '#d1d5db',
+                  borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                   color: theme.colors.text,
                   opacity: 0.8
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = theme.isDarkMode ? '#4b5563' : '#f3f4f6';
+                  e.target.style.backgroundColor = isDarkMode ? '#4b5563' : '#f3f4f6';
                 }}
                 onMouseLeave={(e) => {
                   e.target.style.backgroundColor = 'transparent';
@@ -437,7 +437,7 @@ const ProfilePage = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50"
+                className="px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50 cursor-pointer"
               >
                 {loading ? (
                   <div className="flex items-center space-x-2">

@@ -33,19 +33,3 @@ h6 {
   font-family: "Poppins-Light", sans-serif;
 }
 
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #383838;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #489da6;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #5aa4ac;
-}
