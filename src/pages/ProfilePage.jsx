@@ -5,6 +5,7 @@ import { useTheme } from "../context/ThemeContext";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 import ErrorMessage from "../components/UI/ErrorMessage";
 import SuccessMessage from "../components/UI/SuccessMessage";
+import ImageModal from "../components/UI/ImageModal";
 
 const ProfilePage = () => {
   const { user, updateUser } = useAuth();
@@ -12,6 +13,7 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [modalImage, setModalImage] = useState({ isOpen: false, url: "", alt: "" });
 
   const [formData, setFormData] = useState({
     bio: user?.bio || "",
@@ -138,6 +140,14 @@ const ProfilePage = () => {
     }
   };
 
+  const openImageModal = (url, alt) => {
+    setModalImage({ isOpen: true, url, alt });
+  };
+
+  const closeImageModal = () => {
+    setModalImage({ isOpen: false, url: "", alt: "" });
+  };
+
   return (
     <div className="min-h-screen py-8" style={{ backgroundColor: theme.colors.background }}>
       <div className="max-w-2xl mx-auto px-4">
@@ -161,7 +171,8 @@ const ProfilePage = () => {
                 <img
                   src={user.avatar.url}
                   alt={user.avatar.alt || user.name}
-                  className="h-16 w-16 rounded-full object-cover"
+                  className="h-16 w-16 rounded-full object-cover cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={() => openImageModal(user.avatar.url, user.avatar.alt || user.name)}
                 />
               ) : (
                 <div className="h-16 w-16 rounded-full bg-primary flex items-center justify-center">
@@ -374,7 +385,8 @@ const ProfilePage = () => {
                       <img
                         src={formData.banner.url}
                         alt={formData.banner.alt}
-                        className="w-full h-24 object-cover rounded-lg"
+                        className="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
+                        onClick={() => openImageModal(formData.banner.url, formData.banner.alt)}
                         onError={(e) => {
                           e.target.style.display = "none";
                         }}
@@ -389,7 +401,8 @@ const ProfilePage = () => {
                       <img
                         src={formData.avatar.url}
                         alt={formData.avatar.alt}
-                        className="h-16 w-16 rounded-full object-cover"
+                        className="h-16 w-16 rounded-full object-cover cursor-pointer hover:opacity-80 transition-opacity"
+                        onClick={() => openImageModal(formData.avatar.url, formData.avatar.alt)}
                         onError={(e) => {
                           e.target.style.display = "none";
                         }}
@@ -452,6 +465,12 @@ const ProfilePage = () => {
           </form>
         </div>
       </div>
+      <ImageModal
+        isOpen={modalImage.isOpen}
+        onClose={closeImageModal}
+        imageUrl={modalImage.url}
+        alt={modalImage.alt}
+      />
     </div>
   );
 };

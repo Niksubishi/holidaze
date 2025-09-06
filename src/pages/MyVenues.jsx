@@ -7,6 +7,7 @@ import LoadingSpinner from "../components/UI/LoadingSpinner";
 import ErrorMessage from "../components/UI/ErrorMessage";
 import SuccessMessage from "../components/UI/SuccessMessage";
 import ConfirmationModal from "../components/UI/ConfirmationModal";
+import AmenityIcons from "../components/UI/AmenityIcons";
 
 const MyVenues = () => {
   const { user } = useAuth();
@@ -134,37 +135,35 @@ const MyVenues = () => {
               <div
                 key={venue.id}
                 className="rounded-lg overflow-hidden transition-colors"
-                style={{ 
-                  backgroundColor: isDarkMode ? '#132F3D' : '#f3f4f6',
-                  ':hover': { backgroundColor: isDarkMode ? '#4b5563' : '#e5e7eb' }
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = isDarkMode ? '#4b5563' : '#e5e7eb';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = isDarkMode ? '#132F3D' : '#f3f4f6';
+                style={{
+                  backgroundColor: isDarkMode ? "#3a3a3a" : "#ffffff",
+                  border: isDarkMode ? "none" : "none",
                 }}
               >
                 {/* Venue Image */}
                 <div className="aspect-video w-full overflow-hidden">
-                  <img
-                    src={
-                      venue.media?.[0]?.url ||
-                      "/images/default.jpg"
-                    }
-                    alt={
-                      venue.media?.[0]?.alt || venue.name
-                    }
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
+                  <Link to={`/venues/${venue.id}`}>
+                    <img
+                      src={
+                        venue.media?.[0]?.url ||
+                        "/images/default.jpg"
+                      }
+                      alt={
+                        venue.media?.[0]?.alt || venue.name
+                      }
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300 cursor-pointer"
+                    />
+                  </Link>
                 </div>
 
                 {/* Venue Details */}
                 <div className="p-6">
                   <div className="mb-4">
-                    <h3 className="font-poppins text-xl mb-2" style={{ color: theme.colors.text }}>
-                      {venue.name}
-                    </h3>
+                    <Link to={`/venues/${venue.id}`}>
+                      <h3 className="font-poppins text-xl mb-2 hover:opacity-75 transition-colors cursor-pointer" style={{ color: theme.colors.text }}>
+                        {venue.name}
+                      </h3>
+                    </Link>
                     <p className="font-poppins text-sm mb-2" style={{ color: theme.colors.text, opacity: 0.7 }}>
                       {venue.location?.city && venue.location?.country
                         ? `${venue.location.city}, ${venue.location.country}`
@@ -195,18 +194,30 @@ const MyVenues = () => {
                   </div>
 
                   <div className="flex justify-between items-center mb-4">
-                    <div className="flex space-x-2">
+                    <div className="flex flex-wrap gap-2 items-center">
                       {venue.meta?.wifi && (
-                        <span className="text-primary text-sm">📶</span>
+                        <div className="flex items-center space-x-1">
+                          <AmenityIcons.WiFi size={16} color="#9ca3af" />
+                          <span className="text-xs" style={{ color: "#9ca3af" }}>WiFi</span>
+                        </div>
                       )}
                       {venue.meta?.parking && (
-                        <span className="text-primary text-sm">🚗</span>
+                        <div className="flex items-center space-x-1">
+                          <AmenityIcons.Parking size={16} color="#9ca3af" />
+                          <span className="text-xs" style={{ color: "#9ca3af" }}>Parking</span>
+                        </div>
                       )}
                       {venue.meta?.breakfast && (
-                        <span className="text-primary text-sm">🍳</span>
+                        <div className="flex items-center space-x-1">
+                          <AmenityIcons.Breakfast size={16} color="#9ca3af" />
+                          <span className="text-xs" style={{ color: "#9ca3af" }}>Breakfast</span>
+                        </div>
                       )}
                       {venue.meta?.pets && (
-                        <span className="text-primary text-sm">🐕</span>
+                        <div className="flex items-center space-x-1">
+                          <AmenityIcons.Pets size={16} color="#9ca3af" />
+                          <span className="text-xs" style={{ color: "#9ca3af" }}>Pets</span>
+                        </div>
                       )}
                     </div>
                     <div className="text-right">
@@ -221,33 +232,39 @@ const MyVenues = () => {
 
                   <div className="flex space-x-2">
                     <Link
-                      to={`/venues/${venue.id}`}
-                      className="flex-1 px-4 py-2 font-poppins rounded-lg transition-colors text-center"
-                      style={{ 
-                        borderColor: isDarkMode ? '#4b5563' : '#d1d5db',
-                        color: theme.colors.text,
-                        opacity: 0.8
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.backgroundColor = isDarkMode ? '#4b5563' : '#f3f4f6';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.backgroundColor = 'transparent';
-                      }}
-                    >
-                      View Details
-                    </Link>
-                    <Link
                       to={`/venues/${venue.id}/edit`}
-                      className="flex-1 px-4 py-2 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors text-center"
+                      className="flex-1 px-4 py-2 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors flex items-center justify-center"
                     >
                       Edit
                     </Link>
+                    <Link
+                      to={`/venues/${venue.id}/manage`}
+                      className="flex-1 px-4 py-2 font-poppins rounded-lg transition-colors hover:opacity-80 flex items-center justify-center"
+                      style={{
+                        backgroundColor: isDarkMode ? '#4b5563' : '#f3f4f6',
+                        color: theme.colors.text,
+                      }}
+                    >
+                      Manage
+                    </Link>
                     <button
                       onClick={() => handleDeleteVenue(venue.id)}
-                      className="px-4 py-2 bg-red-600 text-white font-poppins rounded-lg hover:bg-red-700 transition-colors cursor-pointer"
+                      className="px-3 py-2 bg-red-600 text-white font-poppins rounded-lg hover:bg-red-700 transition-colors cursor-pointer flex items-center justify-center"
+                      title="Delete venue"
                     >
-                      Delete
+                      <svg
+                        className="h-4 w-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
                     </button>
                   </div>
                 </div>

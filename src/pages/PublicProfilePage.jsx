@@ -5,6 +5,7 @@ import { useTheme } from "../context/ThemeContext";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 import ErrorMessage from "../components/UI/ErrorMessage";
 import VenueCard from "../components/Venues/VenueCard";
+import ImageModal from "../components/UI/ImageModal";
 
 const PublicProfilePage = () => {
   const { username } = useParams();
@@ -12,6 +13,7 @@ const PublicProfilePage = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [modalImage, setModalImage] = useState({ isOpen: false, url: "", alt: "" });
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -32,6 +34,14 @@ const PublicProfilePage = () => {
       fetchProfile();
     }
   }, [username]);
+
+  const openImageModal = (url, alt) => {
+    setModalImage({ isOpen: true, url, alt });
+  };
+
+  const closeImageModal = () => {
+    setModalImage({ isOpen: false, url: "", alt: "" });
+  };
 
   if (loading) {
     return (
@@ -91,7 +101,8 @@ const PublicProfilePage = () => {
               <img
                 src={profile.banner.url}
                 alt={profile.banner.alt || `${profile.name}'s banner`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover cursor-pointer hover:opacity-80 transition-opacity"
+                onClick={() => openImageModal(profile.banner.url, profile.banner.alt || `${profile.name}'s banner`)}
               />
             </div>
           )}
@@ -103,7 +114,8 @@ const PublicProfilePage = () => {
               <img
                 src={profile.avatar.url}
                 alt={profile.avatar.alt || profile.name}
-                className="h-24 w-24 rounded-full object-cover"
+                className="h-24 w-24 rounded-full object-cover cursor-pointer hover:opacity-80 transition-opacity"
+                onClick={() => openImageModal(profile.avatar.url, profile.avatar.alt || profile.name)}
               />
             ) : (
               <div className="h-24 w-24 rounded-full bg-primary flex items-center justify-center">
@@ -180,6 +192,12 @@ const PublicProfilePage = () => {
           </div>
         )}
       </div>
+      <ImageModal
+        isOpen={modalImage.isOpen}
+        onClose={closeImageModal}
+        imageUrl={modalImage.url}
+        alt={modalImage.alt}
+      />
     </div>
   );
 };

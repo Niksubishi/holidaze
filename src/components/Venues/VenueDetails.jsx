@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 import BookingForm from "./BookingForm";
 import AmenityIcons from "../UI/AmenityIcons";
+import VenueLocationMap from "./VenueLocationMap";
 
 const VenueDetails = ({ venue, onBookingSuccess }) => {
   const defaultImage = "/images/default.jpg";
@@ -282,6 +283,14 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
               )}
 
               {renderAmenities()}
+
+              {/* Location Map */}
+              <div className="mb-6">
+                <h3 className="font-poppins text-lg mb-3" style={{ color: theme.colors.text }}>
+                  Location
+                </h3>
+                <VenueLocationMap venue={venue} />
+              </div>
             </div>
             {renderOwnerInfo()}
           </div>

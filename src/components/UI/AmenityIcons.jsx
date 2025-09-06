@@ -85,19 +85,46 @@ const AmenityIcons = {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* Dog head shape */}
-      <path
-        d="M12 4C8.5 4 6 6.5 6 10V12C6 15.5 8.5 18 12 18C15.5 18 18 15.5 18 12V10C18 6.5 15.5 4 12 4Z"
+      {/* Main paw pad */}
+      <ellipse 
+        cx="12" 
+        cy="15" 
+        rx="4" 
+        ry="3.5" 
         fill={color}
       />
-      {/* Dog ears */}
-      <ellipse cx="8.5" cy="8" rx="2" ry="3" fill={color} />
-      <ellipse cx="15.5" cy="8" rx="2" ry="3" fill={color} />
-      {/* Dog eyes */}
-      <circle cx="10" cy="11" r="1" fill="white" />
-      <circle cx="14" cy="11" r="1" fill="white" />
-      {/* Dog nose */}
-      <ellipse cx="12" cy="13.5" rx="1" ry="0.5" fill="white" />
+      {/* Top left toe */}
+      <ellipse 
+        cx="8.5" 
+        cy="9" 
+        rx="1.8" 
+        ry="2.5" 
+        fill={color}
+      />
+      {/* Top center toe */}
+      <ellipse 
+        cx="12" 
+        cy="7.5" 
+        rx="1.8" 
+        ry="2.8" 
+        fill={color}
+      />
+      {/* Top right toe */}
+      <ellipse 
+        cx="15.5" 
+        cy="9" 
+        rx="1.8" 
+        ry="2.5" 
+        fill={color}
+      />
+      {/* Side toe */}
+      <ellipse 
+        cx="6.5" 
+        cy="12" 
+        rx="1.2" 
+        ry="2" 
+        fill={color}
+      />
     </svg>
   )
 };

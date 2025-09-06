@@ -25,6 +25,16 @@ export const venuesAPI = {
     );
   },
 
+  getByIdWithBookings: async (id) => {
+    const token = tokenManager.get();
+    return makeRequest(
+      `${apiConfig.endpoints.holidaze.venues}/${id}?_owner=true&_bookings=true`,
+      {
+        token,
+      }
+    );
+  },
+
   search: async (query, page = 1, limit = 12, sort = "created", sortOrder = "desc") => {
     const params = new URLSearchParams({
       q: query,

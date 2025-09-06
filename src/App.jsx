@@ -17,6 +17,8 @@ import AuthPage from "./pages/AuthPage";
 import MyBookings from "./pages/MyBookings";
 import MyVenues from "./pages/MyVenues";
 import CreateVenuePage from "./pages/CreateVenuePage";
+import EditVenuePage from "./pages/EditVenuePage";
+import ManageVenuePage from "./pages/ManageVenuePage";
 import ProfilePage from "./pages/ProfilePage";
 import PublicProfilePage from "./pages/PublicProfilePage";
 import NotFound from "./pages/NotFound";
@@ -92,6 +94,22 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute requireVenueManager={true}>
             <CreateVenuePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/venues/:id/edit"
+        element={
+          <ProtectedRoute requireVenueManager={true}>
+            <EditVenuePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/venues/:id/manage"
+        element={
+          <ProtectedRoute requireVenueManager={true}>
+            <ManageVenuePage />
           </ProtectedRoute>
         }
       />

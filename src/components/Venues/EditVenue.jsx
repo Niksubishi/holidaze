@@ -1,15 +1,17 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { venuesAPI } from "../../api/venues.js";
 import { useTheme } from "../../context/ThemeContext";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import ErrorMessage from "../UI/ErrorMessage";
 import SuccessMessage from "../UI/SuccessMessage";
 
-const CreateVenue = () => {
+const EditVenue = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const { theme, isDarkMode } = useTheme();
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -36,6 +38,50 @@ const CreateVenue = () => {
       lng: 0,
     },
   });
+
+  useEffect(() => {
+    const fetchVenue = async () => {
+      try {
+        setInitialLoading(true);
+        const response = await venuesAPI.getById(id);
+        const venue = response.data;
+        
+        setFormData({
+          name: venue.name || "",
+          description: venue.description || "",
+          media: venue.media && venue.media.length > 0 ? venue.media : [{ url: "", alt: "" }],
+          price: venue.price || "",
+          maxGuests: venue.maxGuests || "",
+          rating: venue.rating || 0,
+          meta: {
+            wifi: venue.meta?.wifi || false,
+            parking: venue.meta?.parking || false,
+            breakfast: venue.meta?.breakfast || false,
+            pets: venue.meta?.pets || false,
+          },
+          location: {
+            address: venue.location?.address || "",
+            city: venue.location?.city || "",
+            zip: venue.location?.zip || "",
+            country: venue.location?.country || "",
+            continent: venue.location?.continent || "",
+            lat: venue.location?.lat || 0,
+            lng: venue.location?.lng || 0,
+          },
+        });
+        setError("");
+      } catch (err) {
+        console.error("Failed to fetch venue:", err);
+        setError(err.message || "Failed to load venue");
+      } finally {
+        setInitialLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchVenue();
+    }
+  }, [id]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -123,7 +169,6 @@ const CreateVenue = () => {
       return false;
     }
 
-    // Check if at least one media URL is provided and valid
     const validMedia = formData.media.filter((item) => item.url.trim());
     if (validMedia.length === 0) {
       setError("At least one image URL is required");
@@ -150,7 +195,6 @@ const CreateVenue = () => {
         meta: formData.meta,
       };
 
-      // Add media (filter out empty URLs)
       const validMedia = formData.media
         .filter((item) => item.url.trim())
         .map((item) => ({
@@ -162,7 +206,6 @@ const CreateVenue = () => {
         venueData.media = validMedia;
       }
 
-      // Add location (only include fields with values)
       const location = {};
       Object.entries(formData.location).forEach(([key, value]) => {
         if (key === "lat" || key === "lng") {
@@ -176,24 +219,31 @@ const CreateVenue = () => {
         venueData.location = location;
       }
 
-      // Add rating if specified
       if (formData.rating > 0) {
         venueData.rating = formData.rating;
       }
 
-      const response = await venuesAPI.create(venueData);
-      setSuccess("Venue created successfully!");
+      await venuesAPI.update(id, venueData);
+      setSuccess("Venue updated successfully!");
 
       setTimeout(() => {
         navigate("/my-venues");
       }, 2000);
     } catch (err) {
-      console.error("Failed to create venue:", err);
-      setError(err.message || "Failed to create venue");
+      console.error("Failed to update venue:", err);
+      setError(err.message || "Failed to update venue");
     } finally {
       setLoading(false);
     }
   };
+
+  if (initialLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: theme.colors.background }}>
+        <LoadingSpinner size="large" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen py-8" style={{ backgroundColor: theme.colors.background }}>
@@ -221,10 +271,10 @@ const CreateVenue = () => {
           </button>
 
           <h1 className="font-poppins text-3xl md:text-4xl mb-2" style={{ color: theme.colors.text }}>
-            Create New Venue
+            Edit Venue
           </h1>
           <p className="font-poppins" style={{ color: theme.colors.text, opacity: 0.7 }}>
-            Add a new venue to your listings
+            Update your venue information
           </p>
         </div>
 
@@ -233,7 +283,6 @@ const CreateVenue = () => {
           <SuccessMessage message={success} className="mb-6" />
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Basic Information */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <label
@@ -321,7 +370,7 @@ const CreateVenue = () => {
                   className="block font-poppins text-sm mb-2"
                   style={{ color: theme.colors.text, opacity: 0.8 }}
                 >
-                  Initial Rating (0-5)
+                  Rating (0-5)
                 </label>
                 <input
                   type="number"
@@ -343,7 +392,6 @@ const CreateVenue = () => {
               </div>
             </div>
 
-            {/* Description */}
             <div>
               <label
                 htmlFor="description"
@@ -369,7 +417,6 @@ const CreateVenue = () => {
               />
             </div>
 
-            {/* Media */}
             <div>
               <label className="block font-poppins text-sm mb-2" style={{ color: theme.colors.text, opacity: 0.8 }}>
                 Images *
@@ -450,7 +497,6 @@ const CreateVenue = () => {
               </button>
             </div>
 
-            {/* Amenities */}
             <div>
               <label className="block font-poppins text-sm mb-3" style={{ color: theme.colors.text, opacity: 0.8 }}>
                 Amenities
@@ -478,7 +524,6 @@ const CreateVenue = () => {
               </div>
             </div>
 
-            {/* Location */}
             <div>
               <h3 className="font-poppins text-lg mb-4" style={{ color: theme.colors.text }}>Location</h3>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -654,7 +699,6 @@ const CreateVenue = () => {
               </div>
             </div>
 
-            {/* Submit Button */}
             <div className="flex justify-end space-x-4 pt-6">
               <button
                 type="button"
@@ -676,10 +720,10 @@ const CreateVenue = () => {
                 {loading ? (
                   <div className="flex items-center space-x-2">
                     <LoadingSpinner size="small" />
-                    <span>Creating...</span>
+                    <span>Updating...</span>
                   </div>
                 ) : (
-                  "Create Venue"
+                  "Update Venue"
                 )}
               </button>
             </div>
@@ -690,4 +734,4 @@ const CreateVenue = () => {
   );
 };
 
-export default CreateVenue;
+export default EditVenue;

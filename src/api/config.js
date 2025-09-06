@@ -29,27 +29,44 @@ export const getAuthHeaders = (token = null) => {
   return headers;
 };
 
-export const makeRequest = async (url, options = {}) => {
-  try {
-    const response = await fetch(`${API_BASE_URL}${url}`, {
-      ...options,
-      headers: {
-        ...getAuthHeaders(options.token),
-        ...options.headers,
-      },
-    });
+export const makeRequest = async (url, options = {}, retries = 2) => {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const response = await fetch(`${API_BASE_URL}${url}`, {
+        ...options,
+        headers: {
+          ...getAuthHeaders(options.token),
+          ...options.headers,
+        },
+      });
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(
-        data.errors?.[0]?.message || data.message || "Something went wrong"
-      );
+    let data;
+    const contentType = response.headers.get("content-type");
+    
+    if (contentType && contentType.includes("application/json")) {
+      data = await response.json();
+    } else {
+      // For DELETE requests that return empty content (204 No Content)
+      data = response.status === 204 ? {} : await response.text();
     }
 
-    return data;
-  } catch (error) {
-    console.error("API Request failed:", error);
-    throw error;
+    if (!response.ok) {
+      const errorMessage = data?.errors?.[0]?.message || data?.message || "Something went wrong";
+      throw new Error(errorMessage);
+    }
+
+      return data;
+    } catch (error) {
+      console.error(`API Request failed (attempt ${attempt + 1}/${retries + 1}):`, error);
+      
+      // If this is the last attempt, throw the error
+      if (attempt === retries) {
+        throw error;
+      }
+      
+      // Wait before retrying (exponential backoff)
+      const delay = Math.pow(2, attempt) * 1000; // 1s, 2s, 4s...
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
   }
 };
