@@ -1,23 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useCallback, memo } from "react";
 import { bookingsAPI } from "../../api/bookings.js";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
+import { useLoading } from "../../context/LoadingContext";
+import { useToast } from "../../context/ToastContext";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import ErrorMessage from "../UI/ErrorMessage";
-import SuccessMessage from "../UI/SuccessMessage";
 import { getCardBackground, getInputBackground, getInputBorderColor, getInputTextColor, getSecondaryBackground } from "../../utils/theme.js";
 
-const BookingForm = ({ venue, onBookingSuccess }) => {
+const BookingForm = memo(({ venue, onBookingSuccess }) => {
   const { isAuthenticated } = useAuth();
   const { theme, isDarkMode } = useTheme();
+  const { setLoading, isLoading } = useLoading();
+  const { showSuccess, showError } = useToast();
   const [formData, setFormData] = useState({
     dateFrom: "",
     dateTo: "",
     guests: 1,
   });
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   if (!isAuthenticated) {
     return (
@@ -36,7 +37,8 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
     );
   }
 
-  const handleInputChange = (e) => {
+  // Memoize the stable callback for input changes
+  const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -45,23 +47,26 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
 
     // Clear messages when user starts typing
     if (error) setError("");
-    if (success) setSuccess("");
-  };
+  }, [error]);
 
-  const calculateTotalPrice = () => {
+  // Memoize expensive price calculation
+  const pricingData = useMemo(() => {
     const { dateFrom, dateTo } = formData;
-    if (!dateFrom || !dateTo) return 0;
+    if (!dateFrom || !dateTo) {
+      return { totalPrice: 0, nights: 0 };
+    }
 
     const start = new Date(dateFrom);
     const end = new Date(dateTo);
     const diffTime = Math.abs(end - start);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const totalPrice = nights * venue.price;
 
-    return diffDays * venue.price;
-  };
+    return { totalPrice, nights };
+  }, [formData.dateFrom, formData.dateTo, venue.price]);
 
-  // Check if a date range overlaps with any existing bookings
-  const hasDateConflict = (checkInDate, checkOutDate) => {
+  // Memoize date conflict checking function
+  const hasDateConflict = useCallback((checkInDate, checkOutDate) => {
     if (!venue.bookings) return false;
 
     const newStart = new Date(checkInDate);
@@ -74,7 +79,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
       // Check if dates overlap (including touching dates)
       return (newStart < bookingEnd && newEnd > bookingStart);
     });
-  };
+  }, [venue.bookings]);
 
   const validateForm = () => {
     const { dateFrom, dateTo, guests } = formData;
@@ -118,7 +123,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
 
     if (!validateForm()) return;
 
-    setLoading(true);
+    setLoading('booking-form', true);
     setError("");
 
     try {
@@ -131,7 +136,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
 
       await bookingsAPI.create(bookingData);
 
-      setSuccess("Booking created successfully!");
+      showSuccess("Booking created successfully! Check your bookings page for details.");
       setFormData({
         dateFrom: "",
         dateTo: "",
@@ -142,9 +147,11 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
         onBookingSuccess();
       }
     } catch (err) {
-      setError(err.message || "Failed to create booking");
+      const errorMessage = err.message || "Failed to create booking";
+      setError(errorMessage);
+      showError(errorMessage);
     } finally {
-      setLoading(false);
+      setLoading('booking-form', false);
     }
   };
 
@@ -162,7 +169,8 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
     return `${start} - ${end}`;
   };
 
-  const getUnavailableDateRanges = () => {
+  // Memoize unavailable date ranges calculation
+  const unavailableDateRanges = useMemo(() => {
     if (!venue.bookings || venue.bookings.length === 0) return [];
     
     const today = new Date();
@@ -170,16 +178,10 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
       .filter(booking => new Date(booking.dateTo) > today) // Only future/current bookings
       .sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom))
       .slice(0, 5); // Show max 5 upcoming bookings
-  };
+  }, [venue.bookings]);
 
-  const totalPrice = calculateTotalPrice();
-  const nights =
-    totalPrice > 0
-      ? Math.ceil(
-          Math.abs(new Date(formData.dateTo) - new Date(formData.dateFrom)) /
-            (1000 * 60 * 60 * 24)
-        )
-      : 0;
+  // Use memoized pricing data
+  const { totalPrice, nights } = pricingData;
 
   return (
     <div className="p-6 rounded-lg" style={{ backgroundColor: getCardBackground(isDarkMode) }}>
@@ -193,13 +195,13 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
       </div>
 
       {/* Unavailable Dates Display */}
-      {getUnavailableDateRanges().length > 0 && (
+      {unavailableDateRanges.length > 0 && (
         <div className="mb-4 p-3 rounded-lg" style={{ backgroundColor: isDarkMode ? '#4b5563' : '#fef3c7' }}>
           <h4 className="font-poppins text-sm mb-2" style={{ color: theme.colors.text, opacity: 0.9 }}>
             Unavailable Dates
           </h4>
           <div className="space-y-1">
-            {getUnavailableDateRanges().map((booking, index) => (
+            {unavailableDateRanges.map((booking, index) => (
               <div key={booking.id || index} className="font-poppins text-xs" style={{ color: theme.colors.text, opacity: 0.7 }}>
                 {formatDateRange(booking.dateFrom, booking.dateTo)}
               </div>
@@ -308,14 +310,13 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
         )}
 
         <ErrorMessage message={error} />
-        <SuccessMessage message={success} />
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={isLoading('booking-form')}
           className="w-full px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50 cursor-pointer"
         >
-          {loading ? (
+          {isLoading('booking-form') ? (
             <div className="flex items-center justify-center space-x-2">
               <LoadingSpinner size="small" />
               <span>Booking...</span>
@@ -327,6 +328,9 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
       </form>
     </div>
   );
-};
+});
+
+// Add display name for better debugging
+BookingForm.displayName = 'BookingForm';
 
 export default BookingForm;

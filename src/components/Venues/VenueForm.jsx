@@ -6,14 +6,15 @@ import LoadingSpinner from "../UI/LoadingSpinner";
 import ErrorMessage from "../UI/ErrorMessage";
 import SuccessMessage from "../UI/SuccessMessage";
 import { getInputBackground, getCardBackground } from "../../utils/theme.js";
+import { useApiError } from "../../hooks/useApiError.js";
 
 const VenueForm = ({ mode = "create", venueId = null }) => {
   const navigate = useNavigate();
   const { theme, isDarkMode } = useTheme();
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(mode === "edit");
-  const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const { error, errorType, handleApiError, clearError, getErrorActionText } = useApiError();
   
   const isEditMode = mode === "edit";
 
@@ -73,9 +74,9 @@ const VenueForm = ({ mode = "create", venueId = null }) => {
             lng: venue.location?.lng || 0,
           },
         });
-        setError("");
+        clearError();
       } catch (err) {
-        setError(err.message || "Failed to load venue");
+        handleApiError(err);
       } finally {
         setInitialLoading(false);
       }
@@ -120,7 +121,7 @@ const VenueForm = ({ mode = "create", venueId = null }) => {
       }));
     }
 
-    if (error) setError("");
+    if (error) clearError();
     if (success) setSuccess("");
   };
 
@@ -150,29 +151,30 @@ const VenueForm = ({ mode = "create", venueId = null }) => {
   };
 
   const validateForm = () => {
+    // Use local validation errors (not API errors)
     if (!formData.name.trim()) {
-      setError("Venue name is required");
+      handleApiError({ message: "Venue name is required", type: "VALIDATION" });
       return false;
     }
 
     if (!formData.description.trim()) {
-      setError("Description is required");
+      handleApiError({ message: "Description is required", type: "VALIDATION" });
       return false;
     }
 
     if (!formData.price || formData.price <= 0) {
-      setError("Price must be greater than 0");
+      handleApiError({ message: "Price must be greater than 0", type: "VALIDATION" });
       return false;
     }
 
     if (!formData.maxGuests || formData.maxGuests < 1) {
-      setError("Maximum guests must be at least 1");
+      handleApiError({ message: "Maximum guests must be at least 1", type: "VALIDATION" });
       return false;
     }
 
     const validMedia = formData.media.filter((item) => item.url.trim());
     if (validMedia.length === 0) {
-      setError("At least one image URL is required");
+      handleApiError({ message: "At least one image URL is required", type: "VALIDATION" });
       return false;
     }
 
@@ -185,7 +187,7 @@ const VenueForm = ({ mode = "create", venueId = null }) => {
     if (!validateForm()) return;
 
     setLoading(true);
-    setError("");
+    clearError();
 
     try {
       const venueData = {
@@ -236,7 +238,7 @@ const VenueForm = ({ mode = "create", venueId = null }) => {
         navigate("/my-venues");
       }, 2000);
     } catch (err) {
-      setError(err.message || `Failed to ${isEditMode ? "update" : "create"} venue`);
+      handleApiError(err);
     } finally {
       setLoading(false);
     }
@@ -284,7 +286,13 @@ const VenueForm = ({ mode = "create", venueId = null }) => {
         </div>
 
         <div className="rounded-lg p-6" style={{ backgroundColor: getCardBackground(isDarkMode) }}>
-          <ErrorMessage message={error} className="mb-6" />
+          <ErrorMessage 
+            message={error} 
+            errorType={errorType}
+            className="mb-6"
+            onAction={clearError}
+            actionText={getErrorActionText()}
+          />
           <SuccessMessage message={success} className="mb-6" />
 
           <form onSubmit={handleSubmit} className="space-y-6">

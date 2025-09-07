@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { bookingsAPI } from "../api/bookings.js";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
+import { useLoading } from "../context/LoadingContext";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
+import SkeletonBooking from "../components/UI/SkeletonBooking";
 import ErrorMessage from "../components/UI/ErrorMessage";
 import SuccessMessage from "../components/UI/SuccessMessage";
 import ConfirmationModal from "../components/UI/ConfirmationModal";
@@ -12,8 +14,8 @@ import { getSecondaryBackground } from "../utils/theme.js";
 const MyBookings = () => {
   const { user } = useAuth();
   const { theme, isDarkMode } = useTheme();
+  const { setLoading, isLoading } = useLoading();
   const [allBookings, setAllBookings] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -22,7 +24,7 @@ const MyBookings = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        setLoading(true);
+        setLoading('my-bookings', true);
         const response = await bookingsAPI.getByProfile(user.name);
 
         // Store all bookings and sort by date (newest first)
@@ -34,7 +36,7 @@ const MyBookings = () => {
       } catch (err) {
         setError(err.message || "Failed to load bookings");
       } finally {
-        setLoading(false);
+        setLoading('my-bookings', false);
       }
     };
 
@@ -43,12 +45,13 @@ const MyBookings = () => {
     }
   }, [user]);
 
-  const handleCancelBooking = (bookingId) => {
+  // Stable callbacks for event handlers
+  const handleCancelBooking = useCallback((bookingId) => {
     setBookingToCancel(bookingId);
     setShowConfirmModal(true);
-  };
+  }, []);
 
-  const confirmCancelBooking = async () => {
+  const confirmCancelBooking = useCallback(async () => {
     try {
       setError("");
       await bookingsAPI.delete(bookingToCancel);
@@ -64,58 +67,104 @@ const MyBookings = () => {
       setBookingToCancel(null);
       setTimeout(() => setError(""), 5000);
     }
-  };
+  }, [bookingToCancel]);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setShowConfirmModal(false);
     setBookingToCancel(null);
-  };
+  }, []);
 
-  const formatDate = (dateString) => {
+  // Memoize date formatting utility
+  const formatDate = useCallback((dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
     });
-  };
+  }, []);
 
-  const calculateNights = (dateFrom, dateTo) => {
+  // Memoize calculations to avoid repeated computation
+  const calculateNights = useCallback((dateFrom, dateTo) => {
     const start = new Date(dateFrom);
     const end = new Date(dateTo);
     const diffTime = Math.abs(end - start);
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  };
+  }, []);
 
-  const calculateTotalPrice = (booking) => {
+  const calculateTotalPrice = useCallback((booking) => {
     const nights = calculateNights(booking.dateFrom, booking.dateTo);
     return nights * booking.venue.price;
-  };
+  }, [calculateNights]);
 
-  const isBookingPast = (booking) => {
+  // Memoize booking filtering and sorting - this is expensive with many bookings
+  const bookingCategories = useMemo(() => {
     const today = new Date();
-    const checkoutDate = new Date(booking.dateTo);
-    return checkoutDate < today;
-  };
-
-  const getCurrentBookings = () => {
-    return allBookings
-      .filter(booking => !isBookingPast(booking))
+    
+    const currentBookings = allBookings
+      .filter(booking => {
+        const checkoutDate = new Date(booking.dateTo);
+        return checkoutDate >= today;
+      })
       .sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom)); // Earliest upcoming first
-  };
 
-  const getPastBookings = () => {
-    return allBookings
-      .filter(booking => isBookingPast(booking))
+    const pastBookings = allBookings
+      .filter(booking => {
+        const checkoutDate = new Date(booking.dateTo);
+        return checkoutDate < today;
+      })
       .sort((a, b) => new Date(b.dateFrom) - new Date(a.dateFrom)); // Most recent stay first
-  };
 
-  if (loading) {
+    return { currentBookings, pastBookings };
+  }, [allBookings]);
+
+  const { currentBookings, pastBookings } = bookingCategories;
+
+  if (isLoading('my-bookings')) {
     return (
       <div
-        className="min-h-screen flex items-center justify-center"
+        className="min-h-screen py-8"
         style={{ backgroundColor: theme.colors.background }}
       >
-        <LoadingSpinner size="large" />
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="mb-8">
+            <h1
+              className="font-poppins text-3xl md:text-4xl mb-2"
+              style={{ color: theme.colors.text }}
+            >
+              My Bookings
+            </h1>
+            <p
+              className="font-poppins"
+              style={{ color: theme.colors.text, opacity: 0.7 }}
+            >
+              Manage your upcoming reservations
+            </p>
+          </div>
+          
+          <div className="space-y-8">
+            <div>
+              <h2 className="font-poppins text-2xl mb-4" style={{ color: theme.colors.text }}>
+                Current Bookings
+              </h2>
+              <div className="space-y-6">
+                {Array.from({ length: 2 }).map((_, index) => (
+                  <SkeletonBooking key={index} />
+                ))}
+              </div>
+            </div>
+            
+            <div>
+              <h2 className="font-poppins text-2xl mb-4" style={{ color: theme.colors.text }}>
+                Past Bookings
+              </h2>
+              <div className="space-y-2">
+                {Array.from({ length: 3 }).map((_, index) => (
+                  <SkeletonBooking key={index} compact />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -144,7 +193,7 @@ const MyBookings = () => {
         <ErrorMessage message={error} className="mb-6" />
         <SuccessMessage message={success} className="mb-6" />
 
-        {allBookings.length === 0 && !loading ? (
+        {allBookings.length === 0 && !isLoading('my-bookings') ? (
           <div className="text-center py-12">
             <div className="mb-6">
               <svg
@@ -184,13 +233,13 @@ const MyBookings = () => {
         ) : (
           <div className="space-y-8">
             {/* Current Bookings */}
-            {getCurrentBookings().length > 0 && (
+            {currentBookings.length > 0 && (
               <div>
                 <h2 className="font-poppins text-2xl mb-4" style={{ color: theme.colors.text }}>
-                  Current Bookings ({getCurrentBookings().length})
+                  Current Bookings ({currentBookings.length})
                 </h2>
                 <div className="space-y-6">
-                  {getCurrentBookings().map((booking) => (
+                  {currentBookings.map((booking) => (
               <div
                 key={booking.id}
                 className="rounded-lg p-6 transition-colors"
@@ -362,13 +411,13 @@ const MyBookings = () => {
             )}
 
             {/* Past Bookings */}
-            {getPastBookings().length > 0 && (
+            {pastBookings.length > 0 && (
               <div>
                 <h2 className="font-poppins text-2xl mb-4" style={{ color: theme.colors.text }}>
-                  Past Bookings ({getPastBookings().length})
+                  Past Bookings ({pastBookings.length})
                 </h2>
                 <div className="space-y-2">
-                  {getPastBookings().map((booking) => (
+                  {pastBookings.map((booking) => (
                     <div
                       key={booking.id}
                       className="rounded-lg p-4 transition-colors"

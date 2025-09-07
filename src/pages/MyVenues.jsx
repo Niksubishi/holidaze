@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { venuesAPI } from "../api/venues.js";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
-import LoadingSpinner from "../components/UI/LoadingSpinner";
+import SkeletonList from "../components/UI/SkeletonList";
 import ErrorMessage from "../components/UI/ErrorMessage";
 import SuccessMessage from "../components/UI/SuccessMessage";
 import ConfirmationModal from "../components/UI/ConfirmationModal";
@@ -67,8 +67,18 @@ const MyVenues = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: theme.colors.background }}>
-        <LoadingSpinner size="large" />
+      <div className="min-h-screen py-8" style={{ backgroundColor: theme.colors.background }}>
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="mb-8">
+            <h1 className="font-poppins text-3xl md:text-4xl mb-2" style={{ color: theme.colors.text }}>
+              My Venues
+            </h1>
+            <p className="font-poppins" style={{ color: theme.colors.text, opacity: 0.7 }}>
+              Manage your properties and bookings
+            </p>
+          </div>
+          <SkeletonList count={6} />
+        </div>
       </div>
     );
   }

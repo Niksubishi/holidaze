@@ -5,6 +5,7 @@ import { useTheme } from "../../context/ThemeContext";
 import BookingForm from "./BookingForm";
 import AmenityIcons from "../UI/AmenityIcons";
 import VenueLocationMap from "./VenueLocationMap";
+import MapLinks from "../UI/MapLinks";
 
 const VenueDetails = ({ venue, onBookingSuccess }) => {
   const defaultImage = "/images/default.jpg";
@@ -290,6 +291,14 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
                   Location
                 </h3>
                 <VenueLocationMap venue={venue} />
+                
+                {/* Map Links */}
+                <div className="mt-4">
+                  <MapLinks 
+                    location={venue.location} 
+                    venueName={venue.name} 
+                  />
+                </div>
               </div>
             </div>
             {renderOwnerInfo()}

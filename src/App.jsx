@@ -7,7 +7,11 @@ import {
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
+import { LoadingProvider } from "./context/LoadingContext";
+import { ToastProvider } from "./context/ToastContext";
 import Layout from "./components/Layout/Layout";
+import ProtectedRoute from "./components/Auth/ProtectedRoute";
+import ToastContainer from "./components/UI/ToastContainer";
 
 // Pages
 import Home from "./pages/Home";
@@ -23,29 +27,6 @@ import ProfilePage from "./pages/ProfilePage";
 import PublicProfilePage from "./pages/PublicProfilePage";
 import NotFound from "./pages/NotFound";
 
-// Protected Route Component
-const ProtectedRoute = ({ children, requireVenueManager = false }) => {
-  const { isAuthenticated, isVenueManager, loading } = useAuth();
-  const { theme } = useTheme();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: theme.colors.background }}>
-        <div className="animate-spin rounded-full h-12 w-12 border-2 border-gray-300" style={{ borderTopColor: theme.colors.primary }}></div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return <Navigate to="/auth" replace />;
-  }
-
-  if (requireVenueManager && !isVenueManager) {
-    return <Navigate to="/venues" replace />;
-  }
-
-  return children;
-};
 
 const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
@@ -124,13 +105,18 @@ const AppRoutes = () => {
 function App() {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <Router>
-          <Layout>
-            <AppRoutes />
-          </Layout>
-        </Router>
-      </AuthProvider>
+      <LoadingProvider>
+        <ToastProvider>
+          <AuthProvider>
+            <Router>
+              <Layout>
+                <AppRoutes />
+              </Layout>
+              <ToastContainer />
+            </Router>
+          </AuthProvider>
+        </ToastProvider>
+      </LoadingProvider>
     </ThemeProvider>
   );
 }

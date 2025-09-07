@@ -1,50 +1,77 @@
-import React from "react";
+import React, { memo, useMemo, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 import AmenityIcons from "../UI/AmenityIcons";
+import OptimizedImage from "../UI/OptimizedImage";
 
-const VenueCard = ({ venue }) => {
+const VenueCard = memo(({ venue }) => {
   const { isAuthenticated } = useAuth();
   const { theme, isDarkMode } = useTheme();
   const navigate = useNavigate();
-  const defaultImage = "/images/default.jpg";
-  const imageUrl = venue.media?.[0]?.url || defaultImage;
-  const imageAlt = venue.media?.[0]?.alt || venue.name;
 
-  const handleOwnerClick = (e, ownerName) => {
-    e.stopPropagation();
-    if (!isAuthenticated) {
-      navigate("/auth");
-    } else {
-      navigate(`/profile/${ownerName}`);
-    }
-  };
+  // Memoize image data to avoid recalculation
+  const imageData = useMemo(() => {
+    const defaultImage = "/images/default.jpg";
+    return {
+      url: venue.media?.[0]?.url || defaultImage,
+      alt: venue.media?.[0]?.alt || venue.name
+    };
+  }, [venue.media, venue.name]);
 
-  const formatLocation = () => {
+  // Memoize location formatting
+  const formattedLocation = useMemo(() => {
     const { location } = venue;
     if (!location) return "Location not specified";
 
     const parts = [location.city, location.country].filter(Boolean);
     return parts.length > 0 ? parts.join(", ") : "Location not specified";
-  };
+  }, [venue.location]);
 
-  const renderAmenities = () => {
+  // Memoize amenities list calculation
+  const amenitiesData = useMemo(() => {
     if (!venue.meta) return null;
 
-    const greyColor = "#9ca3af";
     const amenities = [];
     if (venue.meta.wifi) amenities.push({ name: "WiFi", icon: "WiFi" });
     if (venue.meta.parking) amenities.push({ name: "Parking", icon: "Parking" });
     if (venue.meta.breakfast) amenities.push({ name: "Breakfast", icon: "Breakfast" });
     if (venue.meta.pets) amenities.push({ name: "Pets allowed", icon: "Pets" });
 
-    if (amenities.length === 0) return null;
+    return amenities.length > 0 ? amenities : null;
+  }, [venue.meta]);
+
+  // Memoize guest text to avoid string concatenation on every render
+  const guestText = useMemo(() => {
+    return `Max ${venue.maxGuests} guest${venue.maxGuests !== 1 ? "s" : ""}`;
+  }, [venue.maxGuests]);
+
+  // Memoize rating display
+  const hasRating = useMemo(() => venue.rating > 0, [venue.rating]);
+  const formattedRating = useMemo(() => 
+    hasRating ? venue.rating.toFixed(1) : null
+  , [venue.rating, hasRating]);
+
+  // Stable callback for owner click handler
+  const handleOwnerClick = useCallback((e, ownerName) => {
+    e.stopPropagation();
+    if (!isAuthenticated) {
+      navigate("/auth");
+    } else {
+      navigate(`/profile/${ownerName}`);
+    }
+  }, [isAuthenticated, navigate]);
+
+  // Memoize amenities rendering to avoid recalculation
+  const amenitiesComponent = useMemo(() => {
+    if (!amenitiesData) return null;
+
+    const greyColor = "#9ca3af";
 
     return (
       <div className="mt-2">
         <div className="flex flex-wrap gap-2 items-center">
-          {amenities.slice(0, 3).map((amenity, index) => {
+          {amenitiesData.slice(0, 3).map((amenity, index) => {
             const IconComponent = AmenityIcons[amenity.icon];
             return (
               <div key={index} className="flex items-center space-x-1">
@@ -58,18 +85,18 @@ const VenueCard = ({ venue }) => {
               </div>
             );
           })}
-          {amenities.length > 3 && (
+          {amenitiesData.length > 3 && (
             <span
               className="text-xs"
               style={{ color: theme.colors.text, opacity: 0.6 }}
             >
-              +{amenities.length - 3} more
+              +{amenitiesData.length - 3} more
             </span>
           )}
         </div>
       </div>
     );
-  };
+  }, [amenitiesData, theme.colors.text]);
 
   return (
     <Link
@@ -81,11 +108,19 @@ const VenueCard = ({ venue }) => {
       }}
     >
       <div className="aspect-square overflow-hidden">
-        <img
-          src={imageUrl}
-          alt={imageAlt}
+        <OptimizedImage
+          src={imageData.url}
+          alt={imageData.alt}
+          width={400}
+          height={400}
+          quality={85}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          loading="lazy"
+          lazy={true}
+          breakpoints={{
+            mobile: '100vw',
+            tablet: '50vw',
+            desktop: '25vw'
+          }}
         />
       </div>
 
@@ -101,7 +136,7 @@ const VenueCard = ({ venue }) => {
           className="font-poppins text-sm mb-2"
           style={{ color: theme.colors.text, opacity: 0.7 }}
         >
-          {formatLocation()}
+          {formattedLocation}
         </p>
 
         <div className="flex items-center justify-between mb-2">
@@ -120,7 +155,7 @@ const VenueCard = ({ venue }) => {
             </span>
           </div>
 
-          {venue.rating > 0 && (
+          {hasRating && (
             <div className="flex items-center">
               <svg
                 className="h-4 w-4 text-yellow-400 mr-1"
@@ -133,7 +168,7 @@ const VenueCard = ({ venue }) => {
                 className="font-poppins text-sm"
                 style={{ color: theme.colors.text, opacity: 0.7 }}
               >
-                {venue.rating.toFixed(1)}
+                {formattedRating}
               </span>
             </div>
           )}
@@ -143,7 +178,7 @@ const VenueCard = ({ venue }) => {
           className="font-poppins text-xs mb-2"
           style={{ color: theme.colors.text, opacity: 0.6 }}
         >
-          Max {venue.maxGuests} guest{venue.maxGuests !== 1 ? "s" : ""}
+          {guestText}
         </p>
 
         {venue.owner && (
@@ -157,10 +192,13 @@ const VenueCard = ({ venue }) => {
           </div>
         )}
 
-        {renderAmenities()}
+        {amenitiesComponent}
       </div>
     </Link>
   );
-};
+});
+
+// Add display name for better debugging
+VenueCard.displayName = 'VenueCard';
 
 export default VenueCard;

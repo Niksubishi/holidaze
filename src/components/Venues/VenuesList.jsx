@@ -1,27 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo, useMemo, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 import { venuesAPI } from "../../api/venues.js";
 import { useTheme } from "../../context/ThemeContext";
+import { useLoading } from "../../context/LoadingContext";
 import VenueCard from "./VenueCard";
 import LoadingSpinner from "../UI/LoadingSpinner";
+import SkeletonList from "../UI/SkeletonList";
 import ErrorMessage from "../UI/ErrorMessage";
 
-const VenuesList = () => {
+const VenuesList = memo(() => {
   const { theme, isDarkMode } = useTheme();
+  const { setLoading, isLoading } = useLoading();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [venues, setVenues] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("created");
-  const [sortOrder, setSortOrder] = useState("desc");
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
 
+  // Get state from URL params with fallbacks
+  const searchQuery = searchParams.get("search") || "";
+  const sortBy = searchParams.get("sortBy") || "created";
+  const sortOrder = searchParams.get("sortOrder") || "desc";
+
   const venuesPerPage = 12;
 
-  const fetchVenues = async (page = 1, isNewSearch = false) => {
+  const fetchVenues = useCallback(async (page = 1, isNewSearch = false) => {
     try {
-      if (page === 1) setLoading(true);
+      if (page === 1) setLoading('venues-list', true);
 
       let response;
       if (searchQuery.trim()) {
@@ -56,33 +62,73 @@ const VenuesList = () => {
       console.error("Failed to fetch venues:", err);
       setError(err.message || "Failed to load venues");
     } finally {
-      setLoading(false);
+      setLoading('venues-list', false);
     }
-  };
+  }, [searchQuery, sortBy, sortOrder, setLoading]);
 
   useEffect(() => {
     setCurrentPage(1);
     fetchVenues(1, true);
   }, [sortBy, sortOrder, searchQuery]);
 
-  const handleClearSearch = () => {
-    setSearchQuery("");
+  // Update URL params helper
+  const updateParams = useCallback((newParams) => {
+    setSearchParams(prevParams => {
+      const updatedParams = new URLSearchParams(prevParams);
+      Object.entries(newParams).forEach(([key, value]) => {
+        if (value) {
+          updatedParams.set(key, value);
+        } else {
+          updatedParams.delete(key);
+        }
+      });
+      return updatedParams;
+    });
+  }, [setSearchParams]);
+
+  const handleClearSearch = useCallback(() => {
     setCurrentPage(1);
     setIsSearching(false);
-    setSortBy("created");
-    setSortOrder("desc");
-  };
+    updateParams({
+      search: "",
+      sortBy: "created",
+      sortOrder: "desc"
+    });
+  }, [updateParams]);
 
-  const handleLoadMore = () => {
+  const handleLoadMore = useCallback(() => {
     const nextPage = currentPage + 1;
     setCurrentPage(nextPage);
     fetchVenues(nextPage, false);
-  };
+  }, [currentPage, fetchVenues]);
 
-  const handleSortChange = (newSort, newOrder = "desc") => {
-    setSortBy(newSort);
-    setSortOrder(newOrder);
-  };
+  const handleSortChange = useCallback((newSort, newOrder = "desc") => {
+    updateParams({
+      sortBy: newSort,
+      sortOrder: newOrder
+    });
+  }, [updateParams]);
+
+  const handleSearchChange = useCallback((value) => {
+    updateParams({
+      search: value || ""
+    });
+  }, [updateParams]);
+
+  // Memoize sort button states to avoid recalculation
+  const sortButtonStates = useMemo(() => ({
+    newest: sortBy === "created" && sortOrder === "desc",
+    oldest: sortBy === "created" && sortOrder === "asc",
+    cheapest: sortBy === "price" && sortOrder === "asc",
+    mostExpensive: sortBy === "price" && sortOrder === "desc",
+    highestRated: sortBy === "rating" && sortOrder === "desc"
+  }), [sortBy, sortOrder]);
+
+  // Memoize inactive button styles
+  const inactiveButtonStyle = useMemo(() => ({
+    backgroundColor: isDarkMode ? "#132F3D" : "#f3f4f6",
+    color: isDarkMode ? "#9ca3af" : theme.colors.text,
+  }), [isDarkMode, theme.colors.text]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -93,7 +139,7 @@ const VenuesList = () => {
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
               placeholder="Search venues by name or location..."
               className="px-4 py-2 rounded-lg focus:outline-none font-poppins text-sm w-full max-w-2xl"
               style={{
@@ -131,90 +177,45 @@ const VenuesList = () => {
           <button
             onClick={() => handleSortChange("created", "desc")}
             className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer ${
-              sortBy === "created" && sortOrder === "desc"
-                ? "bg-primary text-white"
-                : ""
+              sortButtonStates.newest ? "bg-primary text-white" : ""
             }`}
-            style={
-              sortBy === "created" && sortOrder === "desc"
-                ? {}
-                : {
-                    backgroundColor: isDarkMode ? "#132F3D" : "#f3f4f6",
-                    color: isDarkMode ? "#9ca3af" : theme.colors.text,
-                  }
-            }
+            style={sortButtonStates.newest ? {} : inactiveButtonStyle}
           >
             Newest
           </button>
           <button
             onClick={() => handleSortChange("created", "asc")}
             className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer ${
-              sortBy === "created" && sortOrder === "asc"
-                ? "bg-primary text-white"
-                : ""
+              sortButtonStates.oldest ? "bg-primary text-white" : ""
             }`}
-            style={
-              sortBy === "created" && sortOrder === "asc"
-                ? {}
-                : {
-                    backgroundColor: isDarkMode ? "#132F3D" : "#f3f4f6",
-                    color: isDarkMode ? "#9ca3af" : theme.colors.text,
-                  }
-            }
+            style={sortButtonStates.oldest ? {} : inactiveButtonStyle}
           >
             Oldest
           </button>
           <button
             onClick={() => handleSortChange("price", "asc")}
             className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer ${
-              sortBy === "price" && sortOrder === "asc"
-                ? "bg-primary text-white"
-                : ""
+              sortButtonStates.cheapest ? "bg-primary text-white" : ""
             }`}
-            style={
-              sortBy === "price" && sortOrder === "asc"
-                ? {}
-                : {
-                    backgroundColor: isDarkMode ? "#132F3D" : "#f3f4f6",
-                    color: isDarkMode ? "#9ca3af" : theme.colors.text,
-                  }
-            }
+            style={sortButtonStates.cheapest ? {} : inactiveButtonStyle}
           >
             Cheapest
           </button>
           <button
             onClick={() => handleSortChange("price", "desc")}
             className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer ${
-              sortBy === "price" && sortOrder === "desc"
-                ? "bg-primary text-white"
-                : ""
+              sortButtonStates.mostExpensive ? "bg-primary text-white" : ""
             }`}
-            style={
-              sortBy === "price" && sortOrder === "desc"
-                ? {}
-                : {
-                    backgroundColor: isDarkMode ? "#132F3D" : "#f3f4f6",
-                    color: isDarkMode ? "#9ca3af" : theme.colors.text,
-                  }
-            }
+            style={sortButtonStates.mostExpensive ? {} : inactiveButtonStyle}
           >
             Most Expensive
           </button>
           <button
             onClick={() => handleSortChange("rating", "desc")}
             className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer ${
-              sortBy === "rating" && sortOrder === "desc"
-                ? "bg-primary text-white"
-                : ""
+              sortButtonStates.highestRated ? "bg-primary text-white" : ""
             }`}
-            style={
-              sortBy === "rating" && sortOrder === "desc"
-                ? {}
-                : {
-                    backgroundColor: isDarkMode ? "#132F3D" : "#f3f4f6",
-                    color: isDarkMode ? "#9ca3af" : theme.colors.text,
-                  }
-            }
+            style={sortButtonStates.highestRated ? {} : inactiveButtonStyle}
           >
             Highest Rated
           </button>
@@ -224,15 +225,13 @@ const VenuesList = () => {
       {/* Error Display */}
       {error && <ErrorMessage message={error} className="mb-6" />}
 
-      {/* Loading Spinner */}
-      {loading && venues.length === 0 && (
-        <div className="flex justify-center py-12">
-          <LoadingSpinner size="large" />
-        </div>
+      {/* Loading Skeleton */}
+      {isLoading('venues-list') && venues.length === 0 && (
+        <SkeletonList count={8} />
       )}
 
       {/* Venues Grid */}
-      {!loading && venues.length === 0 && !error && (
+      {!isLoading('venues-list') && venues.length === 0 && !error && (
         <div className="text-center py-12">
           <h3
             className="font-poppins text-xl mb-2"
@@ -263,11 +262,11 @@ const VenuesList = () => {
         <div className="text-center">
           <button
             onClick={handleLoadMore}
-            disabled={loading}
+            disabled={isLoading('venues-list')}
             className="px-8 py-3 text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors cursor-pointer disabled:opacity-50"
             style={{ backgroundColor: theme.colors.primary }}
           >
-            {loading ? (
+            {isLoading('venues-list') ? (
               <div className="flex items-center space-x-2">
                 <LoadingSpinner size="small" />
                 <span>Loading...</span>
@@ -280,6 +279,9 @@ const VenuesList = () => {
       )}
     </div>
   );
-};
+});
+
+// Add display name for better debugging
+VenuesList.displayName = 'VenuesList';
 
 export default VenuesList;

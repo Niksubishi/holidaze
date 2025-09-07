@@ -3,18 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { authAPI } from "../../api/auth.js";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
+import { useToast } from "../../context/ToastContext";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import ErrorMessage from "../UI/ErrorMessage";
-import SuccessMessage from "../UI/SuccessMessage";
+import PasswordInput from "../UI/PasswordInput";
 import { getCardBackground, getInputBackground, getInputBorderColor, getInputTextColor } from "../../utils/theme.js";
 
 const AuthForms = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const { login } = useAuth();
   const { theme, isDarkMode } = useTheme();
+  const { showSuccess, showError } = useToast();
   const navigate = useNavigate();
 
   const [loginData, setLoginData] = useState({
@@ -26,6 +27,7 @@ const AuthForms = () => {
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
     bio: "",
     venueManager: false,
     avatar: {
@@ -33,6 +35,7 @@ const AuthForms = () => {
       alt: "",
     },
   });
+  const [passwordErrors, setPasswordErrors] = useState({});
 
   const handleLoginChange = (e) => {
     const { name, value } = e.target;
@@ -42,7 +45,6 @@ const AuthForms = () => {
     }));
 
     if (error) setError("");
-    if (success) setSuccess("");
   };
 
   const handleSignupChange = (e) => {
@@ -65,7 +67,11 @@ const AuthForms = () => {
     }
 
     if (error) setError("");
-    if (success) setSuccess("");
+    
+    // Clear password errors when user types
+    if (passwordErrors[name]) {
+      setPasswordErrors(prev => ({ ...prev, [name]: null }));
+    }
   };
 
   const validateEmail = (email) => {
@@ -73,7 +79,24 @@ const AuthForms = () => {
   };
 
   const validatePassword = (password) => {
-    return password.length >= 8;
+    const errors = [];
+    if (password.length < 8) {
+      errors.push('Must be at least 8 characters long');
+    }
+    if (!/(?=.*[a-z])/.test(password)) {
+      errors.push('Must contain at least one lowercase letter');
+    }
+    if (!/(?=.*[A-Z])/.test(password)) {
+      errors.push('Must contain at least one uppercase letter');
+    }
+    if (!/(?=.*\d)/.test(password)) {
+      errors.push('Must contain at least one number');
+    }
+    return errors;
+  };
+  
+  const validatePasswordMatch = (password, confirmPassword) => {
+    return password === confirmPassword;
   };
 
   const validateUsername = (name) => {
@@ -88,8 +111,9 @@ const AuthForms = () => {
       return;
     }
 
-    if (!validatePassword(loginData.password)) {
-      setError("Password must be at least 8 characters long");
+    const passwordErrors = validatePassword(loginData.password);
+    if (passwordErrors.length > 0) {
+      setError("Password " + passwordErrors[0].toLowerCase());
       return;
     }
 
@@ -101,13 +125,15 @@ const AuthForms = () => {
       const userData = response.data;
 
       await login(userData, userData.accessToken);
-      setSuccess("Login successful! Redirecting...");
+      showSuccess("Welcome back! Redirecting to venues...");
 
       setTimeout(() => {
         navigate("/venues");
       }, 1000);
     } catch (err) {
-      setError(err.message || "Login failed");
+      const errorMessage = err.message || "Login failed";
+      setError(errorMessage);
+      showError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -126,8 +152,16 @@ const AuthForms = () => {
       return;
     }
 
-    if (!validatePassword(signupData.password)) {
-      setError("Password must be at least 8 characters long");
+    const passwordValidationErrors = validatePassword(signupData.password);
+    if (passwordValidationErrors.length > 0) {
+      setError("Password: " + passwordValidationErrors[0]);
+      setPasswordErrors({ password: passwordValidationErrors[0] });
+      return;
+    }
+    
+    if (!validatePasswordMatch(signupData.password, signupData.confirmPassword)) {
+      setError("Passwords do not match");
+      setPasswordErrors({ confirmPassword: "Passwords do not match" });
       return;
     }
 
@@ -166,7 +200,7 @@ const AuthForms = () => {
       }
 
       await authAPI.register(userData);
-      setSuccess("Account created successfully! Please log in.");
+      showSuccess("Account created successfully! Please log in with your new credentials.");
 
       // Switch to login form after successful signup
       setTimeout(() => {
@@ -175,10 +209,11 @@ const AuthForms = () => {
           email: signupData.email,
           password: "",
         });
-        setSuccess("");
-      }, 2000);
+      }, 1500);
     } catch (err) {
-      setError(err.message || "Signup failed");
+      const errorMessage = err.message || "Signup failed";
+      setError(errorMessage);
+      showError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -200,7 +235,7 @@ const AuthForms = () => {
               onClick={() => {
                 setIsLogin(true);
                 setError("");
-                setSuccess("");
+                setPasswordErrors({});
               }}
               className={`flex-1 py-2 px-4 font-poppins text-center transition-colors cursor-pointer ${
                 isLogin ? "bg-primary" : `hover:opacity-80`
@@ -220,7 +255,7 @@ const AuthForms = () => {
               onClick={() => {
                 setIsLogin(false);
                 setError("");
-                setSuccess("");
+                setPasswordErrors({});
               }}
               className={`flex-1 py-2 px-4 font-poppins text-center transition-colors cursor-pointer ${
                 !isLogin ? "bg-primary" : `hover:opacity-80`
@@ -238,9 +273,8 @@ const AuthForms = () => {
             </button>
           </div>
 
-          {/* Error and Success Messages */}
+          {/* Error Messages */}
           <ErrorMessage message={error} className="mb-4" />
-          <SuccessMessage message={success} className="mb-4" />
 
           {/* Login Form */}
           {isLogin && (
@@ -270,30 +304,15 @@ const AuthForms = () => {
                 />
               </div>
 
-              <div>
-                <label
-                  htmlFor="login-password"
-                  className="block font-poppins text-sm mb-2"
-                  style={{ color: theme.colors.text, opacity: 0.8 }}
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="login-password"
-                  name="password"
-                  value={loginData.password}
-                  onChange={handleLoginChange}
-                  placeholder="Enter your password"
-                  className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
-                  style={{
-                    backgroundColor: getInputBackground(isDarkMode),
-                    borderColor: getInputBorderColor(isDarkMode),
-                    color: getInputTextColor(isDarkMode),
-                  }}
-                  required
-                />
-              </div>
+              <PasswordInput
+                id="login-password"
+                name="password"
+                value={loginData.password}
+                onChange={handleLoginChange}
+                placeholder="Enter your password"
+                label="Password"
+                required
+              />
 
               <button
                 type="submit"
@@ -371,30 +390,27 @@ const AuthForms = () => {
                 />
               </div>
 
-              <div>
-                <label
-                  htmlFor="signup-password"
-                  className="block font-poppins text-sm mb-2"
-                  style={{ color: theme.colors.text, opacity: 0.8 }}
-                >
-                  Password *
-                </label>
-                <input
-                  type="password"
-                  id="signup-password"
-                  name="password"
-                  value={signupData.password}
-                  onChange={handleSignupChange}
-                  placeholder="At least 8 characters"
-                  className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
-                  style={{
-                    backgroundColor: getInputBackground(isDarkMode),
-                    borderColor: getInputBorderColor(isDarkMode),
-                    color: getInputTextColor(isDarkMode),
-                  }}
-                  required
-                />
-              </div>
+              <PasswordInput
+                id="signup-password"
+                name="password"
+                value={signupData.password}
+                onChange={handleSignupChange}
+                placeholder="At least 8 characters (A-Z, a-z, 0-9)"
+                label="Password"
+                required
+                error={passwordErrors.password}
+              />
+
+              <PasswordInput
+                id="signup-confirm-password"
+                name="confirmPassword"
+                value={signupData.confirmPassword}
+                onChange={handleSignupChange}
+                placeholder="Repeat your password"
+                label="Confirm Password"
+                required
+                error={passwordErrors.confirmPassword}
+              />
 
               <div>
                 <label

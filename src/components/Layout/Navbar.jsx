@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, memo, useMemo, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 import UserDropdown from "../Profile/UserDropdown";
 import ThemeToggle from "../UI/ThemeToggle";
 
-const Navbar = () => {
+const Navbar = memo(() => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isAuthenticated, isVenueManager } = useAuth();
   const { isDarkMode, theme } = useTheme();
   const location = useLocation();
 
-  const isActivePage = (path) => location.pathname === path;
+  const isActivePage = useCallback((path) => location.pathname === path, [location.pathname]);
 
-  const NavLink = ({ to, children, className = "" }) => (
+  const NavLink = useCallback(({ to, children, className = "" }) => (
     <Link
       to={to}
       className={`font-poppins hover:opacity-75 transition-colors relative ${className}`}
@@ -25,30 +25,41 @@ const Navbar = () => {
         <div className="absolute -bottom-4 left-0 right-0 h-0.5" style={{ backgroundColor: theme.colors.navLinks }}></div>
       )}
     </Link>
-  );
+  ), [theme.colors.navLinks, isActivePage, setIsMobileMenuOpen]);
 
-  const loggedOutLinks = (
+  const loggedOutLinks = useMemo(() => (
     <>
       <NavLink to="/">Home</NavLink>
       <NavLink to="/venues">Venues</NavLink>
     </>
-  );
+  ), [NavLink]);
 
-  const customerLinks = (
+  const customerLinks = useMemo(() => (
     <>
       <NavLink to="/venues">Venues</NavLink>
       <NavLink to="/my-bookings">My Bookings</NavLink>
     </>
-  );
+  ), [NavLink]);
 
-  const managerLinks = (
+  const managerLinks = useMemo(() => (
     <>
       <NavLink to="/my-venues">My Venues</NavLink>
       <NavLink to="/create-venue">Create Venue</NavLink>
       <NavLink to="/my-bookings">My Bookings</NavLink>
       <NavLink to="/venues">Venues</NavLink>
     </>
+  ), [NavLink]);
+
+  // Memoize logo source to avoid recalculation
+  const logoSrc = useMemo(() => 
+    isDarkMode ? "/images/logo2.jpg" : "/images/logo.jpg", 
+    [isDarkMode]
   );
+
+  // Stable callback for mobile menu toggle
+  const toggleMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  }, [isMobileMenuOpen]);
 
   return (
     <nav className="h-16 flex items-center px-4 relative z-50" style={{ backgroundColor: theme.colors.headerBg }}>
@@ -57,7 +68,7 @@ const Navbar = () => {
         <div className="flex items-center space-x-8">
           <Link to={isAuthenticated ? "/venues" : "/"} className="cursor-pointer">
             <img
-              src={isDarkMode ? "/images/logo2.jpg" : "/images/logo.jpg"}
+              src={logoSrc}
               alt="Holidaze Logo"
               className="h-8 w-auto"
             />
@@ -90,7 +101,7 @@ const Navbar = () => {
 
           {/* Mobile menu button */}
           <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            onClick={toggleMobileMenu}
             className="md:hidden ml-4 text-white hover:text-gray-200"
             aria-label="Toggle mobile menu"
           >
@@ -174,6 +185,9 @@ const Navbar = () => {
       )}
     </nav>
   );
-};
+});
+
+// Add display name for better debugging
+Navbar.displayName = 'Navbar';
 
 export default Navbar;
