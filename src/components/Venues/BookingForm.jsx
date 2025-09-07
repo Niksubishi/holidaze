@@ -5,6 +5,7 @@ import { useTheme } from "../../context/ThemeContext";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import ErrorMessage from "../UI/ErrorMessage";
 import SuccessMessage from "../UI/SuccessMessage";
+import { getCardBackground, getInputBackground, getInputBorderColor, getInputTextColor, getSecondaryBackground } from "../../utils/theme.js";
 
 const BookingForm = ({ venue, onBookingSuccess }) => {
   const { isAuthenticated } = useAuth();
@@ -20,7 +21,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
 
   if (!isAuthenticated) {
     return (
-      <div className="p-6 rounded-lg" style={{ backgroundColor: isDarkMode ? '#3a3a3a' : '#f9fafb' }}>
+      <div className="p-6 rounded-lg" style={{ backgroundColor: getCardBackground(isDarkMode) }}>
         <h3 className="font-poppins text-xl mb-4" style={{ color: theme.colors.text }}>Book This Venue</h3>
         <p className="font-poppins mb-4" style={{ color: theme.colors.text, opacity: 0.8 }}>
           Please sign up or log in to book this venue.
@@ -141,7 +142,6 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
         onBookingSuccess();
       }
     } catch (err) {
-      console.error("Booking failed:", err);
       setError(err.message || "Failed to create booking");
     } finally {
       setLoading(false);
@@ -182,7 +182,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
       : 0;
 
   return (
-    <div className="p-6 rounded-lg" style={{ backgroundColor: isDarkMode ? '#3a3a3a' : '#f9fafb' }}>
+    <div className="p-6 rounded-lg" style={{ backgroundColor: getCardBackground(isDarkMode) }}>
       <h3 className="font-poppins text-xl mb-4" style={{ color: theme.colors.text }}>Book This Venue</h3>
 
       <div className="mb-4">
@@ -226,7 +226,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
             min={new Date().toISOString().split("T")[0]}
             className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
             style={{
-              backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+              backgroundColor: getInputBackground(isDarkMode),
               borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
               color: isDarkMode ? '#ffffff' : '#132F3D'
             }}
@@ -251,7 +251,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
             min={formData.dateFrom || new Date().toISOString().split("T")[0]}
             className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
             style={{
-              backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+              backgroundColor: getInputBackground(isDarkMode),
               borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
               color: isDarkMode ? '#ffffff' : '#132F3D'
             }}
@@ -277,7 +277,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
             max={venue.maxGuests}
             className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
             style={{
-              backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+              backgroundColor: getInputBackground(isDarkMode),
               borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
               color: isDarkMode ? '#ffffff' : '#132F3D'
             }}
@@ -289,7 +289,7 @@ const BookingForm = ({ venue, onBookingSuccess }) => {
         </div>
 
         {totalPrice > 0 && (
-          <div className="p-4 rounded-lg" style={{ backgroundColor: isDarkMode ? '#4b5563' : '#e5e7eb' }}>
+          <div className="p-4 rounded-lg" style={{ backgroundColor: getSecondaryBackground(isDarkMode) }}>
             <div className="flex justify-between items-center mb-2">
               <span className="font-poppins" style={{ color: theme.colors.text, opacity: 0.8 }}>
                 ${venue.price} x {nights} night{nights !== 1 ? "s" : ""}

@@ -8,6 +8,7 @@ import ErrorMessage from "../components/UI/ErrorMessage";
 import SuccessMessage from "../components/UI/SuccessMessage";
 import ConfirmationModal from "../components/UI/ConfirmationModal";
 import AmenityIcons from "../components/UI/AmenityIcons";
+import { getMainCardBackground, getSecondaryBackground } from "../utils/theme.js";
 
 const MyVenues = () => {
   const { user } = useAuth();
@@ -27,7 +28,6 @@ const MyVenues = () => {
         setVenues(response.data);
         setError("");
       } catch (err) {
-        console.error("Failed to fetch venues:", err);
         setError(err.message || "Failed to load venues");
       } finally {
         setLoading(false);
@@ -54,7 +54,6 @@ const MyVenues = () => {
 
       setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
-      console.error("Failed to delete venue:", err);
       setError(err.message || "Failed to delete venue");
       setShowConfirmModal(false);
       setVenueToDelete(null);
@@ -136,7 +135,7 @@ const MyVenues = () => {
                 key={venue.id}
                 className="rounded-lg overflow-hidden transition-colors"
                 style={{
-                  backgroundColor: isDarkMode ? "#3a3a3a" : "#ffffff",
+                  backgroundColor: getMainCardBackground(isDarkMode),
                   border: isDarkMode ? "none" : "none",
                 }}
               >
@@ -241,7 +240,7 @@ const MyVenues = () => {
                       to={`/venues/${venue.id}/manage`}
                       className="flex-1 px-4 py-2 font-poppins rounded-lg transition-colors hover:opacity-80 flex items-center justify-center"
                       style={{
-                        backgroundColor: isDarkMode ? '#4b5563' : '#f3f4f6',
+                        backgroundColor: getSecondaryBackground(isDarkMode),
                         color: theme.colors.text,
                       }}
                     >

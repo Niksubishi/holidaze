@@ -7,11 +7,12 @@ import LoadingSpinner from "../components/UI/LoadingSpinner";
 import ErrorMessage from "../components/UI/ErrorMessage";
 import SuccessMessage from "../components/UI/SuccessMessage";
 import ConfirmationModal from "../components/UI/ConfirmationModal";
+import { getSecondaryBackground } from "../utils/theme.js";
 
 const MyBookings = () => {
   const { user } = useAuth();
   const { theme, isDarkMode } = useTheme();
-  const [bookings, setBookings] = useState([]);
+  const [allBookings, setAllBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -24,16 +25,13 @@ const MyBookings = () => {
         setLoading(true);
         const response = await bookingsAPI.getByProfile(user.name);
 
-        // Filter for upcoming bookings and sort by date
-        const now = new Date();
-        const upcomingBookings = response.data
-          .filter((booking) => new Date(booking.dateTo) >= now)
-          .sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom));
+        // Store all bookings and sort by date (newest first)
+        const sortedBookings = response.data
+          .sort((a, b) => new Date(b.dateFrom) - new Date(a.dateFrom));
 
-        setBookings(upcomingBookings);
+        setAllBookings(sortedBookings);
         setError("");
       } catch (err) {
-        console.error("Failed to fetch bookings:", err);
         setError(err.message || "Failed to load bookings");
       } finally {
         setLoading(false);
@@ -54,14 +52,13 @@ const MyBookings = () => {
     try {
       setError("");
       await bookingsAPI.delete(bookingToCancel);
-      setBookings((prev) => prev.filter((booking) => booking.id !== bookingToCancel));
+      setAllBookings((prev) => prev.filter((booking) => booking.id !== bookingToCancel));
       setSuccess("Booking cancelled successfully");
       setShowConfirmModal(false);
       setBookingToCancel(null);
 
       setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
-      console.error("Failed to cancel booking:", err);
       setError(err.message || "Failed to cancel booking");
       setShowConfirmModal(false);
       setBookingToCancel(null);
@@ -92,6 +89,24 @@ const MyBookings = () => {
   const calculateTotalPrice = (booking) => {
     const nights = calculateNights(booking.dateFrom, booking.dateTo);
     return nights * booking.venue.price;
+  };
+
+  const isBookingPast = (booking) => {
+    const today = new Date();
+    const checkoutDate = new Date(booking.dateTo);
+    return checkoutDate < today;
+  };
+
+  const getCurrentBookings = () => {
+    return allBookings
+      .filter(booking => !isBookingPast(booking))
+      .sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom)); // Earliest upcoming first
+  };
+
+  const getPastBookings = () => {
+    return allBookings
+      .filter(booking => isBookingPast(booking))
+      .sort((a, b) => new Date(b.dateFrom) - new Date(a.dateFrom)); // Most recent stay first
   };
 
   if (loading) {
@@ -129,7 +144,7 @@ const MyBookings = () => {
         <ErrorMessage message={error} className="mb-6" />
         <SuccessMessage message={success} className="mb-6" />
 
-        {bookings.length === 0 && !loading ? (
+        {allBookings.length === 0 && !loading ? (
           <div className="text-center py-12">
             <div className="mb-6">
               <svg
@@ -167,8 +182,15 @@ const MyBookings = () => {
             </Link>
           </div>
         ) : (
-          <div className="space-y-6">
-            {bookings.map((booking) => (
+          <div className="space-y-8">
+            {/* Current Bookings */}
+            {getCurrentBookings().length > 0 && (
+              <div>
+                <h2 className="font-poppins text-2xl mb-4" style={{ color: theme.colors.text }}>
+                  Current Bookings ({getCurrentBookings().length})
+                </h2>
+                <div className="space-y-6">
+                  {getCurrentBookings().map((booking) => (
               <div
                 key={booking.id}
                 className="rounded-lg p-6 transition-colors"
@@ -334,7 +356,76 @@ const MyBookings = () => {
                   </div>
                 </div>
               </div>
-            ))}
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Past Bookings */}
+            {getPastBookings().length > 0 && (
+              <div>
+                <h2 className="font-poppins text-2xl mb-4" style={{ color: theme.colors.text }}>
+                  Past Bookings ({getPastBookings().length})
+                </h2>
+                <div className="space-y-2">
+                  {getPastBookings().map((booking) => (
+                    <div
+                      key={booking.id}
+                      className="rounded-lg p-4 transition-colors"
+                      style={{ backgroundColor: getSecondaryBackground(isDarkMode) }}
+                    >
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                        {/* Venue Name */}
+                        <div>
+                          <Link
+                            to={`/venues/${booking.venue.id}`}
+                            className="font-poppins hover:text-opacity-80 transition-colors cursor-pointer"
+                            style={{ color: theme.colors.primary || '#007bff' }}
+                          >
+                            {booking.venue.name}
+                          </Link>
+                          <p className="font-poppins text-xs mt-1" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                            {booking.venue.location?.city && booking.venue.location?.country
+                              ? `${booking.venue.location.city}, ${booking.venue.location.country}`
+                              : "Location not specified"}
+                          </p>
+                        </div>
+
+                        {/* Dates */}
+                        <div>
+                          <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.8 }}>
+                            {formatDate(booking.dateFrom)}
+                          </p>
+                          <p className="font-poppins text-xs" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                            to {formatDate(booking.dateTo)}
+                          </p>
+                        </div>
+
+                        {/* Duration & Guests */}
+                        <div>
+                          <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.8 }}>
+                            {calculateNights(booking.dateFrom, booking.dateTo)} night{calculateNights(booking.dateFrom, booking.dateTo) !== 1 ? 's' : ''}
+                          </p>
+                          <p className="font-poppins text-xs" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                            {booking.guests} guest{booking.guests !== 1 ? 's' : ''}
+                          </p>
+                        </div>
+
+                        {/* Price */}
+                        <div className="text-right">
+                          <p className="font-poppins" style={{ color: theme.colors.text }}>
+                            ${calculateTotalPrice(booking)}
+                          </p>
+                          <p className="font-poppins text-xs" style={{ color: theme.colors.text, opacity: 0.6 }}>
+                            Total paid
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

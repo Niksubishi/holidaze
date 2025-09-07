@@ -8,6 +8,7 @@ import LoadingSpinner from "../components/UI/LoadingSpinner";
 import ErrorMessage from "../components/UI/ErrorMessage";
 import SuccessMessage from "../components/UI/SuccessMessage";
 import ConfirmationModal from "../components/UI/ConfirmationModal";
+import { getMainCardBackground, getSecondaryBackground } from "../utils/theme.js";
 
 const ManageVenuePage = () => {
   const { id: venueId } = useParams();
@@ -41,7 +42,6 @@ const ManageVenuePage = () => {
         setVenue(venueData);
         setError("");
       } catch (err) {
-        console.error("Failed to fetch venue:", err);
         setError(err.message || "Failed to load venue");
       } finally {
         setLoading(false);
@@ -80,7 +80,6 @@ const ManageVenuePage = () => {
 
       setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
-      console.error("Failed to cancel booking:", err);
       setError(err.message || "Failed to cancel booking");
       setShowConfirmModal(false);
       setBookingToDelete(null);
@@ -189,7 +188,7 @@ const ManageVenuePage = () => {
         <SuccessMessage message={success} className="mb-6" />
 
         {/* Venue Summary */}
-        <div className="rounded-lg p-6 mb-8" style={{ backgroundColor: isDarkMode ? '#3a3a3a' : '#ffffff' }}>
+        <div className="rounded-lg p-6 mb-8" style={{ backgroundColor: getMainCardBackground(isDarkMode) }}>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="text-center">
               <p className="font-poppins text-2xl mb-1" style={{ color: theme.colors.text }}>
@@ -228,7 +227,7 @@ const ManageVenuePage = () => {
 
         {/* Current Bookings List */}
         {getCurrentBookings().length === 0 && getPastBookings().length === 0 ? (
-          <div className="text-center py-12 rounded-lg" style={{ backgroundColor: isDarkMode ? '#3a3a3a' : '#ffffff' }}>
+          <div className="text-center py-12 rounded-lg" style={{ backgroundColor: getMainCardBackground(isDarkMode) }}>
             <div className="mb-6">
               <svg
                 className="mx-auto h-24 w-24 text-gray-500"
@@ -264,7 +263,7 @@ const ManageVenuePage = () => {
               <div
                 key={booking.id}
                 className="rounded-lg p-6 transition-colors"
-                style={{ backgroundColor: isDarkMode ? '#3a3a3a' : '#ffffff' }}
+                style={{ backgroundColor: getMainCardBackground(isDarkMode) }}
               >
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Guest Information */}
@@ -342,7 +341,7 @@ const ManageVenuePage = () => {
                   <div
                     key={booking.id}
                     className="rounded-lg p-4 transition-colors"
-                    style={{ backgroundColor: isDarkMode ? '#4b5563' : '#f9fafb' }}
+                    style={{ backgroundColor: getSecondaryBackground(isDarkMode) }}
                   >
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {/* Guest Name */}

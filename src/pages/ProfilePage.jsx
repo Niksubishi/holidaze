@@ -6,6 +6,7 @@ import LoadingSpinner from "../components/UI/LoadingSpinner";
 import ErrorMessage from "../components/UI/ErrorMessage";
 import SuccessMessage from "../components/UI/SuccessMessage";
 import ImageModal from "../components/UI/ImageModal";
+import { getCardBackground, getInputBackground, getSecondaryBackground, getInputBorderColor, getInputTextColor } from "../utils/theme.js";
 
 const ProfilePage = () => {
   const { user, updateUser } = useAuth();
@@ -133,7 +134,6 @@ const ProfilePage = () => {
 
       setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
-      console.error("Profile update failed:", err);
       setError(err.message || "Failed to update profile");
     } finally {
       setLoading(false);
@@ -160,7 +160,7 @@ const ProfilePage = () => {
           </p>
         </div>
 
-        <div className="rounded-lg p-6" style={{ backgroundColor: isDarkMode ? '#3a3a3a' : '#f9fafb' }}>
+        <div className="rounded-lg p-6" style={{ backgroundColor: getCardBackground(isDarkMode) }}>
           <ErrorMessage message={error} className="mb-6" />
           <SuccessMessage message={success} className="mb-6" />
 
@@ -210,9 +210,9 @@ const ProfilePage = () => {
                 maxLength="160"
                 className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins resize-none h-24"
                 style={{
-                  backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
-                  borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
-                  color: isDarkMode ? '#ffffff' : '#132F3D'
+                  backgroundColor: getInputBackground(isDarkMode),
+                  borderColor: getInputBorderColor(isDarkMode),
+                  color: getInputTextColor(isDarkMode)
                 }}
               />
               <p className="font-poppins text-xs mt-1" style={{ color: theme.colors.text, opacity: 0.6 }}>
@@ -238,9 +238,9 @@ const ProfilePage = () => {
                 placeholder="https://example.com/your-avatar.jpg"
                 className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                 style={{
-                  backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
-                  borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
-                  color: isDarkMode ? '#ffffff' : '#132F3D'
+                  backgroundColor: getInputBackground(isDarkMode),
+                  borderColor: getInputBorderColor(isDarkMode),
+                  color: getInputTextColor(isDarkMode)
                 }}
               />
             </div>
@@ -293,9 +293,9 @@ const ProfilePage = () => {
                 placeholder="https://example.com/your-banner.jpg"
                 className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                 style={{
-                  backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
-                  borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
-                  color: isDarkMode ? '#ffffff' : '#132F3D'
+                  backgroundColor: getInputBackground(isDarkMode),
+                  borderColor: getInputBorderColor(isDarkMode),
+                  color: getInputTextColor(isDarkMode)
                 }}
               />
             </div>
@@ -331,7 +331,7 @@ const ProfilePage = () => {
             )}
 
             {/* Venue Manager Toggle */}
-            <div className="rounded-lg p-4" style={{ backgroundColor: isDarkMode ? '#4b5563' : '#f3f4f6' }}>
+            <div className="rounded-lg p-4" style={{ backgroundColor: getSecondaryBackground(isDarkMode) }}>
               <div className="flex items-center">
                 <input
                   type="checkbox"
@@ -372,7 +372,7 @@ const ProfilePage = () => {
 
             {/* Preview Section */}
             {(formData.avatar.url || formData.banner.url) && (
-              <div className="rounded-lg p-4" style={{ backgroundColor: isDarkMode ? '#4b5563' : '#f3f4f6' }}>
+              <div className="rounded-lg p-4" style={{ backgroundColor: getSecondaryBackground(isDarkMode) }}>
                 <h4 className="font-poppins text-sm mb-3" style={{ color: theme.colors.text, opacity: 0.8 }}>
                   Preview
                 </h4>
@@ -439,7 +439,7 @@ const ProfilePage = () => {
                   opacity: 0.8
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = isDarkMode ? '#4b5563' : '#f3f4f6';
+                  e.target.style.backgroundColor = getSecondaryBackground(isDarkMode);
                 }}
                 onMouseLeave={(e) => {
                   e.target.style.backgroundColor = 'transparent';

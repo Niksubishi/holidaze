@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { venuesAPI } from "../../api/venues.js";
 import { useTheme } from "../../context/ThemeContext";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import ErrorMessage from "../UI/ErrorMessage";
 import SuccessMessage from "../UI/SuccessMessage";
+import { getInputBackground, getCardBackground } from "../../utils/theme.js";
 
-const EditVenue = () => {
-  const { id } = useParams();
+const VenueForm = ({ mode = "create", venueId = null }) => {
   const navigate = useNavigate();
   const { theme, isDarkMode } = useTheme();
   const [loading, setLoading] = useState(false);
-  const [initialLoading, setInitialLoading] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(mode === "edit");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  
+  const isEditMode = mode === "edit";
 
   const [formData, setFormData] = useState({
     name: "",
@@ -41,9 +43,11 @@ const EditVenue = () => {
 
   useEffect(() => {
     const fetchVenue = async () => {
+      if (!isEditMode || !venueId) return;
+      
       try {
         setInitialLoading(true);
-        const response = await venuesAPI.getById(id);
+        const response = await venuesAPI.getById(venueId);
         const venue = response.data;
         
         setFormData({
@@ -71,17 +75,14 @@ const EditVenue = () => {
         });
         setError("");
       } catch (err) {
-        console.error("Failed to fetch venue:", err);
         setError(err.message || "Failed to load venue");
       } finally {
         setInitialLoading(false);
       }
     };
 
-    if (id) {
-      fetchVenue();
-    }
-  }, [id]);
+    fetchVenue();
+  }, [isEditMode, venueId]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -223,15 +224,19 @@ const EditVenue = () => {
         venueData.rating = formData.rating;
       }
 
-      await venuesAPI.update(id, venueData);
-      setSuccess("Venue updated successfully!");
+      if (isEditMode) {
+        await venuesAPI.update(venueId, venueData);
+        setSuccess("Venue updated successfully!");
+      } else {
+        await venuesAPI.create(venueData);
+        setSuccess("Venue created successfully!");
+      }
 
       setTimeout(() => {
         navigate("/my-venues");
       }, 2000);
     } catch (err) {
-      console.error("Failed to update venue:", err);
-      setError(err.message || "Failed to update venue");
+      setError(err.message || `Failed to ${isEditMode ? "update" : "create"} venue`);
     } finally {
       setLoading(false);
     }
@@ -271,18 +276,19 @@ const EditVenue = () => {
           </button>
 
           <h1 className="font-poppins text-3xl md:text-4xl mb-2" style={{ color: theme.colors.text }}>
-            Edit Venue
+            {isEditMode ? "Edit Venue" : "Create New Venue"}
           </h1>
           <p className="font-poppins" style={{ color: theme.colors.text, opacity: 0.7 }}>
-            Update your venue information
+            {isEditMode ? "Update your venue information" : "Add a new venue to your listings"}
           </p>
         </div>
 
-        <div className="rounded-lg p-6" style={{ backgroundColor: isDarkMode ? '#3a3a3a' : '#f9fafb' }}>
+        <div className="rounded-lg p-6" style={{ backgroundColor: getCardBackground(isDarkMode) }}>
           <ErrorMessage message={error} className="mb-6" />
           <SuccessMessage message={success} className="mb-6" />
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Basic Information */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <label
@@ -301,7 +307,7 @@ const EditVenue = () => {
                   placeholder="Enter venue name"
                   className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    backgroundColor: getInputBackground(isDarkMode),
                     borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
@@ -328,7 +334,7 @@ const EditVenue = () => {
                   step="0.01"
                   className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    backgroundColor: getInputBackground(isDarkMode),
                     borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
@@ -356,7 +362,7 @@ const EditVenue = () => {
                   min="1"
                   className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    backgroundColor: getInputBackground(isDarkMode),
                     borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
@@ -370,7 +376,7 @@ const EditVenue = () => {
                   className="block font-poppins text-sm mb-2"
                   style={{ color: theme.colors.text, opacity: 0.8 }}
                 >
-                  Rating (0-5)
+                  {isEditMode ? "Rating (0-5)" : "Initial Rating (0-5)"}
                 </label>
                 <input
                   type="number"
@@ -384,7 +390,7 @@ const EditVenue = () => {
                   step="0.1"
                   className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                    backgroundColor: getInputBackground(isDarkMode),
                     borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                     color: theme.colors.text
                   }}
@@ -392,6 +398,7 @@ const EditVenue = () => {
               </div>
             </div>
 
+            {/* Description */}
             <div>
               <label
                 htmlFor="description"
@@ -409,7 +416,7 @@ const EditVenue = () => {
                 rows="4"
                 className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins resize-none"
                 style={{
-                  backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                  backgroundColor: getInputBackground(isDarkMode),
                   borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                   color: theme.colors.text
                 }}
@@ -417,6 +424,7 @@ const EditVenue = () => {
               />
             </div>
 
+            {/* Media */}
             <div>
               <label className="block font-poppins text-sm mb-2" style={{ color: theme.colors.text, opacity: 0.8 }}>
                 Images *
@@ -435,11 +443,11 @@ const EditVenue = () => {
                       }
                       placeholder="Image URL"
                       className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
-                  style={{
-                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
-                    color: theme.colors.text
-                  }}
+                      style={{
+                        backgroundColor: getInputBackground(isDarkMode),
+                        borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
+                        color: theme.colors.text
+                      }}
                       required={index === 0}
                     />
                   </div>
@@ -453,7 +461,7 @@ const EditVenue = () => {
                       placeholder="Alt text (optional)"
                       className="flex-1 px-3 py-2 rounded-lg focus:outline-none font-poppins"
                       style={{
-                        backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
+                        backgroundColor: getInputBackground(isDarkMode),
                         borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
                         color: theme.colors.text
                       }}
@@ -497,6 +505,7 @@ const EditVenue = () => {
               </button>
             </div>
 
+            {/* Amenities */}
             <div>
               <label className="block font-poppins text-sm mb-3" style={{ color: theme.colors.text, opacity: 0.8 }}>
                 Amenities
@@ -524,6 +533,7 @@ const EditVenue = () => {
               </div>
             </div>
 
+            {/* Location */}
             <div>
               <h3 className="font-poppins text-lg mb-4" style={{ color: theme.colors.text }}>Location</h3>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -531,7 +541,7 @@ const EditVenue = () => {
                   <label
                     htmlFor="location.address"
                     className="block font-poppins text-sm mb-2"
-                  style={{ color: theme.colors.text, opacity: 0.8 }}
+                    style={{ color: theme.colors.text, opacity: 0.8 }}
                   >
                     Address
                   </label>
@@ -543,11 +553,11 @@ const EditVenue = () => {
                     onChange={handleInputChange}
                     placeholder="Street address"
                     className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
-                  style={{
-                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
-                    color: theme.colors.text
-                  }}
+                    style={{
+                      backgroundColor: getInputBackground(isDarkMode),
+                      borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
+                      color: theme.colors.text
+                    }}
                   />
                 </div>
 
@@ -555,7 +565,7 @@ const EditVenue = () => {
                   <label
                     htmlFor="location.city"
                     className="block font-poppins text-sm mb-2"
-                  style={{ color: theme.colors.text, opacity: 0.8 }}
+                    style={{ color: theme.colors.text, opacity: 0.8 }}
                   >
                     City
                   </label>
@@ -567,11 +577,11 @@ const EditVenue = () => {
                     onChange={handleInputChange}
                     placeholder="City name"
                     className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
-                  style={{
-                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
-                    color: theme.colors.text
-                  }}
+                    style={{
+                      backgroundColor: getInputBackground(isDarkMode),
+                      borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
+                      color: theme.colors.text
+                    }}
                   />
                 </div>
 
@@ -579,7 +589,7 @@ const EditVenue = () => {
                   <label
                     htmlFor="location.zip"
                     className="block font-poppins text-sm mb-2"
-                  style={{ color: theme.colors.text, opacity: 0.8 }}
+                    style={{ color: theme.colors.text, opacity: 0.8 }}
                   >
                     ZIP Code
                   </label>
@@ -591,11 +601,11 @@ const EditVenue = () => {
                     onChange={handleInputChange}
                     placeholder="ZIP code"
                     className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
-                  style={{
-                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
-                    color: theme.colors.text
-                  }}
+                    style={{
+                      backgroundColor: getInputBackground(isDarkMode),
+                      borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
+                      color: theme.colors.text
+                    }}
                   />
                 </div>
 
@@ -603,7 +613,7 @@ const EditVenue = () => {
                   <label
                     htmlFor="location.country"
                     className="block font-poppins text-sm mb-2"
-                  style={{ color: theme.colors.text, opacity: 0.8 }}
+                    style={{ color: theme.colors.text, opacity: 0.8 }}
                   >
                     Country
                   </label>
@@ -615,11 +625,11 @@ const EditVenue = () => {
                     onChange={handleInputChange}
                     placeholder="Country name"
                     className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
-                  style={{
-                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
-                    color: theme.colors.text
-                  }}
+                    style={{
+                      backgroundColor: getInputBackground(isDarkMode),
+                      borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
+                      color: theme.colors.text
+                    }}
                   />
                 </div>
 
@@ -627,7 +637,7 @@ const EditVenue = () => {
                   <label
                     htmlFor="location.continent"
                     className="block font-poppins text-sm mb-2"
-                  style={{ color: theme.colors.text, opacity: 0.8 }}
+                    style={{ color: theme.colors.text, opacity: 0.8 }}
                   >
                     Continent
                   </label>
@@ -639,11 +649,11 @@ const EditVenue = () => {
                     onChange={handleInputChange}
                     placeholder="Continent name"
                     className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
-                  style={{
-                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
-                    color: theme.colors.text
-                  }}
+                    style={{
+                      backgroundColor: getInputBackground(isDarkMode),
+                      borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
+                      color: theme.colors.text
+                    }}
                   />
                 </div>
 
@@ -651,7 +661,7 @@ const EditVenue = () => {
                   <label
                     htmlFor="location.lat"
                     className="block font-poppins text-sm mb-2"
-                  style={{ color: theme.colors.text, opacity: 0.8 }}
+                    style={{ color: theme.colors.text, opacity: 0.8 }}
                   >
                     Latitude
                   </label>
@@ -664,11 +674,11 @@ const EditVenue = () => {
                     placeholder="0.0"
                     step="any"
                     className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
-                  style={{
-                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
-                    color: theme.colors.text
-                  }}
+                    style={{
+                      backgroundColor: getInputBackground(isDarkMode),
+                      borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
+                      color: theme.colors.text
+                    }}
                   />
                 </div>
 
@@ -676,7 +686,7 @@ const EditVenue = () => {
                   <label
                     htmlFor="location.lng"
                     className="block font-poppins text-sm mb-2"
-                  style={{ color: theme.colors.text, opacity: 0.8 }}
+                    style={{ color: theme.colors.text, opacity: 0.8 }}
                   >
                     Longitude
                   </label>
@@ -689,16 +699,17 @@ const EditVenue = () => {
                     placeholder="0.0"
                     step="any"
                     className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
-                  style={{
-                    backgroundColor: isDarkMode ? '#4b5563' : '#ffffff',
-                    borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
-                    color: theme.colors.text
-                  }}
+                    style={{
+                      backgroundColor: getInputBackground(isDarkMode),
+                      borderColor: isDarkMode ? '#6b7280' : '#d1d5db',
+                      color: theme.colors.text
+                    }}
                   />
                 </div>
               </div>
             </div>
 
+            {/* Submit Button */}
             <div className="flex justify-end space-x-4 pt-6">
               <button
                 type="button"
@@ -720,10 +731,10 @@ const EditVenue = () => {
                 {loading ? (
                   <div className="flex items-center space-x-2">
                     <LoadingSpinner size="small" />
-                    <span>Updating...</span>
+                    <span>{isEditMode ? "Updating..." : "Creating..."}</span>
                   </div>
                 ) : (
-                  "Update Venue"
+                  isEditMode ? "Update Venue" : "Create Venue"
                 )}
               </button>
             </div>
@@ -734,4 +745,4 @@ const EditVenue = () => {
   );
 };
 
-export default EditVenue;
+export default VenueForm;

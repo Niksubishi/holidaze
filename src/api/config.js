@@ -57,8 +57,6 @@ export const makeRequest = async (url, options = {}, retries = 2) => {
 
       return data;
     } catch (error) {
-      console.error(`API Request failed (attempt ${attempt + 1}/${retries + 1}):`, error);
-      
       // If this is the last attempt, throw the error
       if (attempt === retries) {
         throw error;

@@ -6,6 +6,7 @@ import LoadingSpinner from "../components/UI/LoadingSpinner";
 import ErrorMessage from "../components/UI/ErrorMessage";
 import VenueCard from "../components/Venues/VenueCard";
 import ImageModal from "../components/UI/ImageModal";
+import { getCardBackground } from "../utils/theme.js";
 
 const PublicProfilePage = () => {
   const { username } = useParams();
@@ -23,7 +24,6 @@ const PublicProfilePage = () => {
         setProfile(response.data);
         setError("");
       } catch (err) {
-        console.error("Failed to fetch profile:", err);
         setError(err.message || "Failed to load profile");
       } finally {
         setLoading(false);
@@ -94,7 +94,7 @@ const PublicProfilePage = () => {
     <div className="min-h-screen py-8" style={{ backgroundColor: theme.colors.background }}>
       <div className="max-w-6xl mx-auto px-4">
         {/* Profile Header */}
-        <div className="rounded-lg p-6 mb-8" style={{ backgroundColor: isDarkMode ? '#3a3a3a' : '#f9fafb' }}>
+        <div className="rounded-lg p-6 mb-8" style={{ backgroundColor: getCardBackground(isDarkMode) }}>
           {/* Banner */}
           {profile.banner?.url && (
             <div className="w-full h-48 mb-6 rounded-lg overflow-hidden">

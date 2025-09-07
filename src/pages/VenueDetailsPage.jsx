@@ -22,7 +22,6 @@ const VenueDetailsPage = () => {
         setVenue(response.data);
         setError("");
       } catch (err) {
-        console.error("Failed to fetch venue:", err);
         if (err.message.includes("not found") || err.message.includes("404")) {
           navigate("/404", { replace: true });
         } else {

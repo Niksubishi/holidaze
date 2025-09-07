@@ -1,8 +1,8 @@
 import React from "react";
-import CreateVenue from "../components/Venues/CreateVenue";
+import VenueForm from "../components/Venues/VenueForm";
 
 const CreateVenuePage = () => {
-  return <CreateVenue />;
+  return <VenueForm mode="create" />;
 };
 
 export default CreateVenuePage;

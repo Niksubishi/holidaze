@@ -6,6 +6,7 @@ import { useTheme } from "../../context/ThemeContext";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import ErrorMessage from "../UI/ErrorMessage";
 import SuccessMessage from "../UI/SuccessMessage";
+import { getCardBackground, getInputBackground, getInputBorderColor, getInputTextColor } from "../../utils/theme.js";
 
 const AuthForms = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -106,7 +107,6 @@ const AuthForms = () => {
         navigate("/venues");
       }, 1000);
     } catch (err) {
-      console.error("Login failed:", err);
       setError(err.message || "Login failed");
     } finally {
       setLoading(false);
@@ -178,7 +178,6 @@ const AuthForms = () => {
         setSuccess("");
       }, 2000);
     } catch (err) {
-      console.error("Signup failed:", err);
       setError(err.message || "Signup failed");
     } finally {
       setLoading(false);
@@ -193,7 +192,7 @@ const AuthForms = () => {
       <div className="w-full max-w-md">
         <div
           className="rounded-lg p-8 shadow-lg"
-          style={{ backgroundColor: isDarkMode ? "#3a3a3a" : "#f9fafb" }}
+          style={{ backgroundColor: getCardBackground(isDarkMode) }}
         >
           {/* Toggle Buttons */}
           <div className="flex mb-8">
@@ -263,9 +262,9 @@ const AuthForms = () => {
                   placeholder="your.name@stud.noroff.no"
                   className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: isDarkMode ? "#4b5563" : "#ffffff",
-                    borderColor: isDarkMode ? "#6b7280" : "#d1d5db",
-                    color: isDarkMode ? "#ffffff" : "#132F3D",
+                    backgroundColor: getInputBackground(isDarkMode),
+                    borderColor: getInputBorderColor(isDarkMode),
+                    color: getInputTextColor(isDarkMode),
                   }}
                   required
                 />
@@ -288,9 +287,9 @@ const AuthForms = () => {
                   placeholder="Enter your password"
                   className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: isDarkMode ? "#4b5563" : "#ffffff",
-                    borderColor: isDarkMode ? "#6b7280" : "#d1d5db",
-                    color: isDarkMode ? "#ffffff" : "#132F3D",
+                    backgroundColor: getInputBackground(isDarkMode),
+                    borderColor: getInputBorderColor(isDarkMode),
+                    color: getInputTextColor(isDarkMode),
                   }}
                   required
                 />
@@ -333,9 +332,9 @@ const AuthForms = () => {
                   placeholder="your_username"
                   className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: isDarkMode ? "#4b5563" : "#ffffff",
-                    borderColor: isDarkMode ? "#6b7280" : "#d1d5db",
-                    color: isDarkMode ? "#ffffff" : "#132F3D",
+                    backgroundColor: getInputBackground(isDarkMode),
+                    borderColor: getInputBorderColor(isDarkMode),
+                    color: getInputTextColor(isDarkMode),
                   }}
                   required
                 />
@@ -364,9 +363,9 @@ const AuthForms = () => {
                   placeholder="your.name@stud.noroff.no"
                   className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: isDarkMode ? "#4b5563" : "#ffffff",
-                    borderColor: isDarkMode ? "#6b7280" : "#d1d5db",
-                    color: isDarkMode ? "#ffffff" : "#132F3D",
+                    backgroundColor: getInputBackground(isDarkMode),
+                    borderColor: getInputBorderColor(isDarkMode),
+                    color: getInputTextColor(isDarkMode),
                   }}
                   required
                 />
@@ -389,9 +388,9 @@ const AuthForms = () => {
                   placeholder="At least 8 characters"
                   className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: isDarkMode ? "#4b5563" : "#ffffff",
-                    borderColor: isDarkMode ? "#6b7280" : "#d1d5db",
-                    color: isDarkMode ? "#ffffff" : "#132F3D",
+                    backgroundColor: getInputBackground(isDarkMode),
+                    borderColor: getInputBorderColor(isDarkMode),
+                    color: getInputTextColor(isDarkMode),
                   }}
                   required
                 />
@@ -414,9 +413,9 @@ const AuthForms = () => {
                   maxLength="160"
                   className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins resize-none h-20"
                   style={{
-                    backgroundColor: isDarkMode ? "#4b5563" : "#ffffff",
-                    borderColor: isDarkMode ? "#6b7280" : "#d1d5db",
-                    color: isDarkMode ? "#ffffff" : "#132F3D",
+                    backgroundColor: getInputBackground(isDarkMode),
+                    borderColor: getInputBorderColor(isDarkMode),
+                    color: getInputTextColor(isDarkMode),
                   }}
                 />
                 <p
@@ -444,9 +443,9 @@ const AuthForms = () => {
                   placeholder="https://example.com/your-avatar.jpg"
                   className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                   style={{
-                    backgroundColor: isDarkMode ? "#4b5563" : "#ffffff",
-                    borderColor: isDarkMode ? "#6b7280" : "#d1d5db",
-                    color: isDarkMode ? "#ffffff" : "#132F3D",
+                    backgroundColor: getInputBackground(isDarkMode),
+                    borderColor: getInputBorderColor(isDarkMode),
+                    color: getInputTextColor(isDarkMode),
                   }}
                 />
               </div>
