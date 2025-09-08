@@ -1,8 +1,6 @@
 import React from "react";
-import { useTheme } from "../../context/ThemeContext";
 
 const ImageModal = ({ isOpen, onClose, imageUrl, alt }) => {
-  const { theme, isDarkMode } = useTheme();
 
   if (!isOpen) return null;
 

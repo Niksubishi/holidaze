@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { venuesAPI } from "../../api/venues.js";
 import { useTheme } from "../../context/ThemeContext";
+import { useToast } from "../../context/ToastContext";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import ErrorMessage from "../UI/ErrorMessage";
-import SuccessMessage from "../UI/SuccessMessage";
 import { getInputBackground, getCardBackground } from "../../utils/theme.js";
 import { useApiError } from "../../hooks/useApiError.js";
 
@@ -13,8 +13,8 @@ const VenueForm = ({ mode = "create", venueId = null }) => {
   const { theme, isDarkMode } = useTheme();
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(mode === "edit");
-  const [success, setSuccess] = useState("");
   const { error, errorType, handleApiError, clearError, getErrorActionText } = useApiError();
+  const { showSuccess } = useToast();
   
   const isEditMode = mode === "edit";
 
@@ -228,15 +228,15 @@ const VenueForm = ({ mode = "create", venueId = null }) => {
 
       if (isEditMode) {
         await venuesAPI.update(venueId, venueData);
-        setSuccess("Venue updated successfully!");
+        showSuccess("Venue updated successfully!");
       } else {
         await venuesAPI.create(venueData);
-        setSuccess("Venue created successfully!");
+        showSuccess("Venue created successfully!");
       }
 
       setTimeout(() => {
         navigate("/my-venues");
-      }, 2000);
+      }, 1500);
     } catch (err) {
       handleApiError(err);
     } finally {
@@ -293,7 +293,6 @@ const VenueForm = ({ mode = "create", venueId = null }) => {
             onAction={clearError}
             actionText={getErrorActionText()}
           />
-          <SuccessMessage message={success} className="mb-6" />
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Basic Information */}

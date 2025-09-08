@@ -125,7 +125,7 @@ const AuthForms = () => {
       const userData = response.data;
 
       await login(userData, userData.accessToken);
-      showSuccess("Welcome back! Redirecting to venues...");
+      showSuccess("Welcome back!");
 
       setTimeout(() => {
         navigate("/venues");

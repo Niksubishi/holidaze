@@ -159,7 +159,7 @@ export const useFormValidation = (validationSchema = {}) => {
   }, [validateField, values]);
 
   // Set multiple values at once
-  const setValues = useCallback((newValues) => {
+  const setMultipleValues = useCallback((newValues) => {
     setValues(prev => ({ ...prev, ...newValues }));
     
     // Validate affected fields
@@ -232,7 +232,7 @@ export const useFormValidation = (validationSchema = {}) => {
     errors,
     touched,
     setValue,
-    setValues,
+    setValues: setMultipleValues,
     setTouched,
     getFieldProps,
     validateField,

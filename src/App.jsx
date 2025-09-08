@@ -6,7 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
-import { ThemeProvider, useTheme } from "./context/ThemeContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import { LoadingProvider } from "./context/LoadingContext";
 import { ToastProvider } from "./context/ToastContext";
 import Layout from "./components/Layout/Layout";

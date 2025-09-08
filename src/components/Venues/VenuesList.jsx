@@ -16,7 +16,7 @@ const VenuesList = memo(() => {
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [isSearching, setIsSearching] = useState(false);
+  const [, setIsSearching] = useState(false);
 
   // Get state from URL params with fallbacks
   const searchQuery = searchParams.get("search") || "";

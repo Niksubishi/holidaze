@@ -3,7 +3,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { getMapUrls } from '../../utils/mapLinks';
 
 const MapLinks = memo(({ location, venueName, className = '' }) => {
-  const { theme, isDarkMode } = useTheme();
+  const { isDarkMode } = useTheme();
 
   // Memoize map URLs to avoid recalculation
   const mapUrls = useMemo(() => {

@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { profilesAPI } from "../api/profiles.js";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
+import { useToast } from "../context/ToastContext";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 import ErrorMessage from "../components/UI/ErrorMessage";
-import SuccessMessage from "../components/UI/SuccessMessage";
 import ImageModal from "../components/UI/ImageModal";
 import { getCardBackground, getInputBackground, getSecondaryBackground, getInputBorderColor, getInputTextColor } from "../utils/theme.js";
 
@@ -13,7 +13,7 @@ const ProfilePage = () => {
   const { theme, isDarkMode } = useTheme();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const { showSuccess } = useToast();
   const [modalImage, setModalImage] = useState({ isOpen: false, url: "", alt: "" });
 
   const [formData, setFormData] = useState({
@@ -130,7 +130,7 @@ const ProfilePage = () => {
 
       const response = await profilesAPI.update(user.name, updateData);
       updateUser(response.data);
-      setSuccess("Profile updated successfully!");
+      showSuccess("Profile updated successfully!");
 
       setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
@@ -162,7 +162,6 @@ const ProfilePage = () => {
 
         <div className="rounded-lg p-6" style={{ backgroundColor: getCardBackground(isDarkMode) }}>
           <ErrorMessage message={error} className="mb-6" />
-          <SuccessMessage message={success} className="mb-6" />
 
           {/* Current Profile Info */}
           <div className="mb-6 pb-6 border-b" style={{ borderColor: isDarkMode ? '#4b5563' : '#e5e7eb' }}>
