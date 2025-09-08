@@ -82,7 +82,6 @@ Holidaze is a comprehensive accommodation booking platform that serves both cust
 
 - Node.js (version 16 or higher)
 - npm or yarn package manager
-- Google Maps API key (optional, for enhanced map features)
 
 ### Installation
 
@@ -100,11 +99,6 @@ Holidaze is a comprehensive accommodation booking platform that serves both cust
 3. **Environment Setup**
    ```bash
    cp .env.example .env
-   ```
-   
-   Add your Google Maps API key to the `.env` file:
-   ```env
-   REACT_APP_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
    ```
 
 4. **Start the development server**
