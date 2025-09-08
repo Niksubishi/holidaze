@@ -96,17 +96,12 @@ Holidaze is a comprehensive accommodation booking platform that serves both cust
    npm install
    ```
 
-3. **Environment Setup**
-   ```bash
-   cp .env.example .env
-   ```
-
-4. **Start the development server**
+3. **Start the development server**
    ```bash
    npm run dev
    ```
 
-5. **Open your browser**
+4. **Open your browser**
    Navigate to `http://localhost:5173` to view the application.
 
 ### Available Scripts
