@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo, useMemo, useCallback } from "react";
+import React, { useState, useEffect, memo, useMemo, useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { venuesAPI } from "../../api/venues.js";
 import { useTheme } from "../../context/ThemeContext";
@@ -17,9 +17,11 @@ const VenuesList = memo(() => {
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [, setIsSearching] = useState(false);
+  const debounceTimeoutRef = useRef(null);
 
   // Get state from URL params with fallbacks
   const searchQuery = searchParams.get("search") || "";
+  const [localSearchValue, setLocalSearchValue] = useState(searchQuery);
   const sortBy = searchParams.get("sortBy") || "created";
   const sortOrder = searchParams.get("sortOrder") || "desc";
 
@@ -89,6 +91,13 @@ const VenuesList = memo(() => {
   const handleClearSearch = useCallback(() => {
     setCurrentPage(1);
     setIsSearching(false);
+    setLocalSearchValue("");
+    
+    // Clear any pending debounce
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
+    
     updateParams({
       search: "",
       sortBy: "created",
@@ -109,11 +118,36 @@ const VenuesList = memo(() => {
     });
   }, [updateParams]);
 
-  const handleSearchChange = useCallback((value) => {
-    updateParams({
-      search: value || ""
-    });
+  // Update local search value immediately for responsive UI
+  const handleSearchInputChange = useCallback((value) => {
+    setLocalSearchValue(value);
+    
+    // Clear existing timeout
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
+    
+    // Set new timeout for debounced search
+    debounceTimeoutRef.current = setTimeout(() => {
+      updateParams({
+        search: value || ""
+      });
+    }, 300); // 300ms debounce delay
   }, [updateParams]);
+  
+  // Sync local value when URL search param changes (for browser back/forward)
+  useEffect(() => {
+    setLocalSearchValue(searchQuery);
+  }, [searchQuery]);
+  
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Memoize sort button states to avoid recalculation
   const sortButtonStates = useMemo(() => ({
@@ -138,8 +172,8 @@ const VenuesList = memo(() => {
           <div className="relative w-full">
             <input
               type="text"
-              value={searchQuery}
-              onChange={(e) => handleSearchChange(e.target.value)}
+              value={localSearchValue}
+              onChange={(e) => handleSearchInputChange(e.target.value)}
               placeholder="Search venues by name or location..."
               className="px-4 py-2 rounded-lg focus:outline-none font-poppins text-sm w-full max-w-2xl"
               style={{
@@ -148,7 +182,7 @@ const VenuesList = memo(() => {
                 color: "#000000",
               }}
             />
-            {searchQuery && (
+            {localSearchValue && (
               <button
                 type="button"
                 onClick={handleClearSearch}

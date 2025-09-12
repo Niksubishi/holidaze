@@ -4,10 +4,10 @@ import { bookingsAPI } from "../api/bookings.js";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import { useLoading } from "../context/LoadingContext";
+import { useToast } from "../context/ToastContext";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 import SkeletonBooking from "../components/UI/SkeletonBooking";
 import ErrorMessage from "../components/UI/ErrorMessage";
-import SuccessMessage from "../components/UI/SuccessMessage";
 import ConfirmationModal from "../components/UI/ConfirmationModal";
 import { getSecondaryBackground } from "../utils/theme.js";
 
@@ -17,7 +17,7 @@ const MyBookings = () => {
   const { setLoading, isLoading } = useLoading();
   const [allBookings, setAllBookings] = useState([]);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const { showSuccess } = useToast();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [bookingToCancel, setBookingToCancel] = useState(null);
 
@@ -56,11 +56,9 @@ const MyBookings = () => {
       setError("");
       await bookingsAPI.delete(bookingToCancel);
       setAllBookings((prev) => prev.filter((booking) => booking.id !== bookingToCancel));
-      setSuccess("Booking cancelled successfully");
+      showSuccess("Booking cancelled successfully!");
       setShowConfirmModal(false);
       setBookingToCancel(null);
-
-      setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
       setError(err.message || "Failed to cancel booking");
       setShowConfirmModal(false);
@@ -191,7 +189,6 @@ const MyBookings = () => {
         </div>
 
         <ErrorMessage message={error} className="mb-6" />
-        <SuccessMessage message={success} className="mb-6" />
 
         {allBookings.length === 0 && !isLoading('my-bookings') ? (
           <div className="text-center py-12">

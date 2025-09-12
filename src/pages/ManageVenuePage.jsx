@@ -4,9 +4,9 @@ import { venuesAPI } from "../api/venues.js";
 import { bookingsAPI } from "../api/bookings.js";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
+import { useToast } from "../context/ToastContext";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 import ErrorMessage from "../components/UI/ErrorMessage";
-import SuccessMessage from "../components/UI/SuccessMessage";
 import ConfirmationModal from "../components/UI/ConfirmationModal";
 import { getMainCardBackground, getSecondaryBackground } from "../utils/theme.js";
 
@@ -18,7 +18,7 @@ const ManageVenuePage = () => {
   const [venue, setVenue] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const { showSuccess } = useToast();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [bookingToDelete, setBookingToDelete] = useState(null);
 
@@ -74,11 +74,9 @@ const ManageVenuePage = () => {
         bookings: prev.bookings.filter(booking => booking.id !== bookingToDelete)
       }));
       
-      setSuccess("Booking cancelled successfully");
+      showSuccess("Booking cancelled successfully!");
       setShowConfirmModal(false);
       setBookingToDelete(null);
-
-      setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
       setError(err.message || "Failed to cancel booking");
       setShowConfirmModal(false);
@@ -185,7 +183,6 @@ const ManageVenuePage = () => {
         </div>
 
         <ErrorMessage message={error} className="mb-6" />
-        <SuccessMessage message={success} className="mb-6" />
 
         {/* Venue Summary */}
         <div className="rounded-lg p-6 mb-8" style={{ backgroundColor: getMainCardBackground(isDarkMode) }}>

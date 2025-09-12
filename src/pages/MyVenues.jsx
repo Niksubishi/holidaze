@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { venuesAPI } from "../api/venues.js";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
+import { useToast } from "../context/ToastContext";
 import SkeletonList from "../components/UI/SkeletonList";
 import ErrorMessage from "../components/UI/ErrorMessage";
-import SuccessMessage from "../components/UI/SuccessMessage";
 import ConfirmationModal from "../components/UI/ConfirmationModal";
 import AmenityIcons from "../components/UI/AmenityIcons";
 import { getMainCardBackground, getSecondaryBackground } from "../utils/theme.js";
@@ -16,7 +16,7 @@ const MyVenues = () => {
   const [venues, setVenues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const { showSuccess } = useToast();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [venueToDelete, setVenueToDelete] = useState(null);
 
@@ -48,7 +48,7 @@ const MyVenues = () => {
     try {
       await venuesAPI.delete(venueToDelete);
       setVenues((prev) => prev.filter((venue) => venue.id !== venueToDelete));
-      setSuccess("Venue deleted successfully");
+      showSuccess("Venue deleted successfully!");
       setShowConfirmModal(false);
       setVenueToDelete(null);
 
@@ -106,7 +106,6 @@ const MyVenues = () => {
         </div>
 
         <ErrorMessage message={error} className="mb-6" />
-        <SuccessMessage message={success} className="mb-6" />
 
         {venues.length === 0 && !loading ? (
           <div className="text-center py-12">
