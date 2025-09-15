@@ -6,6 +6,7 @@ import { useLoading } from "../../context/LoadingContext";
 import { useToast } from "../../context/ToastContext";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import ErrorMessage from "../UI/ErrorMessage";
+import AvailabilityCalendar from "../UI/AvailabilityCalendar";
 import { getCardBackground, getInputBackground, getInputBorderColor, getInputTextColor, getSecondaryBackground } from "../../utils/theme.js";
 
 const BookingForm = memo(({ venue, onBookingSuccess }) => {
@@ -48,6 +49,46 @@ const BookingForm = memo(({ venue, onBookingSuccess }) => {
     // Clear messages when user starts typing
     if (error) setError("");
   }, [error]);
+
+  // Handle calendar date selection
+  const handleCalendarDateSelect = useCallback((dateStr) => {
+    if (!formData.dateFrom) {
+      // First click - set check-in date
+      setFormData(prev => ({
+        ...prev,
+        dateFrom: dateStr,
+        dateTo: ""
+      }));
+    } else if (!formData.dateTo) {
+      // Second click - set check-out date
+      const checkInDate = new Date(formData.dateFrom);
+      const checkOutDate = new Date(dateStr);
+
+      if (checkOutDate > checkInDate) {
+        setFormData(prev => ({
+          ...prev,
+          dateTo: dateStr
+        }));
+      } else {
+        // If clicked date is before check-in, reset and start over
+        setFormData(prev => ({
+          ...prev,
+          dateFrom: dateStr,
+          dateTo: ""
+        }));
+      }
+    } else {
+      // Both dates selected - start over
+      setFormData(prev => ({
+        ...prev,
+        dateFrom: dateStr,
+        dateTo: ""
+      }));
+    }
+
+    // Clear error when dates change
+    if (error) setError("");
+  }, [formData.dateFrom, formData.dateTo, error]);
 
   // Memoize expensive price calculation
   const pricingData = useMemo(() => {
@@ -194,21 +235,18 @@ const BookingForm = memo(({ venue, onBookingSuccess }) => {
         </div>
       </div>
 
-      {/* Unavailable Dates Display */}
-      {unavailableDateRanges.length > 0 && (
-        <div className="mb-4 p-3 rounded-lg" style={{ backgroundColor: isDarkMode ? '#4b5563' : '#fef3c7' }}>
-          <h4 className="font-poppins text-sm mb-2" style={{ color: theme.colors.text, opacity: 0.9 }}>
-            Unavailable Dates
-          </h4>
-          <div className="space-y-1">
-            {unavailableDateRanges.map((booking, index) => (
-              <div key={booking.id || index} className="font-poppins text-xs" style={{ color: theme.colors.text, opacity: 0.7 }}>
-                {formatDateRange(booking.dateFrom, booking.dateTo)}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Availability Calendar */}
+      <div className="mb-6">
+        <h4 className="font-poppins text-sm mb-3" style={{ color: theme.colors.text, opacity: 0.9 }}>
+          Select Your Dates
+        </h4>
+        <AvailabilityCalendar
+          venue={venue}
+          selectedDateFrom={formData.dateFrom}
+          selectedDateTo={formData.dateTo}
+          onDateSelect={handleCalendarDateSelect}
+        />
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
