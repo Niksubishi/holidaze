@@ -1,4 +1,4 @@
-# 🏨 Holidaze
+# 🌴 Holidaze
 
 A modern accommodation booking platform built with React, featuring venue browsing, booking management, and venue administration capabilities.
 
