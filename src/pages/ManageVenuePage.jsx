@@ -18,6 +18,7 @@ const ManageVenuePage = () => {
   const [venue, setVenue] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [pastBookingsToShow, setPastBookingsToShow] = useState(4);
   const { showSuccess } = useToast();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [bookingToDelete, setBookingToDelete] = useState(null);
@@ -89,6 +90,10 @@ const ManageVenuePage = () => {
     setBookingToDelete(null);
   };
 
+  const handleLoadMorePastBookings = () => {
+    setPastBookingsToShow(prev => prev + 4);
+  };
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -118,7 +123,21 @@ const ManageVenuePage = () => {
 
   const getPastBookings = () => {
     if (!venue?.bookings) return [];
-    return venue.bookings.filter(booking => isBookingPast(booking));
+    const allPastBookings = venue.bookings
+      .filter(booking => isBookingPast(booking))
+      .sort((a, b) => new Date(b.dateFrom) - new Date(a.dateFrom)); // Most recent first
+    return allPastBookings.slice(0, pastBookingsToShow);
+  };
+
+  const getTotalPastBookings = () => {
+    if (!venue?.bookings) return 0;
+    return venue.bookings.filter(booking => isBookingPast(booking)).length;
+  };
+
+  const hasMorePastBookings = () => {
+    if (!venue?.bookings) return false;
+    const totalPast = venue.bookings.filter(booking => isBookingPast(booking)).length;
+    return totalPast > pastBookingsToShow;
   };
 
   const getTotalRevenue = () => {
@@ -328,10 +347,10 @@ const ManageVenuePage = () => {
             )}
 
             {/* Past Bookings */}
-            {getPastBookings().length > 0 && (
+            {getTotalPastBookings() > 0 && (
               <div className="space-y-4">
                 <h2 className="font-poppins text-2xl mb-4" style={{ color: theme.colors.text }}>
-                  Past Bookings ({getPastBookings().length})
+                  Past Bookings ({getTotalPastBookings()})
                 </h2>
                 
                 {getPastBookings().map((booking) => (
@@ -380,6 +399,19 @@ const ManageVenuePage = () => {
                     </div>
                   </div>
                 ))}
+
+                {/* Load More Past Bookings Button */}
+                {hasMorePastBookings() && (
+                  <div className="text-center mt-6">
+                    <button
+                      onClick={handleLoadMorePastBookings}
+                      className="px-6 py-3 text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors cursor-pointer"
+                      style={{ backgroundColor: theme.colors.primary }}
+                    >
+                      Load More Past Bookings
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>

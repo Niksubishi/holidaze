@@ -92,7 +92,7 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
         </div>
 
         {images.length > 1 && (
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid grid-cols-6 gap-2">
             {images.map((image, index) => (
               <div
                 key={index}

@@ -130,7 +130,7 @@ const VenuesList = memo(() => {
     // Set new timeout for debounced search
     debounceTimeoutRef.current = setTimeout(() => {
       updateParams({
-        search: value || ""
+        search: value ? value.trim() : ""
       });
     }, 300); // 300ms debounce delay
   }, [updateParams]);

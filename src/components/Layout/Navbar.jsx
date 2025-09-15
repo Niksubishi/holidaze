@@ -43,12 +43,13 @@ const Navbar = memo(() => {
 
   const managerLinks = useMemo(() => (
     <>
+      <NavLink to="/venues">Venues</NavLink>
+      <NavLink to="/my-bookings">My Bookings</NavLink>
+      <span className="text-xs" style={{ color: theme.colors.navLinks, opacity: 0.5 }}>●</span>
       <NavLink to="/my-venues">My Venues</NavLink>
       <NavLink to="/create-venue">Create Venue</NavLink>
-      <NavLink to="/my-bookings">My Bookings</NavLink>
-      <NavLink to="/venues">Venues</NavLink>
     </>
-  ), [NavLink]);
+  ), [NavLink, theme.colors.navLinks]);
 
   // Memoize logo source to avoid recalculation
   const logoSrc = useMemo(() => 

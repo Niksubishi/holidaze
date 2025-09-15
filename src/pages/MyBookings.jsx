@@ -3,9 +3,7 @@ import { Link } from "react-router-dom";
 import { bookingsAPI } from "../api/bookings.js";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
-import { useLoading } from "../context/LoadingContext";
 import { useToast } from "../context/ToastContext";
-import LoadingSpinner from "../components/UI/LoadingSpinner";
 import SkeletonBooking from "../components/UI/SkeletonBooking";
 import ErrorMessage from "../components/UI/ErrorMessage";
 import ConfirmationModal from "../components/UI/ConfirmationModal";
@@ -14,9 +12,10 @@ import { getSecondaryBackground } from "../utils/theme.js";
 const MyBookings = () => {
   const { user } = useAuth();
   const { theme, isDarkMode } = useTheme();
-  const { setLoading, isLoading } = useLoading();
   const [allBookings, setAllBookings] = useState([]);
   const [error, setError] = useState("");
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [pastBookingsToShow, setPastBookingsToShow] = useState(4);
   const { showSuccess } = useToast();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [bookingToCancel, setBookingToCancel] = useState(null);
@@ -24,7 +23,6 @@ const MyBookings = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        setLoading('my-bookings', true);
         const response = await bookingsAPI.getByProfile(user.name);
 
         // Store all bookings and sort by date (newest first)
@@ -36,7 +34,7 @@ const MyBookings = () => {
       } catch (err) {
         setError(err.message || "Failed to load bookings");
       } finally {
-        setLoading('my-bookings', false);
+        setInitialLoading(false);
       }
     };
 
@@ -72,6 +70,10 @@ const MyBookings = () => {
     setBookingToCancel(null);
   }, []);
 
+  const handleLoadMorePastBookings = useCallback(() => {
+    setPastBookingsToShow(prev => prev + 4);
+  }, []);
+
   // Memoize date formatting utility
   const formatDate = useCallback((dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -97,7 +99,7 @@ const MyBookings = () => {
   // Memoize booking filtering and sorting - this is expensive with many bookings
   const bookingCategories = useMemo(() => {
     const today = new Date();
-    
+
     const currentBookings = allBookings
       .filter(booking => {
         const checkoutDate = new Date(booking.dateTo);
@@ -105,19 +107,26 @@ const MyBookings = () => {
       })
       .sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom)); // Earliest upcoming first
 
-    const pastBookings = allBookings
+    const allPastBookings = allBookings
       .filter(booking => {
         const checkoutDate = new Date(booking.dateTo);
         return checkoutDate < today;
       })
       .sort((a, b) => new Date(b.dateFrom) - new Date(a.dateFrom)); // Most recent stay first
 
-    return { currentBookings, pastBookings };
-  }, [allBookings]);
+    const displayedPastBookings = allPastBookings.slice(0, pastBookingsToShow);
 
-  const { currentBookings, pastBookings } = bookingCategories;
+    return {
+      currentBookings,
+      pastBookings: displayedPastBookings,
+      totalPastBookings: allPastBookings.length,
+      hasMorePastBookings: allPastBookings.length > pastBookingsToShow
+    };
+  }, [allBookings, pastBookingsToShow]);
 
-  if (isLoading('my-bookings')) {
+  const { currentBookings, pastBookings, totalPastBookings, hasMorePastBookings } = bookingCategories;
+
+  if (initialLoading) {
     return (
       <div
         className="min-h-screen py-8"
@@ -190,7 +199,7 @@ const MyBookings = () => {
 
         <ErrorMessage message={error} className="mb-6" />
 
-        {allBookings.length === 0 && !isLoading('my-bookings') ? (
+        {allBookings.length === 0 && !initialLoading ? (
           <div className="text-center py-12">
             <div className="mb-6">
               <svg
@@ -408,10 +417,10 @@ const MyBookings = () => {
             )}
 
             {/* Past Bookings */}
-            {pastBookings.length > 0 && (
+            {totalPastBookings > 0 && (
               <div>
                 <h2 className="font-poppins text-2xl mb-4" style={{ color: theme.colors.text }}>
-                  Past Bookings ({pastBookings.length})
+                  Past Bookings ({totalPastBookings})
                 </h2>
                 <div className="space-y-2">
                   {pastBookings.map((booking) => (
@@ -470,6 +479,19 @@ const MyBookings = () => {
                     </div>
                   ))}
                 </div>
+
+                {/* Load More Past Bookings Button */}
+                {hasMorePastBookings && (
+                  <div className="text-center mt-6">
+                    <button
+                      onClick={handleLoadMorePastBookings}
+                      className="px-6 py-3 text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors cursor-pointer"
+                      style={{ backgroundColor: theme.colors.primary }}
+                    >
+                      Load More Past Bookings
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>

@@ -68,6 +68,8 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     tokenManager.remove();
     userManager.remove();
+    // Redirect to login page after logout
+    window.location.href = '/auth';
   };
 
   const updateUser = (updatedUserData) => {

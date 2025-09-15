@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { venuesAPI } from "../api/venues.js";
+import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import VenueDetails from "../components/Venues/VenueDetails";
-import LoadingSpinner from "../components/UI/LoadingSpinner";
+import SkeletonVenueDetails from "../components/UI/SkeletonVenueDetails";
 import ErrorMessage from "../components/UI/ErrorMessage";
 
 const VenueDetailsPage = () => {
@@ -15,6 +16,9 @@ const VenueDetailsPage = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    // Scroll to top when component mounts or id changes
+    window.scrollTo(0, 0);
+
     const fetchVenue = async () => {
       try {
         setLoading(true);
@@ -37,17 +41,14 @@ const VenueDetailsPage = () => {
     }
   }, [id, navigate]);
 
+
   const handleBookingSuccess = () => {
     // Could trigger a refetch of venue data or show a success message
     // For now, we'll just let the booking form handle the success message
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: theme.colors.background }}>
-        <LoadingSpinner size="large" />
-      </div>
-    );
+    return <SkeletonVenueDetails />;
   }
 
   if (error) {
