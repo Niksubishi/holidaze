@@ -66,7 +66,7 @@ const VenueCard = memo(({ venue }) => {
   const amenitiesComponent = useMemo(() => {
     if (!amenitiesData) return null;
 
-    const greyColor = "#9ca3af";
+    const greyColor = isDarkMode ? theme.colors.text : "#6D7588";
 
     return (
       <div className="mt-2">
@@ -88,7 +88,7 @@ const VenueCard = memo(({ venue }) => {
           {amenitiesData.length > 3 && (
             <span
               className="text-xs"
-              style={{ color: theme.colors.text, opacity: 0.6 }}
+              style={{ color: isDarkMode ? theme.colors.text : '#6D7588' }}
             >
               +{amenitiesData.length - 3} more
             </span>
@@ -96,7 +96,7 @@ const VenueCard = memo(({ venue }) => {
         </div>
       </div>
     );
-  }, [amenitiesData, theme.colors.text]);
+  }, [amenitiesData, isDarkMode, theme.colors.text]);
 
   return (
     <Link
@@ -134,7 +134,7 @@ const VenueCard = memo(({ venue }) => {
 
         <p
           className="font-poppins text-sm mb-2"
-          style={{ color: theme.colors.text, opacity: 0.7 }}
+          style={{ color: isDarkMode ? theme.colors.text : '#6D7588' }}
         >
           {formattedLocation}
         </p>
@@ -149,7 +149,7 @@ const VenueCard = memo(({ venue }) => {
             </span>
             <span
               className="font-poppins text-sm ml-1"
-              style={{ color: theme.colors.text, opacity: 0.7 }}
+              style={{ color: isDarkMode ? theme.colors.text : '#6D7588' }}
             >
               / night
             </span>
@@ -166,7 +166,7 @@ const VenueCard = memo(({ venue }) => {
               </svg>
               <span
                 className="font-poppins text-sm"
-                style={{ color: theme.colors.text, opacity: 0.7 }}
+                style={{ color: isDarkMode ? theme.colors.text : '#6D7588' }}
               >
                 {formattedRating}
               </span>
@@ -176,7 +176,7 @@ const VenueCard = memo(({ venue }) => {
 
         <p
           className="font-poppins text-xs mb-2"
-          style={{ color: theme.colors.text, opacity: 0.6 }}
+          style={{ color: isDarkMode ? theme.colors.text : '#6D7588' }}
         >
           {guestText}
         </p>
@@ -185,7 +185,8 @@ const VenueCard = memo(({ venue }) => {
           <div className="mb-2">
             <button
               onClick={(e) => handleOwnerClick(e, venue.owner.name)}
-              className="font-poppins text-primary text-xs hover:text-opacity-80 transition-colors cursor-pointer"
+              className="font-poppins text-xs hover:text-opacity-80 transition-colors cursor-pointer"
+              style={{ color: '#3D808A' }}
             >
               Hosted by {venue.owner.name}
             </button>

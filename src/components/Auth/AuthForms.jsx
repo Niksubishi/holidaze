@@ -7,7 +7,12 @@ import { useToast } from "../../context/ToastContext";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import ErrorMessage from "../UI/ErrorMessage";
 import PasswordInput from "../UI/PasswordInput";
-import { getCardBackground, getInputBackground, getInputBorderColor, getInputTextColor } from "../../utils/theme.js";
+import {
+  getCardBackground,
+  getInputBackground,
+  getInputBorderColor,
+  getInputTextColor,
+} from "../../utils/theme.js";
 
 const AuthForms = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -67,10 +72,9 @@ const AuthForms = () => {
     }
 
     if (error) setError("");
-    
-    // Clear password errors when user types
+
     if (passwordErrors[name]) {
-      setPasswordErrors(prev => ({ ...prev, [name]: null }));
+      setPasswordErrors((prev) => ({ ...prev, [name]: null }));
     }
   };
 
@@ -81,20 +85,20 @@ const AuthForms = () => {
   const validatePassword = (password) => {
     const errors = [];
     if (password.length < 8) {
-      errors.push('Must be at least 8 characters long');
+      errors.push("Must be at least 8 characters long");
     }
     if (!/(?=.*[a-z])/.test(password)) {
-      errors.push('Must contain at least one lowercase letter');
+      errors.push("Must contain at least one lowercase letter");
     }
     if (!/(?=.*[A-Z])/.test(password)) {
-      errors.push('Must contain at least one uppercase letter');
+      errors.push("Must contain at least one uppercase letter");
     }
     if (!/(?=.*\d)/.test(password)) {
-      errors.push('Must contain at least one number');
+      errors.push("Must contain at least one number");
     }
     return errors;
   };
-  
+
   const validatePasswordMatch = (password, confirmPassword) => {
     return password === confirmPassword;
   };
@@ -158,8 +162,10 @@ const AuthForms = () => {
       setPasswordErrors({ password: passwordValidationErrors[0] });
       return;
     }
-    
-    if (!validatePasswordMatch(signupData.password, signupData.confirmPassword)) {
+
+    if (
+      !validatePasswordMatch(signupData.password, signupData.confirmPassword)
+    ) {
       setError("Passwords do not match");
       setPasswordErrors({ confirmPassword: "Passwords do not match" });
       return;
@@ -200,9 +206,10 @@ const AuthForms = () => {
       }
 
       await authAPI.register(userData);
-      showSuccess("Account created successfully! Please log in with your new credentials.");
+      showSuccess(
+        "Account created successfully! Please log in with your new credentials."
+      );
 
-      // Switch to login form after successful signup
       setTimeout(() => {
         setIsLogin(true);
         setLoginData({

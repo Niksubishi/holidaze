@@ -11,49 +11,72 @@ const Navbar = memo(() => {
   const { isDarkMode, theme } = useTheme();
   const location = useLocation();
 
-  const isActivePage = useCallback((path) => location.pathname === path, [location.pathname]);
+  const isActivePage = useCallback(
+    (path) => location.pathname === path,
+    [location.pathname]
+  );
 
-  const NavLink = useCallback(({ to, children, className = "" }) => (
-    <Link
-      to={to}
-      className={`font-poppins hover:opacity-75 transition-colors relative ${className}`}
-      style={{ color: theme.colors.navLinks }}
-      onClick={() => setIsMobileMenuOpen(false)}
-    >
-      {children}
-      {isActivePage(to) && (
-        <div className="absolute -bottom-4 left-0 right-0 h-0.5" style={{ backgroundColor: theme.colors.navLinks }}></div>
-      )}
-    </Link>
-  ), [theme.colors.navLinks, isActivePage, setIsMobileMenuOpen]);
+  const NavLink = useCallback(
+    ({ to, children, className = "" }) => (
+      <Link
+        to={to}
+        className={`font-poppins hover:opacity-75 transition-colors relative ${className}`}
+        style={{ color: theme.colors.navLinks }}
+        onClick={() => setIsMobileMenuOpen(false)}
+      >
+        {children}
+        {isActivePage(to) && (
+          <div
+            className="absolute -bottom-4 left-0 right-0 h-0.5"
+            style={{ backgroundColor: theme.colors.navLinks }}
+          ></div>
+        )}
+      </Link>
+    ),
+    [theme.colors.navLinks, isActivePage, setIsMobileMenuOpen]
+  );
 
-  const loggedOutLinks = useMemo(() => (
-    <>
-      <NavLink to="/">Home</NavLink>
-      <NavLink to="/venues">Venues</NavLink>
-    </>
-  ), [NavLink]);
+  const loggedOutLinks = useMemo(
+    () => (
+      <>
+        <NavLink to="/">Home</NavLink>
+        <NavLink to="/venues">Venues</NavLink>
+      </>
+    ),
+    [NavLink]
+  );
 
-  const customerLinks = useMemo(() => (
-    <>
-      <NavLink to="/venues">Venues</NavLink>
-      <NavLink to="/my-bookings">My Bookings</NavLink>
-    </>
-  ), [NavLink]);
+  const customerLinks = useMemo(
+    () => (
+      <>
+        <NavLink to="/venues">Venues</NavLink>
+        <NavLink to="/my-bookings">My Bookings</NavLink>
+      </>
+    ),
+    [NavLink]
+  );
 
-  const managerLinks = useMemo(() => (
-    <>
-      <NavLink to="/venues">Venues</NavLink>
-      <NavLink to="/my-bookings">My Bookings</NavLink>
-      <span className="text-xs" style={{ color: theme.colors.navLinks, opacity: 0.5 }}>●</span>
-      <NavLink to="/my-venues">My Venues</NavLink>
-      <NavLink to="/create-venue">Create Venue</NavLink>
-    </>
-  ), [NavLink, theme.colors.navLinks]);
+  const managerLinks = useMemo(
+    () => (
+      <>
+        <NavLink to="/venues">Venues</NavLink>
+        <NavLink to="/my-bookings">My Bookings</NavLink>
+        <span
+          className="text-xs"
+          style={{ color: theme.colors.navLinks, opacity: 0.5 }}
+        >
+          ●
+        </span>
+        <NavLink to="/my-venues">My Venues</NavLink>
+        <NavLink to="/create-venue">Create Venue</NavLink>
+      </>
+    ),
+    [NavLink, theme.colors.navLinks]
+  );
 
   // Memoize logo source to avoid recalculation
-  const logoSrc = useMemo(() => 
-    isDarkMode ? "/images/logo2.jpg" : "/images/logo.jpg", 
+  const logoSrc = useMemo(
+    () => (isDarkMode ? "/images/logo2.jpg" : "/images/logo.jpg"),
     [isDarkMode]
   );
 
@@ -63,18 +86,20 @@ const Navbar = memo(() => {
   }, [isMobileMenuOpen]);
 
   return (
-    <nav className="h-16 flex items-center px-4 relative z-50" style={{ backgroundColor: theme.colors.headerBg }}>
+    <nav
+      className="h-16 flex items-center px-4 relative z-50"
+      style={{ backgroundColor: theme.colors.headerBg }}
+    >
       <div className="flex items-center justify-between w-full max-w-7xl mx-auto">
         {/* Logo and Navigation Links */}
         <div className="flex items-center space-x-8">
-          <Link to={isAuthenticated ? "/venues" : "/"} className="cursor-pointer">
-            <img
-              src={logoSrc}
-              alt="Holidaze Logo"
-              className="h-8 w-auto"
-            />
+          <Link
+            to={isAuthenticated ? "/venues" : "/"}
+            className="cursor-pointer"
+          >
+            <img src={logoSrc} alt="Holidaze Logo" className="h-8 w-auto" />
           </Link>
-          
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {!isAuthenticated && loggedOutLinks}
@@ -134,7 +159,13 @@ const Navbar = memo(() => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="absolute top-16 left-0 right-0 shadow-lg md:hidden" style={{ backgroundColor: theme.colors.headerBg, borderTop: `1px solid ${theme.colors.headerBg}` }}>
+        <div
+          className="absolute top-16 left-0 right-0 shadow-lg md:hidden"
+          style={{
+            backgroundColor: theme.colors.headerBg,
+            borderTop: `1px solid ${theme.colors.headerBg}`,
+          }}
+        >
           <div className="py-4 px-4 space-y-3">
             {!isAuthenticated && (
               <>
@@ -188,7 +219,6 @@ const Navbar = memo(() => {
   );
 });
 
-// Add display name for better debugging
-Navbar.displayName = 'Navbar';
+Navbar.displayName = "Navbar";
 
 export default Navbar;
