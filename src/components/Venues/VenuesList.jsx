@@ -4,7 +4,6 @@ import { venuesAPI } from "../../api/venues.js";
 import { useTheme } from "../../context/ThemeContext";
 import { useLoading } from "../../context/LoadingContext";
 import VenueCard from "./VenueCard";
-import LoadingSpinner from "../UI/LoadingSpinner";
 import SkeletonList from "../UI/SkeletonList";
 import ErrorMessage from "../UI/ErrorMessage";
 
@@ -15,7 +14,7 @@ const VenuesList = memo(() => {
   const [venues, setVenues] = useState([]);
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
+  const [totalPages, setTotalPages] = useState(0);
   const [, setIsSearching] = useState(false);
   const debounceTimeoutRef = useRef(null);
 
@@ -27,9 +26,9 @@ const VenuesList = memo(() => {
 
   const venuesPerPage = 12;
 
-  const fetchVenues = useCallback(async (page = 1, isNewSearch = false) => {
+  const fetchVenues = useCallback(async (page = 1) => {
     try {
-      if (page === 1) setLoading('venues-list', true);
+      setLoading('venues-list', true);
 
       let response;
       if (searchQuery.trim()) {
@@ -51,13 +50,8 @@ const VenuesList = memo(() => {
         );
       }
 
-      if (isNewSearch || page === 1) {
-        setVenues(response.data || []);
-      } else {
-        setVenues((prev) => [...prev, ...(response.data || [])]);
-      }
-
-      setHasMore(response.meta && !response.meta.isLastPage);
+      setVenues(response.data || []);
+      setTotalPages(response.meta?.pageCount || 0);
 
       setError("");
     } catch (err) {
@@ -70,8 +64,13 @@ const VenuesList = memo(() => {
 
   useEffect(() => {
     setCurrentPage(1);
-    fetchVenues(1, true);
+    fetchVenues(1);
   }, [sortBy, sortOrder, searchQuery]);
+
+  // Fetch venues when page changes
+  useEffect(() => {
+    fetchVenues(currentPage);
+  }, [currentPage, fetchVenues]);
 
   // Update URL params helper
   const updateParams = useCallback((newParams) => {
@@ -105,11 +104,9 @@ const VenuesList = memo(() => {
     });
   }, [updateParams]);
 
-  const handleLoadMore = useCallback(() => {
-    const nextPage = currentPage + 1;
-    setCurrentPage(nextPage);
-    fetchVenues(nextPage, false);
-  }, [currentPage, fetchVenues]);
+  const handlePageChange = useCallback((page) => {
+    setCurrentPage(page);
+  }, []);
 
   const handleSortChange = useCallback((newSort, newOrder = "desc") => {
     updateParams({
@@ -292,22 +289,75 @@ const VenuesList = memo(() => {
         </div>
       )}
 
-      {hasMore && venues.length > 0 && (
-        <div className="text-center">
+      {/* Pagination */}
+      {totalPages > 1 && venues.length > 0 && (
+        <div className="flex justify-center items-center space-x-2 mt-8">
+          {/* Previous button */}
           <button
-            onClick={handleLoadMore}
-            disabled={isLoading('venues-list')}
-            className="px-8 py-3 text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors cursor-pointer disabled:opacity-50"
-            style={{ backgroundColor: theme.colors.primary }}
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-3 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{
+              backgroundColor: currentPage === 1 ? inactiveButtonStyle.backgroundColor : theme.colors.primary,
+              color: currentPage === 1 ? inactiveButtonStyle.color : "#ffffff",
+            }}
           >
-            {isLoading('venues-list') ? (
-              <div className="flex items-center space-x-2">
-                <LoadingSpinner size="small" />
-                <span>Loading...</span>
-              </div>
-            ) : (
-              "Load More"
-            )}
+            ← Previous
+          </button>
+
+          {/* Page numbers */}
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => {
+            // Show first page, last page, current page, and pages around current
+            const showPage =
+              pageNum === 1 ||
+              pageNum === totalPages ||
+              (pageNum >= currentPage - 1 && pageNum <= currentPage + 1);
+
+            // Show ellipsis
+            const showEllipsisBefore = pageNum === currentPage - 2 && currentPage > 4;
+            const showEllipsisAfter = pageNum === currentPage + 2 && currentPage < totalPages - 3;
+
+            return (
+              <React.Fragment key={pageNum}>
+                {showEllipsisBefore && (
+                  <span className="px-2 py-2 font-poppins text-sm" style={{ color: theme.colors.text }}>
+                    ...
+                  </span>
+                )}
+
+                {showPage && (
+                  <button
+                    onClick={() => handlePageChange(pageNum)}
+                    className="px-3 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer min-w-[40px]"
+                    style={{
+                      backgroundColor: currentPage === pageNum ? theme.colors.primary : inactiveButtonStyle.backgroundColor,
+                      color: currentPage === pageNum ? "#ffffff" : inactiveButtonStyle.color,
+                    }}
+                  >
+                    {pageNum}
+                  </button>
+                )}
+
+                {showEllipsisAfter && (
+                  <span className="px-2 py-2 font-poppins text-sm" style={{ color: theme.colors.text }}>
+                    ...
+                  </span>
+                )}
+              </React.Fragment>
+            );
+          })}
+
+          {/* Next button */}
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-3 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{
+              backgroundColor: currentPage === totalPages ? inactiveButtonStyle.backgroundColor : theme.colors.primary,
+              color: currentPage === totalPages ? inactiveButtonStyle.color : "#ffffff",
+            }}
+          >
+            Next →
           </button>
         </div>
       )}
