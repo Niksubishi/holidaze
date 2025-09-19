@@ -1,6 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 
-// Hook for toggle functionality (modals, dropdowns, etc.)
 export const useToggle = (initialValue = false) => {
   const [value, setValue] = useState(initialValue);
 
@@ -17,7 +16,6 @@ export const useToggle = (initialValue = false) => {
   };
 };
 
-// Hook for managing disclosure patterns (expandable content)
 export const useDisclosure = (initialOpen = false) => {
   const { 
     value: isOpen, 
@@ -34,7 +32,6 @@ export const useDisclosure = (initialOpen = false) => {
   };
 };
 
-// Hook for managing hover states
 export const useHover = () => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -49,7 +46,6 @@ export const useHover = () => {
   };
 };
 
-// Hook for managing focus states
 export const useFocus = () => {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -64,7 +60,6 @@ export const useFocus = () => {
   };
 };
 
-// Hook for click outside functionality
 export const useClickOutside = (callback) => {
   const ref = useRef(null);
 
@@ -82,7 +77,6 @@ export const useClickOutside = (callback) => {
   return ref;
 };
 
-// Hook for escape key functionality
 export const useEscapeKey = (callback) => {
   useEffect(() => {
     const handleEscape = (event) => {
@@ -96,12 +90,10 @@ export const useEscapeKey = (callback) => {
   }, [callback]);
 };
 
-// Hook for combining click outside and escape key
 export const useModalBehavior = (isOpen, onClose) => {
   const ref = useClickOutside(isOpen ? onClose : () => {});
   useEscapeKey(isOpen ? onClose : () => {});
   
-  // Prevent body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
       const originalStyle = window.getComputedStyle(document.body).overflow;
@@ -116,7 +108,6 @@ export const useModalBehavior = (isOpen, onClose) => {
   return ref;
 };
 
-// Hook for debounced values
 export const useDebounce = (value, delay) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
@@ -133,7 +124,6 @@ export const useDebounce = (value, delay) => {
   return debouncedValue;
 };
 
-// Hook for managing async operations
 export const useAsync = (asyncFn, immediate = true) => {
   const [loading, setLoading] = useState(immediate);
   const [error, setError] = useState(null);
@@ -147,7 +137,7 @@ export const useAsync = (asyncFn, immediate = true) => {
       const result = await asyncFn(...args);
       setData(result);
       return result;
-    } catch (error) {
+    } catch {
       setError(error);
       throw error;
     } finally {
@@ -171,7 +161,6 @@ export const useAsync = (asyncFn, immediate = true) => {
   };
 };
 
-// Hook for managing clipboard operations
 export const useClipboard = (timeout = 2000) => {
   const [hasCopied, setHasCopied] = useState(false);
 
@@ -185,8 +174,7 @@ export const useClipboard = (timeout = 2000) => {
       }, timeout);
 
       return true;
-    } catch (error) {
-      console.error('Failed to copy to clipboard:', error);
+    } catch {
       setHasCopied(false);
       return false;
     }
@@ -198,14 +186,12 @@ export const useClipboard = (timeout = 2000) => {
   };
 };
 
-// Hook for managing local storage
 export const useLocalStorage = (key, initialValue) => {
   const [storedValue, setStoredValue] = useState(() => {
     try {
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
-    } catch (error) {
-      console.error('Error reading from localStorage:', error);
+    } catch {
       return initialValue;
     }
   });
@@ -215,8 +201,8 @@ export const useLocalStorage = (key, initialValue) => {
       const valueToStore = value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
       window.localStorage.setItem(key, JSON.stringify(valueToStore));
-    } catch (error) {
-      console.error('Error writing to localStorage:', error);
+    } catch {
+      // Silent error handling
     }
   }, [key, storedValue]);
 
@@ -224,8 +210,8 @@ export const useLocalStorage = (key, initialValue) => {
     try {
       window.localStorage.removeItem(key);
       setStoredValue(initialValue);
-    } catch (error) {
-      console.error('Error removing from localStorage:', error);
+    } catch {
+      // Silent error handling
     }
   }, [key, initialValue]);
 
@@ -236,7 +222,6 @@ export const useLocalStorage = (key, initialValue) => {
   };
 };
 
-// Hook for managing window dimensions
 export const useWindowSize = () => {
   const [windowSize, setWindowSize] = useState({
     width: undefined,
@@ -260,7 +245,6 @@ export const useWindowSize = () => {
   return windowSize;
 };
 
-// Hook for managing media queries
 export const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(false);
 

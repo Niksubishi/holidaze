@@ -20,7 +20,7 @@ const FormInput = memo(({
 }) => {
   const { theme, isDarkMode } = useTheme();
 
-  // Memoize styles to prevent recalculation
+  
   const inputStyles = useMemo(() => ({
     backgroundColor: isDarkMode ? '#374151' : '#ffffff',
     borderColor: error ? '#ef4444' : (isDarkMode ? '#6b7280' : '#d1d5db'),

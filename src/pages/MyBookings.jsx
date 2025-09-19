@@ -25,7 +25,7 @@ const MyBookings = () => {
       try {
         const response = await bookingsAPI.getByProfile(user.name);
 
-        // Store all bookings and sort by date (newest first)
+        
         const sortedBookings = response.data
           .sort((a, b) => new Date(b.dateFrom) - new Date(a.dateFrom));
 
@@ -43,7 +43,7 @@ const MyBookings = () => {
     }
   }, [user]);
 
-  // Stable callbacks for event handlers
+  
   const handleCancelBooking = useCallback((bookingId) => {
     setBookingToCancel(bookingId);
     setShowConfirmModal(true);
@@ -74,7 +74,7 @@ const MyBookings = () => {
     setPastBookingsToShow(prev => prev + 4);
   }, []);
 
-  // Memoize date formatting utility
+  
   const formatDate = useCallback((dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -83,7 +83,7 @@ const MyBookings = () => {
     });
   }, []);
 
-  // Memoize calculations to avoid repeated computation
+  
   const calculateNights = useCallback((dateFrom, dateTo) => {
     const start = new Date(dateFrom);
     const end = new Date(dateTo);
@@ -96,7 +96,7 @@ const MyBookings = () => {
     return nights * booking.venue.price;
   }, [calculateNights]);
 
-  // Memoize booking filtering and sorting - this is expensive with many bookings
+  
   const bookingCategories = useMemo(() => {
     const today = new Date();
 
@@ -105,14 +105,14 @@ const MyBookings = () => {
         const checkoutDate = new Date(booking.dateTo);
         return checkoutDate >= today;
       })
-      .sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom)); // Earliest upcoming first
+      .sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom)); 
 
     const allPastBookings = allBookings
       .filter(booking => {
         const checkoutDate = new Date(booking.dateTo);
         return checkoutDate < today;
       })
-      .sort((a, b) => new Date(b.dateFrom) - new Date(a.dateFrom)); // Most recent stay first
+      .sort((a, b) => new Date(b.dateFrom) - new Date(a.dateFrom)); 
 
     const displayedPastBookings = allPastBookings.slice(0, pastBookingsToShow);
 
@@ -238,7 +238,7 @@ const MyBookings = () => {
           </div>
         ) : (
           <div className="space-y-8">
-            {/* Current Bookings */}
+            
             {currentBookings.length > 0 && (
               <div>
                 <h2 className="font-poppins text-2xl mb-4" style={{ color: theme.colors.text }}>
@@ -258,7 +258,7 @@ const MyBookings = () => {
                 }}
               >
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  {/* Venue Image */}
+                  
                   <div className="lg:col-span-1">
                     <Link to={`/venues/${booking.venue.id}`}>
                       <div className="aspect-video w-full overflow-hidden rounded-lg">
@@ -276,7 +276,7 @@ const MyBookings = () => {
                     </Link>
                   </div>
 
-                  {/* Booking Details */}
+                  
                   <div className="lg:col-span-2">
                     <div className="flex flex-col h-full">
                       <div className="flex-1">
@@ -416,7 +416,7 @@ const MyBookings = () => {
               </div>
             )}
 
-            {/* Past Bookings */}
+            
             {totalPastBookings > 0 && (
               <div>
                 <h2 className="font-poppins text-2xl mb-4" style={{ color: theme.colors.text }}>
@@ -430,7 +430,7 @@ const MyBookings = () => {
                       style={{ backgroundColor: getSecondaryBackground(isDarkMode) }}
                     >
                       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
-                        {/* Venue Name */}
+                        
                         <div>
                           <Link
                             to={`/venues/${booking.venue.id}`}
@@ -446,7 +446,7 @@ const MyBookings = () => {
                           </p>
                         </div>
 
-                        {/* Dates */}
+                        
                         <div>
                           <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.8 }}>
                             {formatDate(booking.dateFrom)}
@@ -456,7 +456,7 @@ const MyBookings = () => {
                           </p>
                         </div>
 
-                        {/* Duration & Guests */}
+                        
                         <div>
                           <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.8 }}>
                             {calculateNights(booking.dateFrom, booking.dateTo)} night{calculateNights(booking.dateFrom, booking.dateTo) !== 1 ? 's' : ''}
@@ -466,7 +466,7 @@ const MyBookings = () => {
                           </p>
                         </div>
 
-                        {/* Price */}
+                        
                         <div className="text-right">
                           <p className="font-poppins" style={{ color: theme.colors.text }}>
                             ${calculateTotalPrice(booking)}
@@ -480,7 +480,7 @@ const MyBookings = () => {
                   ))}
                 </div>
 
-                {/* Load More Past Bookings Button */}
+                
                 {hasMorePastBookings && (
                   <div className="text-center mt-6">
                     <button

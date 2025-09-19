@@ -29,7 +29,6 @@ export const getAuthHeaders = (token = null) => {
   return headers;
 };
 
-// Enhanced error types for better error handling
 export const ErrorTypes = {
   NETWORK: "NETWORK",
   AUTHENTICATION: "AUTHENTICATION",
@@ -41,7 +40,6 @@ export const ErrorTypes = {
   UNKNOWN: "UNKNOWN",
 };
 
-// Custom error class with additional context
 export class APIError extends Error {
   constructor(message, type, status, originalError = null, context = {}) {
     super(message);
@@ -53,9 +51,7 @@ export class APIError extends Error {
   }
 }
 
-// Classify error based on response status and content
 const classifyError = (response, data) => {
-  // Network errors (no response)
   if (!response) {
     return {
       type: ErrorTypes.NETWORK,
@@ -68,7 +64,6 @@ const classifyError = (response, data) => {
 
   switch (status) {
     case 400:
-      // Check if it's validation errors
       if (data?.errors && Array.isArray(data.errors)) {
         return {
           type: ErrorTypes.VALIDATION,
@@ -98,7 +93,7 @@ const classifyError = (response, data) => {
         message: "The requested resource was not found.",
       };
 
-    case 429:
+    case 429: {
       const retryAfter = response.headers.get("Retry-After");
       return {
         type: ErrorTypes.RATE_LIMIT,
@@ -106,6 +101,7 @@ const classifyError = (response, data) => {
           retryAfter ? ` in ${retryAfter} seconds` : " later"
         }.`,
       };
+    }
 
     case 500:
     case 502:
@@ -128,11 +124,9 @@ const classifyError = (response, data) => {
   }
 };
 
-// Determine if error should be retried
 const shouldRetry = (error, attempt, maxRetries) => {
   if (attempt >= maxRetries) return false;
 
-  // Don't retry client errors (4xx) except rate limiting
   if (
     error.status >= 400 &&
     error.status < 500 &&
@@ -141,7 +135,6 @@ const shouldRetry = (error, attempt, maxRetries) => {
     return false;
   }
 
-  // Retry network errors and server errors
   return [
     ErrorTypes.NETWORK,
     ErrorTypes.SERVER,
@@ -149,24 +142,22 @@ const shouldRetry = (error, attempt, maxRetries) => {
   ].includes(error.type);
 };
 
-// Enhanced retry delay calculation
 const getRetryDelay = (attempt, errorType) => {
-  const baseDelay = 1000; // 1 second base
+  const baseDelay = 1000;
 
-  // Rate limiting - respect Retry-After if available, otherwise exponential backoff
   if (errorType === ErrorTypes.RATE_LIMIT) {
-    return Math.min(baseDelay * Math.pow(2, attempt), 30000); // Max 30 seconds
+    return Math.min(baseDelay * Math.pow(2, attempt), 30000);
   }
 
-  // Network/server errors - exponential backoff with jitter
   const exponentialDelay = baseDelay * Math.pow(2, attempt);
-  const jitter = Math.random() * 1000; // Add randomness to prevent thundering herd
-  return Math.min(exponentialDelay + jitter, 10000); // Max 10 seconds
+  const jitter = Math.random() * 1000;
+  return Math.min(exponentialDelay + jitter, 10000);
 };
 
 export const makeRequest = async (url, options = {}, customRetries = null) => {
   const maxRetries = customRetries !== null ? customRetries : 2;
   const context = { url, method: options.method || "GET" };
+  let lastError;
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
@@ -184,7 +175,6 @@ export const makeRequest = async (url, options = {}, customRetries = null) => {
       if (contentType && contentType.includes("application/json")) {
         data = await response.json();
       } else {
-        // For DELETE requests that return empty content (204 No Content)
         data = response.status === 204 ? {} : await response.text();
       }
 
@@ -202,13 +192,11 @@ export const makeRequest = async (url, options = {}, customRetries = null) => {
           throw apiError;
         }
 
-        // If we should retry, continue to the retry logic
         throw apiError;
       }
 
       return data;
     } catch (error) {
-      // Handle network errors (fetch failures)
       if (!error.type) {
         const networkError = new APIError(
           "Network connection failed. Please check your internet connection.",
@@ -221,16 +209,14 @@ export const makeRequest = async (url, options = {}, customRetries = null) => {
         if (!shouldRetry(networkError, attempt, maxRetries)) {
           throw networkError;
         }
-        error = networkError;
+        lastError = networkError;
       }
 
-      // If this is the last attempt, throw the error
-      if (attempt === maxRetries || !shouldRetry(error, attempt, maxRetries)) {
-        throw error;
+      if (attempt === maxRetries || !shouldRetry(lastError, attempt, maxRetries)) {
+        throw lastError;
       }
 
-      // Wait before retrying
-      const delay = getRetryDelay(attempt, error.type);
+      const delay = getRetryDelay(attempt, lastError.type);
       await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }

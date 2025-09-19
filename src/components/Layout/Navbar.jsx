@@ -74,13 +74,11 @@ const Navbar = memo(() => {
     [NavLink, theme.colors.navLinks]
   );
 
-  // Memoize logo source to avoid recalculation
   const logoSrc = useMemo(
     () => (isDarkMode ? "/images/logo2.jpg" : "/images/logo.jpg"),
     [isDarkMode]
   );
 
-  // Stable callback for mobile menu toggle
   const toggleMobileMenu = useCallback(() => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   }, [isMobileMenuOpen]);
@@ -91,7 +89,6 @@ const Navbar = memo(() => {
       style={{ backgroundColor: theme.colors.headerBg }}
     >
       <div className="flex items-center justify-between w-full max-w-7xl mx-auto">
-        {/* Logo and Navigation Links */}
         <div className="flex items-center space-x-8">
           <Link
             to={isAuthenticated ? "/venues" : "/"}
@@ -100,7 +97,6 @@ const Navbar = memo(() => {
             <img src={logoSrc} alt="Holidaze Logo" className="h-8 w-auto" />
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {!isAuthenticated && loggedOutLinks}
             {isAuthenticated && !isVenueManager && customerLinks}
@@ -108,7 +104,6 @@ const Navbar = memo(() => {
           </div>
         </div>
 
-        {/* User Icon / Auth */}
         <div className="flex items-center space-x-4">
           <ThemeToggle />
           {isAuthenticated ? (
@@ -125,7 +120,6 @@ const Navbar = memo(() => {
             </div>
           )}
 
-          {/* Mobile menu button */}
           <button
             onClick={toggleMobileMenu}
             className="md:hidden ml-4 text-white hover:text-gray-200"
@@ -157,7 +151,6 @@ const Navbar = memo(() => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div
           className="absolute top-16 left-0 right-0 shadow-lg md:hidden"

@@ -4,7 +4,7 @@ import { ErrorTypes } from "../../api/config.js";
 const ErrorMessage = ({ message, errorType, className = "", onAction = null, actionText = "" }) => {
   if (!message) return null;
 
-  // Get styling based on error type
+  
   const getErrorStyles = (type) => {
     switch (type) {
       case ErrorTypes.NETWORK:

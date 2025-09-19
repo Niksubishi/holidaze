@@ -148,7 +148,7 @@ const MyVenues = () => {
                   border: isDarkMode ? "none" : "none",
                 }}
               >
-                {/* Venue Image */}
+                
                 <div className="aspect-video w-full overflow-hidden">
                   <Link to={`/venues/${venue.id}`}>
                     <img
@@ -164,7 +164,7 @@ const MyVenues = () => {
                   </Link>
                 </div>
 
-                {/* Venue Details */}
+                
                 <div className="p-6">
                   <div className="mb-4">
                     <Link to={`/venues/${venue.id}`}>

@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import { useTheme } from '../context/ThemeContext';
 
-// Custom hook for generating theme-based styles
+
 export const useThemeStyles = () => {
   const { theme, isDarkMode } = useTheme();
 
   const styles = useMemo(() => ({
-    // Common background styles
+    
     backgrounds: {
       primary: theme.colors.background,
       card: isDarkMode ? '#3a3a3a' : '#ffffff',
@@ -15,7 +15,7 @@ export const useThemeStyles = () => {
       hover: isDarkMode ? '#4b5563' : '#f3f4f6'
     },
 
-    // Text color variations
+    
     text: {
       primary: theme.colors.text,
       secondary: { color: theme.colors.text, opacity: 0.8 },
@@ -23,7 +23,7 @@ export const useThemeStyles = () => {
       disabled: { color: theme.colors.text, opacity: 0.4 }
     },
 
-    // Button styles
+    
     buttons: {
       primary: {
         backgroundColor: theme.colors.primary,
@@ -51,7 +51,7 @@ export const useThemeStyles = () => {
       }
     },
 
-    // Input styles
+    
     inputs: {
       base: {
         backgroundColor: isDarkMode ? '#374151' : '#ffffff',
@@ -70,7 +70,7 @@ export const useThemeStyles = () => {
       }
     },
 
-    // Card styles
+    
     cards: {
       base: {
         backgroundColor: isDarkMode ? '#3a3a3a' : '#ffffff',
@@ -88,7 +88,7 @@ export const useThemeStyles = () => {
       }
     },
 
-    // Modal styles
+    
     modals: {
       overlay: {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -103,7 +103,7 @@ export const useThemeStyles = () => {
       }
     },
 
-    // Navigation styles
+    
     navigation: {
       background: theme.colors.headerBg,
       link: {
@@ -116,7 +116,7 @@ export const useThemeStyles = () => {
       }
     },
 
-    // Status styles
+    
     status: {
       success: {
         backgroundColor: '#10b981',
@@ -136,7 +136,7 @@ export const useThemeStyles = () => {
       }
     },
 
-    // Animation styles
+    
     animations: {
       fadeIn: {
         animation: 'fadeIn 0.3s ease-in-out'
@@ -156,7 +156,7 @@ export const useThemeStyles = () => {
   return styles;
 };
 
-// Hook for button styles
+
 export const useButtonStyles = (variant = 'primary', size = 'md') => {
   const styles = useThemeStyles();
   
@@ -196,7 +196,7 @@ export const useButtonStyles = (variant = 'primary', size = 'md') => {
   }, [styles.buttons, variant, size]);
 };
 
-// Hook for input styles
+
 export const useInputStyles = (hasError = false, isFocused = false) => {
   const styles = useThemeStyles();
   
@@ -222,7 +222,7 @@ export const useInputStyles = (hasError = false, isFocused = false) => {
   }, [styles.inputs, hasError, isFocused]);
 };
 
-// Hook for card styles
+
 export const useCardStyles = (interactive = false) => {
   const styles = useThemeStyles();
   

@@ -15,7 +15,6 @@ const ProtectedRoute = ({
   const { isAnyLoading } = useLoading();
   const location = useLocation();
 
-  // Memoize the loading component to avoid recreation
   const LoadingComponent = useMemo(
     () => (
       <div

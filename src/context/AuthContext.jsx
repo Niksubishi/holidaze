@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const initializeAuth = async () => {
-      // Check for existing authentication on app load
       const storedToken = tokenManager.get();
       const storedUser = userManager.get();
 
@@ -27,14 +26,11 @@ export const AuthProvider = ({ children }) => {
         setToken(storedToken);
         
         try {
-          // Fetch the latest user profile to ensure we have current venueManager status
           const response = await profilesAPI.getById(storedUser.name);
           const updatedUser = response.data;
           setUser(updatedUser);
           userManager.set(updatedUser);
         } catch (error) {
-          console.error("Failed to fetch latest user profile:", error);
-          // Use cached data if API call fails
           setUser(storedUser);
         }
       }
@@ -50,14 +46,12 @@ export const AuthProvider = ({ children }) => {
     tokenManager.set(authToken);
     
     try {
-      // Fetch the latest user profile to ensure we have current venueManager status
+      
       const response = await profilesAPI.getById(userData.name);
       const updatedUser = response.data;
       setUser(updatedUser);
       userManager.set(updatedUser);
     } catch (error) {
-      console.error("Failed to fetch latest user profile during login:", error);
-      // Use login response data if API call fails
       setUser(userData);
       userManager.set(userData);
     }
@@ -68,7 +62,6 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     tokenManager.remove();
     userManager.remove();
-    // Redirect to login page after logout
     window.location.href = '/auth';
   };
 

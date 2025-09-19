@@ -10,7 +10,6 @@ const VenueCard = memo(({ venue }) => {
   const { theme, isDarkMode } = useTheme();
   const navigate = useNavigate();
 
-  // Memoize image data to avoid recalculation
   const imageData = useMemo(() => {
     const defaultImage = "/images/default.jpg";
     return {
@@ -19,7 +18,6 @@ const VenueCard = memo(({ venue }) => {
     };
   }, [venue.media, venue.name]);
 
-  // Memoize location formatting
   const formattedLocation = useMemo(() => {
     const { location } = venue;
     if (!location) return "Location not specified";
@@ -28,7 +26,6 @@ const VenueCard = memo(({ venue }) => {
     return parts.length > 0 ? parts.join(", ") : "Location not specified";
   }, [venue.location]);
 
-  // Memoize amenities list calculation
   const amenitiesData = useMemo(() => {
     if (!venue.meta) return null;
 
@@ -41,18 +38,15 @@ const VenueCard = memo(({ venue }) => {
     return amenities.length > 0 ? amenities : null;
   }, [venue.meta]);
 
-  // Memoize guest text to avoid string concatenation on every render
   const guestText = useMemo(() => {
     return `Max ${venue.maxGuests} guest${venue.maxGuests !== 1 ? "s" : ""}`;
   }, [venue.maxGuests]);
 
-  // Memoize rating display
   const hasRating = useMemo(() => venue.rating > 0, [venue.rating]);
   const formattedRating = useMemo(() => 
     hasRating ? venue.rating.toFixed(1) : null
   , [venue.rating, hasRating]);
 
-  // Stable callback for owner click handler
   const handleOwnerClick = useCallback((e, ownerName) => {
     e.stopPropagation();
     if (!isAuthenticated) {
@@ -62,7 +56,6 @@ const VenueCard = memo(({ venue }) => {
     }
   }, [isAuthenticated, navigate]);
 
-  // Memoize amenities rendering to avoid recalculation
   const amenitiesComponent = useMemo(() => {
     if (!amenitiesData) return null;
 
@@ -199,7 +192,6 @@ const VenueCard = memo(({ venue }) => {
   );
 });
 
-// Add display name for better debugging
 VenueCard.displayName = 'VenueCard';
 
 export default VenueCard;

@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { useThemeStyles, useButtonStyles, useInputStyles, useCardStyles } from '../../hooks/useThemeStyles';
 
-// Styled Button Component
+
 export const Button = forwardRef(({ 
   variant = 'primary', 
   size = 'md', 
@@ -40,7 +40,7 @@ export const Button = forwardRef(({
 
 Button.displayName = 'Button';
 
-// Styled Input Component
+
 export const Input = forwardRef(({ 
   error = false, 
   className = '', 
@@ -65,7 +65,7 @@ export const Input = forwardRef(({
 
 Input.displayName = 'Input';
 
-// Styled Textarea Component
+
 export const Textarea = forwardRef(({ 
   error = false, 
   className = '', 
@@ -90,7 +90,7 @@ export const Textarea = forwardRef(({
 
 Textarea.displayName = 'Textarea';
 
-// Styled Card Component
+
 export const Card = forwardRef(({ 
   children, 
   className = '', 
@@ -118,7 +118,7 @@ export const Card = forwardRef(({
 
 Card.displayName = 'Card';
 
-// Styled Text Components
+
 export const Text = ({ 
   variant = 'primary', 
   children, 
@@ -169,7 +169,7 @@ export const Heading = ({
   );
 };
 
-// Styled Container Component
+
 export const Container = ({ 
   children, 
   className = '', 
@@ -190,7 +190,7 @@ export const Container = ({
   );
 };
 
-// Styled Modal Components
+
 export const Modal = ({ 
   isOpen, 
   onClose, 

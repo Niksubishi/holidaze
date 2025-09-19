@@ -19,7 +19,6 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("theme", isDarkMode ? "dark" : "light");
 
-    // Update body styles
     if (isDarkMode) {
       document.body.style.backgroundColor = "#2A2A2A";
       document.body.style.color = "white";

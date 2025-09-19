@@ -18,7 +18,7 @@ const AnimatedText = ({ texts, className, style, interval = 5000 }) => {
       className={`relative overflow-hidden h-8 ${className || ""}`}
       style={style}
     >
-      {/* Previous text sliding up and out */}
+      
       {prevIndex !== null && (
         <div
           key={`prev-${prevIndex}`}
@@ -28,7 +28,7 @@ const AnimatedText = ({ texts, className, style, interval = 5000 }) => {
         </div>
       )}
 
-      {/* Current text sliding in from bottom */}
+      
       <div
         key={`curr-${currentIndex}`}
         className="absolute w-full text-center transition-all duration-700 ease-in-out transform opacity-100 translate-y-0"

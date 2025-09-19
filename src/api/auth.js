@@ -16,7 +16,6 @@ export const authAPI = {
   },
 };
 
-// Token management
 export const tokenManager = {
   get: () => {
     try {
@@ -30,7 +29,6 @@ export const tokenManager = {
     try {
       localStorage.setItem("holidaze_token", token);
     } catch (error) {
-      console.error("Failed to store token:", error);
     }
   },
 
@@ -39,12 +37,10 @@ export const tokenManager = {
       localStorage.removeItem("holidaze_token");
       localStorage.removeItem("holidaze_user");
     } catch (error) {
-      console.error("Failed to remove token:", error);
     }
   },
 };
 
-// User data management
 export const userManager = {
   get: () => {
     try {
@@ -59,7 +55,6 @@ export const userManager = {
     try {
       localStorage.setItem("holidaze_user", JSON.stringify(userData));
     } catch (error) {
-      console.error("Failed to store user data:", error);
     }
   },
 
@@ -67,7 +62,6 @@ export const userManager = {
     try {
       localStorage.removeItem("holidaze_user");
     } catch (error) {
-      console.error("Failed to remove user data:", error);
     }
   },
 };

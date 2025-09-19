@@ -5,15 +5,15 @@ export const usePermissions = () => {
   const { isAuthenticated, isVenueManager, user } = useAuth();
 
   const permissions = useMemo(() => ({
-    // Basic authentication
+    
     isLoggedIn: isAuthenticated,
     isGuest: !isAuthenticated,
     
-    // Role-based permissions
+    
     isVenueManager: isAuthenticated && isVenueManager,
     isCustomer: isAuthenticated && !isVenueManager,
     
-    // Action permissions
+    
     canCreateVenue: isAuthenticated && isVenueManager,
     canEditVenue: (venue) => isAuthenticated && isVenueManager && venue?.owner?.name === user?.name,
     canManageVenue: (venue) => isAuthenticated && isVenueManager && venue?.owner?.name === user?.name,
@@ -22,9 +22,9 @@ export const usePermissions = () => {
     canCancelBooking: (booking) => isAuthenticated && booking?.customer?.name === user?.name,
     canViewProfile: isAuthenticated,
     canEditProfile: isAuthenticated,
-    canViewPublicProfile: true, // Anyone can view public profiles
+    canViewPublicProfile: true, 
     
-    // Booking management permissions for venue owners
+    
     canManageBookings: (venue) => isAuthenticated && isVenueManager && venue?.owner?.name === user?.name,
     canCancelGuestBooking: (booking, venue) => {
       return isAuthenticated && isVenueManager && 
@@ -32,7 +32,7 @@ export const usePermissions = () => {
              booking?.venue?.id === venue?.id;
     },
     
-    // Content permissions
+    
     canViewMyBookings: isAuthenticated,
     canViewMyVenues: isAuthenticated && isVenueManager,
   }), [isAuthenticated, isVenueManager, user]);
@@ -40,7 +40,7 @@ export const usePermissions = () => {
   return permissions;
 };
 
-// Helper function to check specific permission
+
 export const useHasPermission = (permissionKey, ...args) => {
   const permissions = usePermissions();
   
@@ -57,7 +57,7 @@ export const useHasPermission = (permissionKey, ...args) => {
   return hasPermission;
 };
 
-// Higher-order component for permission-based rendering
+
 export const withPermission = (Component, permissionKey, fallback = null) => {
   return function PermissionWrappedComponent(props) {
     const hasPermission = useHasPermission(permissionKey, props.data);

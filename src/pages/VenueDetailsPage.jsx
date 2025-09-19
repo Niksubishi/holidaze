@@ -40,8 +40,6 @@ const VenueDetailsPage = () => {
 
 
   const handleBookingSuccess = () => {
-    // Could trigger a refetch of venue data or show a success message
-    // For now, we'll just let the booking form handle the success message
   };
 
   if (loading) {
@@ -84,7 +82,6 @@ const VenueDetailsPage = () => {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: theme.colors.background }}>
-      {/* Back button */}
       <div className="max-w-7xl mx-auto px-4 py-6">
         <button
           onClick={() => navigate(-1)}

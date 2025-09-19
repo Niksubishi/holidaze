@@ -23,7 +23,7 @@ const OptimizedImage = memo(({
   const { isDarkMode } = useTheme();
   const [currentSrc, setCurrentSrc] = useState(src);
 
-  // Image optimization
+  
   const {
     optimizedUrl,
     srcSet,
@@ -38,7 +38,7 @@ const OptimizedImage = memo(({
     breakpoints
   });
 
-  // Lazy loading (if enabled)
+  
   const {
     ref,
     src: lazySrc,
@@ -52,18 +52,18 @@ const OptimizedImage = memo(({
     rootMargin: '50px'
   });
 
-  // Determine final src and loading states
+  
   const finalSrc = lazy ? lazySrc : optimizedUrl;
   const isLoaded = lazy ? lazyLoaded && imageLoaded : imageLoaded;
   const hasError = lazy ? lazyError || imageError : imageError;
 
-  // Handle image load
+  
   const handleImageLoad = (e) => {
     if (lazy) handleLazyLoad();
     if (onLoad) onLoad(e);
   };
 
-  // Handle image error with fallback
+  
   const handleImageError = (e) => {
     if (currentSrc !== fallbackSrc) {
       setCurrentSrc(fallbackSrc);
@@ -73,7 +73,7 @@ const OptimizedImage = memo(({
     }
   };
 
-  // Memoize placeholder styles
+  
   const placeholderStyle = useMemo(() => ({
     backgroundColor: isDarkMode ? '#374151' : '#f3f4f6',
     display: 'flex',
@@ -82,14 +82,14 @@ const OptimizedImage = memo(({
     ...style
   }), [isDarkMode, style]);
 
-  // Memoize image styles
+  
   const imageStyle = useMemo(() => ({
     transition: 'opacity 0.3s ease-in-out',
     opacity: isLoaded ? 1 : 0,
     ...style
   }), [isLoaded, style]);
 
-  // Error state first
+  
   if (hasError) {
     return (
       <div
@@ -117,7 +117,7 @@ const OptimizedImage = memo(({
     );
   }
 
-  // Main image with smoother loading transition
+  
   return (
     <div
       ref={lazy ? ref : undefined}
@@ -125,7 +125,7 @@ const OptimizedImage = memo(({
       style={style}
       {...props}
     >
-      {/* Loading skeleton - shows until image loads */}
+      
       {showPlaceholder && !isLoaded && (
         <div 
           className="absolute inset-0 flex items-center justify-center animate-pulse"
@@ -150,7 +150,7 @@ const OptimizedImage = memo(({
         </div>
       )}
 
-      {/* Main image */}
+      
       {finalSrc && (
         <img
           src={finalSrc}

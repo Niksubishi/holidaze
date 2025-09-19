@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from 'react';
 
-// Validation rules
+
 export const validationRules = {
   required: (value) => {
     if (value === null || value === undefined || value === '') {
@@ -83,10 +83,10 @@ export const validationRules = {
   imageUrl: (value) => {
     if (!value) return null;
     
-    // Check if it's a valid URL first
+    
     try {
       const url = new URL(value);
-      // Check for image file extensions
+      
       const imageExtensions = /\.(jpg|jpeg|png|gif|webp|svg)$/i;
       if (!imageExtensions.test(url.pathname)) {
         return 'URL must point to an image file (jpg, jpeg, png, gif, webp, svg)';
@@ -112,13 +112,13 @@ export const validationRules = {
   }
 };
 
-// Main form validation hook
+
 export const useFormValidation = (validationSchema = {}) => {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
 
-  // Validate a single field
+  
   const validateField = useCallback((fieldName, value, allValues = values) => {
     const fieldRules = validationSchema[fieldName];
     if (!fieldRules) return null;
@@ -130,7 +130,7 @@ export const useFormValidation = (validationSchema = {}) => {
     return null;
   }, [validationSchema, values]);
 
-  // Validate all fields
+  
   const validateForm = useCallback((valuesToValidate = values) => {
     const newErrors = {};
     let isValid = true;
@@ -146,11 +146,11 @@ export const useFormValidation = (validationSchema = {}) => {
     return { isValid, errors: newErrors };
   }, [validationSchema, validateField, values]);
 
-  // Set value for a field with real-time validation
+  
   const setValue = useCallback((fieldName, value) => {
     setValues(prev => ({ ...prev, [fieldName]: value }));
     
-    // Real-time validation
+    
     const error = validateField(fieldName, value, { ...values, [fieldName]: value });
     setErrors(prev => ({ 
       ...prev, 
@@ -158,11 +158,11 @@ export const useFormValidation = (validationSchema = {}) => {
     }));
   }, [validateField, values]);
 
-  // Set multiple values at once
+  
   const setMultipleValues = useCallback((newValues) => {
     setValues(prev => ({ ...prev, ...newValues }));
     
-    // Validate affected fields
+    
     const newErrors = { ...errors };
     Object.keys(newValues).forEach(fieldName => {
       if (validationSchema[fieldName]) {
@@ -173,12 +173,12 @@ export const useFormValidation = (validationSchema = {}) => {
     setErrors(newErrors);
   }, [errors, validateField, values, validationSchema]);
 
-  // Mark field as touched (for showing validation on blur)
+  
   const setTouched = useCallback((fieldName) => {
     setTouched(prev => ({ ...prev, [fieldName]: true }));
   }, []);
 
-  // Get field props for easy integration with form inputs
+  
   const getFieldProps = useCallback((fieldName) => ({
     value: values[fieldName] || '',
     onChange: (e) => setValue(fieldName, e.target.value),
@@ -186,14 +186,14 @@ export const useFormValidation = (validationSchema = {}) => {
     error: touched[fieldName] ? errors[fieldName] : null
   }), [values, setValue, setTouched, touched, errors]);
 
-  // Reset form
+  
   const reset = useCallback((initialValues = {}) => {
     setValues(initialValues);
     setErrors({});
     setTouched({});
   }, []);
 
-  // Submit handler
+  
   const handleSubmit = useCallback((onSubmit) => {
     return (e) => {
       e.preventDefault();
@@ -201,7 +201,7 @@ export const useFormValidation = (validationSchema = {}) => {
       const validation = validateForm();
       setErrors(validation.errors);
       
-      // Mark all fields as touched to show errors
+      
       const allTouched = {};
       Object.keys(validationSchema).forEach(fieldName => {
         allTouched[fieldName] = true;
@@ -214,7 +214,7 @@ export const useFormValidation = (validationSchema = {}) => {
     };
   }, [validateForm, validationSchema, values]);
 
-  // Computed values
+  
   const isValid = useMemo(() => {
     return Object.keys(errors).every(key => !errors[key]);
   }, [errors]);

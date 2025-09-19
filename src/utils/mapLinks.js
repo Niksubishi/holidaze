@@ -16,12 +16,10 @@
 export const generateGoogleMapsUrl = (location) => {
   if (!location) return null;
 
-  // If we have coordinates, use them with the place parameter for direct navigation
   if (location.lat && location.lng) {
-    return `https://www.google.com/maps/place/${location.lat},${location.lng}`;
+    return `https://www.google.com/maps/search/?api=1&query=${location.lat},${location.lng}`;
   }
 
-  // Build address string from available data
   const addressParts = [];
   if (location.address) addressParts.push(location.address);
   if (location.city) addressParts.push(location.city);
@@ -31,9 +29,7 @@ export const generateGoogleMapsUrl = (location) => {
   if (addressParts.length === 0) return null;
 
   const addressString = addressParts.join(', ');
-  
-  // Use place search for direct navigation to address
-  return `https://www.google.com/maps/place/${encodeURIComponent(addressString)}`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressString)}`;
 };
 
 /**
@@ -50,12 +46,10 @@ export const generateGoogleMapsUrl = (location) => {
 export const generateAppleMapsUrl = (location) => {
   if (!location) return null;
 
-  // If we have coordinates, use them for better accuracy
   if (location.lat && location.lng) {
-    return `https://maps.apple.com/?ll=${location.lat},${location.lng}`;
+    return `https://maps.apple.com/?q=${location.lat},${location.lng}`;
   }
 
-  // Build address string from available data
   const addressParts = [];
   if (location.address) addressParts.push(location.address);
   if (location.city) addressParts.push(location.city);
@@ -65,7 +59,6 @@ export const generateAppleMapsUrl = (location) => {
   if (addressParts.length === 0) return null;
 
   const addressString = addressParts.join(', ');
-  
   return `https://maps.apple.com/?q=${encodeURIComponent(addressString)}`;
 };
 

@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
-// Lazy loading hook using Intersection Observer
 export const useLazyLoading = (options = {}) => {
   const {
     threshold = 0.1,
@@ -15,7 +14,6 @@ export const useLazyLoading = (options = {}) => {
 
   const setRef = useCallback((node) => {
     if (elementRef.current) {
-      // Clean up previous observer
       if (observerRef.current) {
         observerRef.current.disconnect();
       }
@@ -24,7 +22,6 @@ export const useLazyLoading = (options = {}) => {
     elementRef.current = node;
 
     if (node) {
-      // Create new observer
       observerRef.current = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
@@ -66,7 +63,6 @@ export const useLazyLoading = (options = {}) => {
   };
 };
 
-// Hook specifically for lazy loading images
 export const useLazyImage = (src, options = {}) => {
   const { ref, shouldLoad } = useLazyLoading(options);
   const [imageSrc, setImageSrc] = useState(null);
@@ -100,7 +96,6 @@ export const useLazyImage = (src, options = {}) => {
   };
 };
 
-// Hook for lazy loading components
 export const useLazyComponent = (importFn, options = {}) => {
   const { shouldLoad } = useLazyLoading(options);
   const [Component, setComponent] = useState(null);
@@ -117,8 +112,7 @@ export const useLazyComponent = (importFn, options = {}) => {
           setIsLoading(false);
           setHasError(false);
         })
-        .catch((error) => {
-          console.error('Failed to load component:', error);
+        .catch(() => {
           setHasError(true);
           setIsLoading(false);
         });

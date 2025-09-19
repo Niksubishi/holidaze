@@ -93,9 +93,9 @@ const PublicProfilePage = () => {
   return (
     <div className="min-h-screen py-8" style={{ backgroundColor: theme.colors.background }}>
       <div className="max-w-6xl mx-auto px-4">
-        {/* Profile Header */}
+        
         <div className="rounded-lg p-6 mb-8" style={{ backgroundColor: getCardBackground(isDarkMode) }}>
-          {/* Banner */}
+          
           {profile.banner?.url && (
             <div className="w-full h-48 mb-6 rounded-lg overflow-hidden">
               <img
@@ -107,9 +107,9 @@ const PublicProfilePage = () => {
             </div>
           )}
 
-          {/* Profile Info */}
+          
           <div className="flex items-start space-x-6">
-            {/* Avatar */}
+            
             {profile.avatar?.url ? (
               <img
                 src={profile.avatar.url}
@@ -125,7 +125,7 @@ const PublicProfilePage = () => {
               </div>
             )}
 
-            {/* Name and Bio */}
+            
             <div className="flex-1">
               <h1 className="font-poppins text-3xl mb-2" style={{ color: theme.colors.text }}>
                 {profile.name}
@@ -145,7 +145,7 @@ const PublicProfilePage = () => {
           </div>
         </div>
 
-        {/* Venues Section */}
+        
         {profile.venues && profile.venues.length > 0 && (
           <div>
             <div className="mb-6">
@@ -165,7 +165,7 @@ const PublicProfilePage = () => {
           </div>
         )}
 
-        {/* No Venues Message */}
+        
         {(!profile.venues || profile.venues.length === 0) && (
           <div className="text-center py-12">
             <div className="mb-6">

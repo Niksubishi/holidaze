@@ -26,7 +26,6 @@ const VenuesList = memo(() => {
   });
   const debounceTimeoutRef = useRef(null);
 
-  // Get state from URL params with fallbacks
   const searchQuery = searchParams.get("search") || "";
   const [localSearchValue, setLocalSearchValue] = useState(searchQuery);
   const sortBy = searchParams.get("sortBy") || "created";
@@ -34,7 +33,6 @@ const VenuesList = memo(() => {
 
   const venuesPerPage = 12;
 
-  // Apply client-side amenity filtering
   const applyAmenityFilters = useCallback((venuesList) => {
     const hasActiveFilters = Object.values(amenityFilters).some(filter => filter);
 
@@ -45,7 +43,6 @@ const VenuesList = memo(() => {
     return venuesList.filter(venue => {
       if (!venue.meta) return false;
 
-      // Check if venue has all selected amenities
       if (amenityFilters.wifi && !venue.meta.wifi) return false;
       if (amenityFilters.parking && !venue.meta.parking) return false;
       if (amenityFilters.breakfast && !venue.meta.breakfast) return false;
@@ -82,16 +79,13 @@ const VenuesList = memo(() => {
       const apiVenues = response.data || [];
       setVenues(apiVenues);
 
-      // Apply client-side amenity filtering
-      const filtered = applyAmenityFilters(apiVenues);
+          const filtered = applyAmenityFilters(apiVenues);
       setFilteredVenues(filtered);
 
-      // Set pagination based on API response (not filtered results)
       setTotalPages(response.meta?.pageCount || 0);
 
       setError("");
     } catch (err) {
-      console.error("Failed to fetch venues:", err);
       setError(err.message || "Failed to load venues");
     } finally {
       setLoading('venues-list', false);
@@ -103,18 +97,15 @@ const VenuesList = memo(() => {
     fetchVenues(1);
   }, [sortBy, sortOrder, searchQuery]);
 
-  // Fetch venues when page changes
   useEffect(() => {
     fetchVenues(currentPage);
   }, [currentPage, fetchVenues]);
 
-  // Re-apply filters when amenity filters change
   useEffect(() => {
     const filtered = applyAmenityFilters(venues);
     setFilteredVenues(filtered);
   }, [venues, applyAmenityFilters]);
 
-  // Update URL params helper
   const updateParams = useCallback((newParams) => {
     setSearchParams(prevParams => {
       const updatedParams = new URLSearchParams(prevParams);
@@ -134,7 +125,6 @@ const VenuesList = memo(() => {
     setIsSearching(false);
     setLocalSearchValue("");
     
-    // Clear any pending debounce
     if (debounceTimeoutRef.current) {
       clearTimeout(debounceTimeoutRef.current);
     }
@@ -165,29 +155,24 @@ const VenuesList = memo(() => {
     });
   }, [updateParams]);
 
-  // Update local search value immediately for responsive UI
   const handleSearchInputChange = useCallback((value) => {
     setLocalSearchValue(value);
     
-    // Clear existing timeout
     if (debounceTimeoutRef.current) {
       clearTimeout(debounceTimeoutRef.current);
     }
     
-    // Set new timeout for debounced search
     debounceTimeoutRef.current = setTimeout(() => {
       updateParams({
         search: value ? value.trim() : ""
       });
-    }, 300); // 300ms debounce delay
+    }, 300);
   }, [updateParams]);
   
-  // Sync local value when URL search param changes (for browser back/forward)
   useEffect(() => {
     setLocalSearchValue(searchQuery);
   }, [searchQuery]);
   
-  // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
       if (debounceTimeoutRef.current) {
@@ -196,7 +181,6 @@ const VenuesList = memo(() => {
     };
   }, []);
 
-  // Memoize sort button states to avoid recalculation
   const sortButtonStates = useMemo(() => ({
     newest: sortBy === "created" && sortOrder === "desc",
     oldest: sortBy === "created" && sortOrder === "asc",
@@ -205,7 +189,6 @@ const VenuesList = memo(() => {
     highestRated: sortBy === "rating" && sortOrder === "desc"
   }), [sortBy, sortOrder]);
 
-  // Memoize inactive button styles
   const inactiveButtonStyle = useMemo(() => ({
     backgroundColor: isDarkMode ? "#132F3D" : "#f3f4f6",
     color: isDarkMode ? "#9ca3af" : theme.colors.text,
@@ -213,7 +196,6 @@ const VenuesList = memo(() => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      {/* Search and Filter Section */}
       <div className="mb-8 flex flex-col items-center">
         <div className="mb-6 w-full max-w-2xl">
           <div className="relative w-full">
@@ -253,7 +235,6 @@ const VenuesList = memo(() => {
           </div>
         </div>
 
-        {/* Sort Options */}
         <div className="flex flex-wrap gap-2 justify-center">
           <button
             onClick={() => handleSortChange("created", "desc")}
@@ -302,7 +283,6 @@ const VenuesList = memo(() => {
           </button>
         </div>
 
-        {/* Amenity Filters */}
         <div className="mt-6">
           <div className="flex flex-wrap gap-2 justify-center items-center">
             <span className="font-poppins text-sm mr-2" style={{ color: theme.colors.text }}>
@@ -337,7 +317,6 @@ const VenuesList = memo(() => {
             ))}
           </div>
 
-          {/* Active filters indicator */}
           {Object.values(amenityFilters).some(filter => filter) && (
             <div className="mt-3 text-center">
               <span className="font-poppins text-xs px-3 py-1 rounded-full" style={{
@@ -351,15 +330,12 @@ const VenuesList = memo(() => {
         </div>
       </div>
 
-      {/* Error Display */}
       {error && <ErrorMessage message={error} className="mb-6" />}
 
-      {/* Loading Skeleton */}
       {isLoading('venues-list') && venues.length === 0 && (
         <SkeletonList count={8} />
       )}
 
-      {/* Venues Grid */}
       {!isLoading('venues-list') && venues.length === 0 && !error && (
         <div className="text-center py-12">
           <h3
@@ -404,10 +380,8 @@ const VenuesList = memo(() => {
         </div>
       )}
 
-      {/* Pagination */}
       {totalPages > 1 && filteredVenues.length > 0 && (
         <div className="flex justify-center items-center space-x-2 mt-8">
-          {/* Previous button */}
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
@@ -420,15 +394,12 @@ const VenuesList = memo(() => {
             ← Previous
           </button>
 
-          {/* Page numbers */}
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => {
-            // Show first page, last page, current page, and pages around current
             const showPage =
               pageNum === 1 ||
               pageNum === totalPages ||
               (pageNum >= currentPage - 1 && pageNum <= currentPage + 1);
 
-            // Show ellipsis
             const showEllipsisBefore = pageNum === currentPage - 2 && currentPage > 4;
             const showEllipsisAfter = pageNum === currentPage + 2 && currentPage < totalPages - 3;
 
@@ -462,7 +433,6 @@ const VenuesList = memo(() => {
             );
           })}
 
-          {/* Next button */}
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
@@ -480,7 +450,6 @@ const VenuesList = memo(() => {
   );
 });
 
-// Add display name for better debugging
 VenuesList.displayName = 'VenuesList';
 
 export default VenuesList;

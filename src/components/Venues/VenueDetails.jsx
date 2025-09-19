@@ -137,7 +137,7 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
               className="w-full h-auto max-h-screen object-contain"
             />
 
-            {/* Close button */}
+            
             <button
               onClick={() => setIsModalOpen(false)}
               className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors bg-black bg-opacity-70 rounded-full p-2"
@@ -157,7 +157,7 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
               </svg>
             </button>
 
-            {/* Navigation arrows for multiple images */}
+            
             {images.length > 1 && (
               <>
                 <button
@@ -184,7 +184,7 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
                   </svg>
                 </button>
 
-                {/* Image counter */}
+                
                 <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white bg-black bg-opacity-70 px-3 py-1 rounded-full text-sm">
                   {selectedImageIndex + 1} / {images.length}
                 </div>
@@ -239,7 +239,7 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
     <>
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Column - Images and Details */}
+          
           <div>
             {renderImageGallery()}
 
@@ -273,7 +273,7 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
                 </span>
               </div>
 
-              {/* Description */}
+              
               {venue.description && (
                 <div className="mb-6">
                   <h3 className="font-poppins text-lg mb-3" style={{ color: theme.colors.text }}>
@@ -287,14 +287,14 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
 
               {renderAmenities()}
 
-              {/* Location Map */}
+              
               <div className="mb-6">
                 <h3 className="font-poppins text-lg mb-3" style={{ color: theme.colors.text }}>
                   Location
                 </h3>
                 <VenueLocationMap venue={venue} />
                 
-                {/* Map Links */}
+                
                 <div className="mt-4">
                   <MapLinks 
                     location={venue.location} 
@@ -306,14 +306,14 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
             {renderOwnerInfo()}
           </div>
 
-          {/* Right Column - Booking Form */}
+          
           <div className="lg:sticky lg:top-8 lg:self-start">
             <BookingForm venue={venue} onBookingSuccess={onBookingSuccess} />
           </div>
         </div>
       </div>
 
-      {/* Image Modal */}
+      
       {renderImageModal()}
     </>
   );

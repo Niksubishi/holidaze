@@ -60,12 +60,12 @@ const PasswordInput = memo(({
           aria-label={showPassword ? 'Hide password' : 'Show password'}
         >
           {showPassword ? (
-            // Eye slash icon (hide password)
+            
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L6.757 6.757M9.878 9.878a3 3 0 000 4.243m4.242-4.243L17.121 17.121m-4.243-4.243a3 3 0 000-4.243m0 4.243l4.243 4.243M17.121 17.121L21 21m-3.879-3.879l-2.122-2.122m0 0L12 12m0 0L9.879 9.879" />
             </svg>
           ) : (
-            // Eye icon (show password)
+            
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />

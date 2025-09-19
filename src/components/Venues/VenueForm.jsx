@@ -151,7 +151,7 @@ const VenueForm = ({ mode = "create", venueId = null }) => {
   };
 
   const validateForm = () => {
-    // Use local validation errors (not API errors)
+    
     if (!formData.name.trim()) {
       handleApiError({ message: "Venue name is required", type: "VALIDATION" });
       return false;
@@ -295,7 +295,7 @@ const VenueForm = ({ mode = "create", venueId = null }) => {
           />
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Basic Information */}
+            
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <label
@@ -405,7 +405,7 @@ const VenueForm = ({ mode = "create", venueId = null }) => {
               </div>
             </div>
 
-            {/* Description */}
+            
             <div>
               <label
                 htmlFor="description"
@@ -431,7 +431,7 @@ const VenueForm = ({ mode = "create", venueId = null }) => {
               />
             </div>
 
-            {/* Media */}
+            
             <div>
               <label className="block font-poppins text-sm mb-2" style={{ color: theme.colors.text, opacity: 0.8 }}>
                 Images *
@@ -512,7 +512,7 @@ const VenueForm = ({ mode = "create", venueId = null }) => {
               </button>
             </div>
 
-            {/* Amenities */}
+            
             <div>
               <label className="block font-poppins text-sm mb-3" style={{ color: theme.colors.text, opacity: 0.8 }}>
                 Amenities
@@ -540,7 +540,7 @@ const VenueForm = ({ mode = "create", venueId = null }) => {
               </div>
             </div>
 
-            {/* Location */}
+            
             <div>
               <h3 className="font-poppins text-lg mb-4" style={{ color: theme.colors.text }}>Location</h3>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -716,7 +716,7 @@ const VenueForm = ({ mode = "create", venueId = null }) => {
               </div>
             </div>
 
-            {/* Submit Button */}
+            
             <div className="flex justify-end space-x-4 pt-6">
               <button
                 type="button"

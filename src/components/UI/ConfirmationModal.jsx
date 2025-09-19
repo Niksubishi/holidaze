@@ -8,14 +8,14 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm, title, message, confirm
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
+      
       <div 
         className="fixed inset-0 transition-opacity"
         style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
         onClick={onClose}
       />
       
-      {/* Modal */}
+      
       <div 
         className="relative rounded-lg p-6 w-full max-w-md transition-all"
         style={{ 

@@ -85,7 +85,7 @@ const AmenityIcons = {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* Main paw pad */}
+      
       <ellipse 
         cx="12" 
         cy="15" 
@@ -93,7 +93,7 @@ const AmenityIcons = {
         ry="3.5" 
         fill={color}
       />
-      {/* Top left toe */}
+      
       <ellipse 
         cx="8.5" 
         cy="9" 
@@ -101,7 +101,7 @@ const AmenityIcons = {
         ry="2.5" 
         fill={color}
       />
-      {/* Top center toe */}
+      
       <ellipse 
         cx="12" 
         cy="7.5" 
@@ -109,7 +109,7 @@ const AmenityIcons = {
         ry="2.8" 
         fill={color}
       />
-      {/* Top right toe */}
+      
       <ellipse 
         cx="15.5" 
         cy="9" 
@@ -117,7 +117,7 @@ const AmenityIcons = {
         ry="2.5" 
         fill={color}
       />
-      {/* Side toe */}
+      
       <ellipse 
         cx="6.5" 
         cy="12" 

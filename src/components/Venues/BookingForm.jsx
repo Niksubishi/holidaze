@@ -38,7 +38,6 @@ const BookingForm = memo(({ venue, onBookingSuccess }) => {
     );
   }
 
-  // Memoize the stable callback for input changes
   const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -46,21 +45,17 @@ const BookingForm = memo(({ venue, onBookingSuccess }) => {
       [name]: value,
     }));
 
-    // Clear messages when user starts typing
     if (error) setError("");
   }, [error]);
 
-  // Handle calendar date selection
   const handleCalendarDateSelect = useCallback((dateStr) => {
     if (!formData.dateFrom) {
-      // First click - set check-in date
       setFormData(prev => ({
         ...prev,
         dateFrom: dateStr,
         dateTo: ""
       }));
     } else if (!formData.dateTo) {
-      // Second click - set check-out date
       const checkInDate = new Date(formData.dateFrom);
       const checkOutDate = new Date(dateStr);
 
@@ -70,7 +65,6 @@ const BookingForm = memo(({ venue, onBookingSuccess }) => {
           dateTo: dateStr
         }));
       } else {
-        // If clicked date is before check-in, reset and start over
         setFormData(prev => ({
           ...prev,
           dateFrom: dateStr,
@@ -78,7 +72,6 @@ const BookingForm = memo(({ venue, onBookingSuccess }) => {
         }));
       }
     } else {
-      // Both dates selected - start over
       setFormData(prev => ({
         ...prev,
         dateFrom: dateStr,
@@ -86,11 +79,9 @@ const BookingForm = memo(({ venue, onBookingSuccess }) => {
       }));
     }
 
-    // Clear error when dates change
     if (error) setError("");
   }, [formData.dateFrom, formData.dateTo, error]);
 
-  // Memoize expensive price calculation
   const pricingData = useMemo(() => {
     const { dateFrom, dateTo } = formData;
     if (!dateFrom || !dateTo) {
@@ -106,7 +97,6 @@ const BookingForm = memo(({ venue, onBookingSuccess }) => {
     return { totalPrice, nights };
   }, [formData.dateFrom, formData.dateTo, venue.price]);
 
-  // Memoize date conflict checking function
   const hasDateConflict = useCallback((checkInDate, checkOutDate) => {
     if (!venue.bookings) return false;
 
@@ -117,7 +107,6 @@ const BookingForm = memo(({ venue, onBookingSuccess }) => {
       const bookingStart = new Date(booking.dateFrom);
       const bookingEnd = new Date(booking.dateTo);
 
-      // Check if dates overlap (including touching dates)
       return (newStart < bookingEnd && newEnd > bookingStart);
     });
   }, [venue.bookings]);
@@ -145,7 +134,6 @@ const BookingForm = memo(({ venue, onBookingSuccess }) => {
       return false;
     }
 
-    // Check for booking conflicts
     if (hasDateConflict(dateFrom, dateTo)) {
       setError("Selected dates conflict with existing bookings. Please choose different dates.");
       return false;
@@ -210,18 +198,16 @@ const BookingForm = memo(({ venue, onBookingSuccess }) => {
     return `${start} - ${end}`;
   };
 
-  // Memoize unavailable date ranges calculation
   const unavailableDateRanges = useMemo(() => {
     if (!venue.bookings || venue.bookings.length === 0) return [];
     
     const today = new Date();
     return venue.bookings
-      .filter(booking => new Date(booking.dateTo) > today) // Only future/current bookings
+      .filter(booking => new Date(booking.dateTo) > today)
       .sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom))
-      .slice(0, 5); // Show max 5 upcoming bookings
+      .slice(0, 5);
   }, [venue.bookings]);
 
-  // Use memoized pricing data
   const { totalPrice, nights } = pricingData;
 
   return (
@@ -235,7 +221,6 @@ const BookingForm = memo(({ venue, onBookingSuccess }) => {
         </div>
       </div>
 
-      {/* Availability Calendar */}
       <div className="mb-6">
         <h4 className="font-poppins text-sm mb-3" style={{ color: theme.colors.text, opacity: 0.9 }}>
           Select Your Dates
@@ -368,7 +353,6 @@ const BookingForm = memo(({ venue, onBookingSuccess }) => {
   );
 });
 
-// Add display name for better debugging
 BookingForm.displayName = 'BookingForm';
 
 export default BookingForm;

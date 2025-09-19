@@ -14,7 +14,6 @@ import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import ToastContainer from "./components/UI/ToastContainer";
 import useScrollToTop from "./hooks/useScrollToTop";
 
-// Pages
 import Home from "./pages/Home";
 import VenuesPage from "./pages/VenuesPage";
 import VenueDetailsPage from "./pages/VenueDetailsPage";
@@ -28,14 +27,12 @@ import ProfilePage from "./pages/ProfilePage";
 import PublicProfilePage from "./pages/PublicProfilePage";
 import NotFound from "./pages/NotFound";
 
-
 const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
-  useScrollToTop(); // Add global scroll-to-top
+  useScrollToTop();
 
   return (
     <Routes>
-      {/* Public routes */}
       <Route
         path="/"
         element={isAuthenticated ? <Navigate to="/venues" replace /> : <Home />}
@@ -45,7 +42,6 @@ const AppRoutes = () => {
       <Route path="/profile/:username" element={<PublicProfilePage />} />
       <Route path="/auth" element={<AuthPage />} />
 
-      {/* Protected customer routes */}
       <Route
         path="/my-bookings"
         element={
@@ -63,7 +59,6 @@ const AppRoutes = () => {
         }
       />
 
-      {/* Protected venue manager routes */}
       <Route
         path="/my-venues"
         element={
@@ -97,7 +92,6 @@ const AppRoutes = () => {
         }
       />
 
-      {/* 404 and catch-all */}
       <Route path="/404" element={<NotFound />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

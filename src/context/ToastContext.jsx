@@ -28,7 +28,7 @@ export const ToastProvider = ({ children }) => {
     setToasts([]);
   }, []);
 
-  // Convenience methods
+  
   const showSuccess = useCallback((message, duration = 4000) => {
     return addToast(message, 'success', duration);
   }, [addToast]);

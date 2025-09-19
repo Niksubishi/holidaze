@@ -5,12 +5,12 @@ import { getMapUrls } from '../../utils/mapLinks';
 const MapLinks = memo(({ location, venueName, className = '' }) => {
   const { isDarkMode } = useTheme();
 
-  // Memoize map URLs to avoid recalculation
+  
   const mapUrls = useMemo(() => {
     return getMapUrls(location, venueName);
   }, [location, venueName]);
 
-  // Don't render if we don't have any valid URLs
+  
   if (!mapUrls.google && !mapUrls.apple) {
     return null;
   }
@@ -41,14 +41,14 @@ const MapLinks = memo(({ location, venueName, className = '' }) => {
     color: isDarkMode ? '#000000' : '#ffffff'
   };
 
-  // Google Maps Icon (simplified)
+  
   const GoogleMapsIcon = () => (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
       <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
     </svg>
   );
 
-  // Apple Maps Icon (simplified)
+  
   const AppleMapsIcon = () => (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
       <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>

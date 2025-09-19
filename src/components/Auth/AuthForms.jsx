@@ -185,7 +185,6 @@ const AuthForms = () => {
     setError("");
 
     try {
-      // Prepare signup data
       const userData = {
         name: signupData.name,
         email: signupData.email,
@@ -193,7 +192,6 @@ const AuthForms = () => {
         venueManager: signupData.venueManager,
       };
 
-      // Add optional fields only if they have values
       if (signupData.bio.trim()) {
         userData.bio = signupData.bio.trim();
       }
@@ -236,7 +234,6 @@ const AuthForms = () => {
           className="rounded-lg p-8 shadow-lg"
           style={{ backgroundColor: getCardBackground(isDarkMode) }}
         >
-          {/* Toggle Buttons */}
           <div className="flex mb-8">
             <button
               onClick={() => {
@@ -280,10 +277,8 @@ const AuthForms = () => {
             </button>
           </div>
 
-          {/* Error Messages */}
           <ErrorMessage message={error} className="mb-4" />
 
-          {/* Login Form */}
           {isLogin && (
             <form onSubmit={handleLogin} className="space-y-4">
               <div>
@@ -338,7 +333,6 @@ const AuthForms = () => {
             </form>
           )}
 
-          {/* Signup Form */}
           {!isLogin && (
             <form onSubmit={handleSignup} className="space-y-4">
               <div>

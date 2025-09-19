@@ -33,7 +33,7 @@ const ManageVenuePage = () => {
         ]);
         const venueData = response.data;
         
-        // Check if user owns this venue
+        
         if (venueData.owner.name !== user.name) {
           setError("You don't have permission to manage this venue");
           setLoading(false);
@@ -52,7 +52,7 @@ const ManageVenuePage = () => {
     if (venueId && user) {
       fetchVenue();
     } else if (venueId && !user) {
-      // User not loaded yet, wait
+      
       setLoading(true);
     } else {
       setLoading(false);
@@ -69,7 +69,7 @@ const ManageVenuePage = () => {
     try {
       await bookingsAPI.delete(bookingToDelete);
       
-      // Remove the booking from the venue's bookings array
+      
       setVenue(prev => ({
         ...prev,
         bookings: prev.bookings.filter(booking => booking.id !== bookingToDelete)
@@ -125,7 +125,7 @@ const ManageVenuePage = () => {
     if (!venue?.bookings) return [];
     const allPastBookings = venue.bookings
       .filter(booking => isBookingPast(booking))
-      .sort((a, b) => new Date(b.dateFrom) - new Date(a.dateFrom)); // Most recent first
+      .sort((a, b) => new Date(b.dateFrom) - new Date(a.dateFrom)); 
     return allPastBookings.slice(0, pastBookingsToShow);
   };
 
@@ -177,7 +177,7 @@ const ManageVenuePage = () => {
   return (
     <div className="min-h-screen py-8" style={{ backgroundColor: theme.colors.background }}>
       <div className="max-w-6xl mx-auto px-4">
-        {/* Header */}
+        
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
@@ -203,7 +203,7 @@ const ManageVenuePage = () => {
 
         <ErrorMessage message={error} className="mb-6" />
 
-        {/* Venue Summary */}
+        
         <div className="rounded-lg p-6 mb-8" style={{ backgroundColor: getMainCardBackground(isDarkMode) }}>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="text-center">
@@ -241,7 +241,7 @@ const ManageVenuePage = () => {
           </div>
         </div>
 
-        {/* Current Bookings List */}
+        
         {getCurrentBookings().length === 0 && getPastBookings().length === 0 ? (
           <div className="text-center py-12 rounded-lg" style={{ backgroundColor: getMainCardBackground(isDarkMode) }}>
             <div className="mb-6">
@@ -268,7 +268,7 @@ const ManageVenuePage = () => {
           </div>
         ) : (
           <div className="space-y-8">
-            {/* Current Bookings */}
+            
             {getCurrentBookings().length > 0 && (
               <div className="space-y-4">
                 <h2 className="font-poppins text-2xl mb-4" style={{ color: theme.colors.text }}>
@@ -282,7 +282,7 @@ const ManageVenuePage = () => {
                 style={{ backgroundColor: getMainCardBackground(isDarkMode) }}
               >
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* Guest Information */}
+                  
                   <div>
                     <h4 className="font-poppins text-lg mb-2" style={{ color: theme.colors.text }}>
                       Guest Details
@@ -310,7 +310,7 @@ const ManageVenuePage = () => {
                     </div>
                   </div>
 
-                  {/* Booking Dates */}
+                  
                   <div>
                     <h4 className="font-poppins text-lg mb-2" style={{ color: theme.colors.text }}>
                       Booking Details
@@ -331,7 +331,7 @@ const ManageVenuePage = () => {
                     </div>
                   </div>
 
-                  {/* Actions */}
+                  
                   <div className="flex items-end justify-end">
                     <button
                       onClick={() => handleDeleteBooking(booking.id)}
@@ -346,7 +346,7 @@ const ManageVenuePage = () => {
               </div>
             )}
 
-            {/* Past Bookings */}
+            
             {getTotalPastBookings() > 0 && (
               <div className="space-y-4">
                 <h2 className="font-poppins text-2xl mb-4" style={{ color: theme.colors.text }}>
@@ -360,7 +360,7 @@ const ManageVenuePage = () => {
                     style={{ backgroundColor: getSecondaryBackground(isDarkMode) }}
                   >
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {/* Guest Name */}
+                      
                       <div>
                         {booking.customer?.name ? (
                           <Link
@@ -377,7 +377,7 @@ const ManageVenuePage = () => {
                         )}
                       </div>
 
-                      {/* Booking Dates */}
+                      
                       <div>
                         <p className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.7 }}>
                           {formatDate(booking.dateFrom)} - {formatDate(booking.dateTo)}
@@ -387,7 +387,7 @@ const ManageVenuePage = () => {
                         </p>
                       </div>
 
-                      {/* Price */}
+                      
                       <div className="text-right">
                         <p className="font-poppins" style={{ color: theme.colors.text }}>
                           ${calculateNights(booking.dateFrom, booking.dateTo) * venue.price}
@@ -400,7 +400,7 @@ const ManageVenuePage = () => {
                   </div>
                 ))}
 
-                {/* Load More Past Bookings Button */}
+                
                 {hasMorePastBookings() && (
                   <div className="text-center mt-6">
                     <button

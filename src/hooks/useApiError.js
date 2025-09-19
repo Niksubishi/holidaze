@@ -8,7 +8,6 @@ export const useApiError = () => {
   const { logout } = useAuth();
 
   const handleApiError = useCallback((apiError) => {
-    // Handle authentication errors by logging out
     if (apiError.type === ErrorTypes.AUTHENTICATION) {
       logout();
       setError('Your session has expired. Please sign in again.');
@@ -16,22 +15,9 @@ export const useApiError = () => {
       return;
     }
 
-    // Set user-friendly error message
     setError(apiError.message || 'Something went wrong. Please try again.');
     setErrorType(apiError.type);
 
-    // Log detailed error info for debugging (only in development)
-    if (import.meta.env.DEV) {
-      console.group('🚨 API Error Details');
-      console.error('Message:', apiError.message);
-      console.error('Type:', apiError.type);
-      console.error('Status:', apiError.status);
-      console.error('Context:', apiError.context);
-      if (apiError.originalError) {
-        console.error('Original Error:', apiError.originalError);
-      }
-      console.groupEnd();
-    }
   }, [logout]);
 
   const clearError = useCallback(() => {

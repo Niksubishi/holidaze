@@ -4,19 +4,19 @@ import { useTheme } from "../../context/ThemeContext";
 const ThemeToggle = memo(() => {
   const { isDarkMode, toggleDarkMode } = useTheme();
 
-  // Memoize the button styles to avoid recalculation
+  
   const buttonStyle = useMemo(() => ({
     backgroundColor: isDarkMode ? '#489DA6' : '#132F3D'
   }), [isDarkMode]);
 
-  // Memoize the toggle circle classes
+  
   const toggleClasses = useMemo(() => 
     `w-4 h-4 rounded-full bg-white flex items-center justify-center transition-transform duration-300 ${
       isDarkMode ? 'transform translate-x-2' : 'transform -translate-x-2'
     }`, [isDarkMode]
   );
 
-  // Memoize the icons to avoid re-creating SVG elements
+  
   const moonIcon = useMemo(() => (
     <svg 
       width="10" 
@@ -62,7 +62,7 @@ const ThemeToggle = memo(() => {
   );
 });
 
-// Add display name for better debugging
+
 ThemeToggle.displayName = 'ThemeToggle';
 
 export default ThemeToggle;

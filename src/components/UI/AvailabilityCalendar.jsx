@@ -5,7 +5,6 @@ const AvailabilityCalendar = ({ venue, selectedDateFrom, selectedDateTo, onDateS
   const { theme, isDarkMode } = useTheme();
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
-  // Helper function to check if a date is unavailable
   const isDateUnavailable = (date) => {
     if (!venue.bookings) return false;
 
@@ -14,23 +13,19 @@ const AvailabilityCalendar = ({ venue, selectedDateFrom, selectedDateTo, onDateS
       const bookingEnd = new Date(booking.dateTo);
       const checkDate = new Date(date);
 
-      // Check if date falls within any booking range (inclusive)
       return checkDate >= bookingStart && checkDate < bookingEnd;
     });
   };
 
-  // Helper function to check if date is in the past
   const isDateInPast = (date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return date < today;
   };
 
-  // Helper function to check if date is selected
   const isDateSelected = (date) => {
     if (!selectedDateFrom) return false;
 
-    // Use local date formatting to avoid timezone issues
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
@@ -40,31 +35,25 @@ const AvailabilityCalendar = ({ venue, selectedDateFrom, selectedDateTo, onDateS
       return dateStr === selectedDateFrom;
     }
 
-    // For date range comparison, use string comparison since we're using YYYY-MM-DD format
     return dateStr >= selectedDateFrom && dateStr <= selectedDateTo;
   };
 
-  // Generate calendar days for current month
   const calendarDays = useMemo(() => {
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
 
-    // Get first day of month and number of days
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
     const daysInMonth = lastDay.getDate();
 
-    // Get starting day of week (0 = Sunday)
     const startDayOfWeek = firstDay.getDay();
 
     const days = [];
 
-    // Add empty cells for days before month starts
     for (let i = 0; i < startDayOfWeek; i++) {
       days.push(null);
     }
 
-    // Add all days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       days.push(new Date(year, month, day));
     }
@@ -75,7 +64,6 @@ const AvailabilityCalendar = ({ venue, selectedDateFrom, selectedDateTo, onDateS
   const handleDateClick = (date) => {
     if (isDateInPast(date) || isDateUnavailable(date)) return;
 
-    // Use local date formatting to avoid timezone issues
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
@@ -101,7 +89,6 @@ const AvailabilityCalendar = ({ venue, selectedDateFrom, selectedDateTo, onDateS
 
   return (
     <div className="w-full">
-      {/* Calendar Header */}
       <div className="flex items-center justify-between mb-4">
         <button
           type="button"
@@ -130,7 +117,6 @@ const AvailabilityCalendar = ({ venue, selectedDateFrom, selectedDateTo, onDateS
         </button>
       </div>
 
-      {/* Day Headers */}
       <div className="grid grid-cols-7 gap-1 mb-2">
         {dayNames.map(day => (
           <div
@@ -143,7 +129,6 @@ const AvailabilityCalendar = ({ venue, selectedDateFrom, selectedDateTo, onDateS
         ))}
       </div>
 
-      {/* Calendar Grid */}
       <div className="grid grid-cols-7 gap-1">
         {calendarDays.map((date, index) => {
           if (!date) {
@@ -169,10 +154,10 @@ const AvailabilityCalendar = ({ venue, selectedDateFrom, selectedDateTo, onDateS
                 backgroundColor: isSelected
                   ? theme.colors.primary || '#007bff'
                   : isUnavailable
-                    ? '#ef4444' // Red for booked dates
+                    ? '#ef4444'
                     : isPast
-                      ? isDarkMode ? '#374151' : '#e5e7eb' // Gray for past dates
-                      : isDarkMode ? '#4b5563' : '#f9fafb', // Normal background
+                      ? isDarkMode ? '#374151' : '#e5e7eb'
+                      : isDarkMode ? '#4b5563' : '#f9fafb',
                 color: isSelected
                   ? '#ffffff'
                   : isUnavailable
@@ -186,7 +171,6 @@ const AvailabilityCalendar = ({ venue, selectedDateFrom, selectedDateTo, onDateS
         })}
       </div>
 
-      {/* Legend */}
       <div className="mt-4 flex flex-wrap gap-4 text-xs font-poppins">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded bg-red-500"></div>

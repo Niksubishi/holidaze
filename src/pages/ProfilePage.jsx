@@ -82,12 +82,12 @@ const ProfilePage = () => {
     try {
       const updateData = {};
 
-      // Add bio if it has a value or if it's being cleared
+      
       if (formData.bio !== user.bio) {
         updateData.bio = formData.bio.trim();
       }
 
-      // Add avatar if URL is provided or if it's being cleared
+      
       if (
         formData.avatar.url !== user?.avatar?.url ||
         formData.avatar.alt !== user?.avatar?.alt
@@ -102,7 +102,7 @@ const ProfilePage = () => {
         }
       }
 
-      // Add banner if URL is provided or if it's being cleared
+      
       if (
         formData.banner.url !== user?.banner?.url ||
         formData.banner.alt !== user?.banner?.alt
@@ -117,12 +117,12 @@ const ProfilePage = () => {
         }
       }
 
-      // Add venue manager status if it's different
+      
       if (formData.venueManager !== user.venueManager) {
         updateData.venueManager = formData.venueManager;
       }
 
-      // Only make API call if there are changes
+      
       if (Object.keys(updateData).length === 0) {
         setError("No changes to save");
         return;
@@ -163,7 +163,7 @@ const ProfilePage = () => {
         <div className="rounded-lg p-6" style={{ backgroundColor: getCardBackground(isDarkMode) }}>
           <ErrorMessage message={error} className="mb-6" />
 
-          {/* Current Profile Info */}
+          
           <div className="mb-6 pb-6 border-b" style={{ borderColor: isDarkMode ? '#4b5563' : '#e5e7eb' }}>
             <div className="flex items-center space-x-4">
               {user?.avatar?.url ? (
@@ -191,7 +191,7 @@ const ProfilePage = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Bio */}
+            
             <div>
               <label
                 htmlFor="bio"
@@ -219,7 +219,7 @@ const ProfilePage = () => {
               </p>
             </div>
 
-            {/* Avatar */}
+            
             <div>
               <label
                 htmlFor="avatar-url"
@@ -234,7 +234,7 @@ const ProfilePage = () => {
                 name="avatar.url"
                 value={formData.avatar.url}
                 onChange={handleInputChange}
-                placeholder="https://example.com/your-avatar.jpg"
+                placeholder="https://example.com/image.jpg"//example.com/avatar.jpg"
                 className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                 style={{
                   backgroundColor: getInputBackground(isDarkMode),
@@ -274,7 +274,7 @@ const ProfilePage = () => {
               </div>
             )}
 
-            {/* Banner */}
+            
             <div>
               <label
                 htmlFor="banner-url"
@@ -289,7 +289,7 @@ const ProfilePage = () => {
                 name="banner.url"
                 value={formData.banner.url}
                 onChange={handleInputChange}
-                placeholder="https://example.com/your-banner.jpg"
+                placeholder="https://example.com/image.jpg"//example.com/banner.jpg"
                 className="w-full px-3 py-2 rounded-lg focus:outline-none font-poppins"
                 style={{
                   backgroundColor: getInputBackground(isDarkMode),
@@ -329,7 +329,7 @@ const ProfilePage = () => {
               </div>
             )}
 
-            {/* Venue Manager Toggle */}
+            
             <div className="rounded-lg p-4" style={{ backgroundColor: getSecondaryBackground(isDarkMode) }}>
               <div className="flex items-center">
                 <input
@@ -369,7 +369,7 @@ const ProfilePage = () => {
               )}
             </div>
 
-            {/* Preview Section */}
+            
             {(formData.avatar.url || formData.banner.url) && (
               <div className="rounded-lg p-4" style={{ backgroundColor: getSecondaryBackground(isDarkMode) }}>
                 <h4 className="font-poppins text-sm mb-3" style={{ color: theme.colors.text, opacity: 0.8 }}>

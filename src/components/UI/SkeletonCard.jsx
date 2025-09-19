@@ -12,27 +12,27 @@ const SkeletonCard = () => {
       className="rounded-lg overflow-hidden animate-pulse"
       style={{ backgroundColor: cardBg }}
     >
-      {/* Image skeleton */}
+      
       <div 
         className="aspect-square w-full"
         style={{ backgroundColor: skeletonColor }}
       />
       
-      {/* Content skeleton */}
+      
       <div className="p-4 space-y-3">
-        {/* Title skeleton */}
+        
         <div 
           className="h-5 rounded w-3/4"
           style={{ backgroundColor: skeletonColor }}
         />
         
-        {/* Location skeleton */}
+        
         <div 
           className="h-4 rounded w-1/2"
           style={{ backgroundColor: skeletonColor }}
         />
         
-        {/* Price skeleton */}
+        
         <div className="flex justify-between items-center">
           <div 
             className="h-6 rounded w-20"
@@ -44,19 +44,19 @@ const SkeletonCard = () => {
           />
         </div>
         
-        {/* Guest count skeleton */}
+        
         <div 
           className="h-3 rounded w-16"
           style={{ backgroundColor: skeletonColor }}
         />
         
-        {/* Host skeleton */}
+        
         <div 
           className="h-3 rounded w-24"
           style={{ backgroundColor: skeletonColor }}
         />
         
-        {/* Amenities skeleton */}
+        
         <div className="flex space-x-2">
           <div 
             className="h-3 rounded w-12"

@@ -1,19 +1,19 @@
 import { useEffect, useCallback, useRef, useState } from 'react';
 
-// Hook for keyboard navigation within a list/grid
+
 export const useKeyboardNavigation = (items = [], options = {}) => {
   const {
     initialIndex = 0,
     loop = true,
     disabled = false,
     onActivate = () => {},
-    orientation = 'vertical' // 'vertical', 'horizontal', or 'grid'
+    orientation = 'vertical' 
   } = options;
 
   const [activeIndex, setActiveIndex] = useState(initialIndex);
   const containerRef = useRef(null);
 
-  // Move to next item
+  
   const moveNext = useCallback(() => {
     if (disabled || items.length === 0) return;
     
@@ -25,7 +25,7 @@ export const useKeyboardNavigation = (items = [], options = {}) => {
     });
   }, [disabled, items.length, loop]);
 
-  // Move to previous item
+  
   const movePrevious = useCallback(() => {
     if (disabled || items.length === 0) return;
     
@@ -37,19 +37,19 @@ export const useKeyboardNavigation = (items = [], options = {}) => {
     });
   }, [disabled, items.length, loop]);
 
-  // Move to specific index
+  
   const moveToIndex = useCallback((index) => {
     if (disabled || index < 0 || index >= items.length) return;
     setActiveIndex(index);
   }, [disabled, items.length]);
 
-  // Activate current item
+  
   const activateItem = useCallback(() => {
     if (disabled || activeIndex < 0 || activeIndex >= items.length) return;
     onActivate(items[activeIndex], activeIndex);
   }, [disabled, activeIndex, items, onActivate]);
 
-  // Handle keyboard events
+  
   const handleKeyDown = useCallback((event) => {
     if (disabled) return;
 
@@ -96,7 +96,7 @@ export const useKeyboardNavigation = (items = [], options = {}) => {
     }
   }, [disabled, orientation, moveNext, movePrevious, activateItem, moveToIndex, items.length]);
 
-  // Set up keyboard event listeners
+  
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -121,13 +121,13 @@ export const useKeyboardNavigation = (items = [], options = {}) => {
   };
 };
 
-// Hook for modal keyboard navigation (focus trapping)
+
 export const useFocusTrap = (isActive = true) => {
   const containerRef = useRef(null);
   const firstFocusableRef = useRef(null);
   const lastFocusableRef = useRef(null);
 
-  // Get all focusable elements
+  
   const getFocusableElements = useCallback(() => {
     if (!containerRef.current) return [];
     
@@ -145,7 +145,7 @@ export const useFocusTrap = (isActive = true) => {
     return Array.from(containerRef.current.querySelectorAll(focusableSelectors));
   }, []);
 
-  // Handle keyboard navigation within trap
+  
   const handleKeyDown = useCallback((event) => {
     if (!isActive) return;
 
@@ -155,13 +155,13 @@ export const useFocusTrap = (isActive = true) => {
 
     if (event.key === 'Tab') {
       if (event.shiftKey) {
-        // Shift + Tab
+        
         if (document.activeElement === firstElement) {
           event.preventDefault();
           lastElement?.focus();
         }
       } else {
-        // Tab
+        
         if (document.activeElement === lastElement) {
           event.preventDefault();
           firstElement?.focus();
@@ -171,13 +171,13 @@ export const useFocusTrap = (isActive = true) => {
 
     if (event.key === 'Escape') {
       event.preventDefault();
-      // Let parent component handle escape
+      
       const escapeEvent = new CustomEvent('focustrap-escape', { bubbles: true });
       containerRef.current?.dispatchEvent(escapeEvent);
     }
   }, [isActive, getFocusableElements]);
 
-  // Set initial focus
+  
   useEffect(() => {
     if (isActive && containerRef.current) {
       const focusableElements = getFocusableElements();
@@ -186,7 +186,7 @@ export const useFocusTrap = (isActive = true) => {
     }
   }, [isActive, getFocusableElements]);
 
-  // Set up event listeners
+  
   useEffect(() => {
     if (isActive) {
       document.addEventListener('keydown', handleKeyDown);
@@ -205,7 +205,7 @@ export const useFocusTrap = (isActive = true) => {
   };
 };
 
-// Hook for skip navigation
+
 export const useSkipNavigation = () => {
   const skipLinkRef = useRef(null);
   const mainContentRef = useRef(null);
@@ -240,7 +240,7 @@ export const useSkipNavigation = () => {
   };
 };
 
-// Hook for roving tabindex (for complex widgets)
+
 export const useRovingTabIndex = (items = [], initialIndex = 0) => {
   const [activeIndex, setActiveIndex] = useState(initialIndex);
   
@@ -279,7 +279,7 @@ export const useRovingTabIndex = (items = [], initialIndex = 0) => {
     }
 
     setActiveIndex(newIndex);
-    // Focus the new element
+    
     setTimeout(() => {
       const newElement = document.querySelector(`[data-roving-index="${newIndex}"]`);
       newElement?.focus();
@@ -301,13 +301,13 @@ export const useRovingTabIndex = (items = [], initialIndex = 0) => {
   };
 };
 
-// Hook for accessible announcements
+
 export const useAnnouncements = () => {
   const [announcement, setAnnouncement] = useState('');
   const announcementRef = useRef(null);
 
   const announce = useCallback((message, priority = 'polite') => {
-    setAnnouncement(''); // Clear first to ensure screen readers pick up the change
+    setAnnouncement(''); 
     setTimeout(() => {
       setAnnouncement(message);
     }, 10);

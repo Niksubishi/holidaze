@@ -4,17 +4,17 @@ import { useTheme } from "../../context/ThemeContext";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
-// Fix for default markers in React Leaflet
+
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
-  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
-  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
 
-// Enhanced location coordinates with major cities
+
 const getLocationCoordinates = (location) => {
-  // Country coordinates (fallback)
+  
   const countryCoords = {
     'Norway': { lat: 60.472, lng: 8.4689 },
     'Denmark': { lat: 56.2639, lng: 9.5018 },
@@ -36,25 +36,25 @@ const getLocationCoordinates = (location) => {
     'Finland': { lat: 61.9241, lng: 25.7482 }
   };
 
-  // Major city coordinates for better accuracy
+  
   const cityCoords = {
-    // Norway
+    
     'Oslo': { lat: 59.9139, lng: 10.7522 },
     'Bergen': { lat: 60.3913, lng: 5.3221 },
     'Stavanger': { lat: 58.9700, lng: 5.7331 },
     'Trondheim': { lat: 63.4305, lng: 10.3951 },
     
-    // Denmark
+    
     'Copenhagen': { lat: 55.6761, lng: 12.5683 },
     'Aarhus': { lat: 56.1629, lng: 10.2039 },
     'Odense': { lat: 55.4038, lng: 10.4024 },
     
-    // Sweden
+    
     'Stockholm': { lat: 59.3293, lng: 18.0686 },
     'Gothenburg': { lat: 57.7089, lng: 11.9746 },
     'Malmö': { lat: 55.6050, lng: 13.0038 },
     
-    // United States
+    
     'New York': { lat: 40.7128, lng: -74.0060 },
     'Los Angeles': { lat: 34.0522, lng: -118.2437 },
     'Chicago': { lat: 41.8781, lng: -87.6298 },
@@ -64,68 +64,68 @@ const getLocationCoordinates = (location) => {
     'Orlando': { lat: 28.5383, lng: -81.3792 },
     'Boston': { lat: 42.3601, lng: -71.0589 },
     
-    // United Kingdom
+    
     'London': { lat: 51.5074, lng: -0.1278 },
     'Manchester': { lat: 53.4808, lng: -2.2426 },
     'Birmingham': { lat: 52.4862, lng: -1.8904 },
     'Edinburgh': { lat: 55.9533, lng: -3.1883 },
     'Glasgow': { lat: 55.8642, lng: -4.2518 },
     
-    // Germany  
+    
     'Berlin': { lat: 52.5200, lng: 13.4050 },
     'Munich': { lat: 48.1351, lng: 11.5820 },
     'Hamburg': { lat: 53.5511, lng: 9.9937 },
     'Frankfurt': { lat: 50.1109, lng: 8.6821 },
     
-    // France
+    
     'Paris': { lat: 48.8566, lng: 2.3522 },
     'Lyon': { lat: 45.7640, lng: 4.8357 },
     'Marseille': { lat: 43.2965, lng: 5.3698 },
     'Nice': { lat: 43.7102, lng: 7.2620 },
     
-    // Spain
+    
     'Madrid': { lat: 40.4168, lng: -3.7038 },
     'Barcelona': { lat: 41.3874, lng: 2.1686 },
     'Valencia': { lat: 39.4699, lng: -0.3763 },
     'Seville': { lat: 37.3886, lng: -5.9823 },
     
-    // Italy
+    
     'Rome': { lat: 41.9028, lng: 12.4964 },
     'Milan': { lat: 45.4642, lng: 9.1900 },
     'Venice': { lat: 45.4408, lng: 12.3155 },
     'Florence': { lat: 43.7696, lng: 11.2558 },
     'Naples': { lat: 40.8518, lng: 14.2681 },
     
-    // Netherlands
+    
     'Amsterdam': { lat: 52.3676, lng: 4.9041 },
     'Rotterdam': { lat: 51.9225, lng: 4.4792 },
     'The Hague': { lat: 52.0705, lng: 4.3007 },
     
-    // Bahamas
+    
     'Nassau': { lat: 25.0343, lng: -77.3963 },
     
-    // Canada
+    
     'Toronto': { lat: 43.6532, lng: -79.3832 },
     'Vancouver': { lat: 49.2827, lng: -123.1207 },
     'Montreal': { lat: 45.5017, lng: -73.5673 },
     'Calgary': { lat: 51.0447, lng: -114.0719 },
     
-    // Australia
+    
     'Sydney': { lat: -33.8688, lng: 151.2093 },
     'Melbourne': { lat: -37.8136, lng: 144.9631 },
     'Brisbane': { lat: -27.4698, lng: 153.0251 },
     'Perth': { lat: -31.9505, lng: 115.8605 },
     
-    // Japan
+    
     'Tokyo': { lat: 35.6762, lng: 139.6503 },
     'Osaka': { lat: 34.6937, lng: 135.5023 },
     'Kyoto': { lat: 35.0116, lng: 135.7681 },
     
-    // Iceland
+    
     'Reykjavik': { lat: 64.1466, lng: -21.9426 }
   };
 
-  // Try to find city coordinates first (most accurate)
+  
   if (location.city) {
     const cityKey = location.city;
     if (cityCoords[cityKey]) {
@@ -133,7 +133,7 @@ const getLocationCoordinates = (location) => {
     }
   }
 
-  // Try country coordinates (less accurate)
+  
   if (location.country) {
     const countryKey = location.country;
     if (countryCoords[countryKey]) {
@@ -147,13 +147,13 @@ const getLocationCoordinates = (location) => {
 const VenueLocationMap = ({ venue }) => {
   const { theme } = useTheme();
 
-  // Determine the best coordinates to use for this venue
+  
   const mapCoordinates = useMemo(() => {
     if (!venue?.location) {
       return null;
     }
 
-    // Priority 1: Check if venue has exact coordinates
+    
     if (venue.location.lat && venue.location.lng && 
         venue.location.lat !== 0 && venue.location.lng !== 0 &&
         typeof venue.location.lat === 'number' && 
@@ -167,7 +167,7 @@ const VenueLocationMap = ({ venue }) => {
       };
     }
 
-    // Priority 2: Try to use city/country information for better accuracy
+    
     const locationCoords = getLocationCoordinates(venue.location);
     if (locationCoords) {
       return {
@@ -182,7 +182,7 @@ const VenueLocationMap = ({ venue }) => {
     return null;
   }, [venue]);
 
-  // Build location display text using all available information
+  
   const locationText = useMemo(() => {
     if (!venue?.location) return "Location unavailable";
 
@@ -239,7 +239,7 @@ const VenueLocationMap = ({ venue }) => {
           <Marker position={[mapCoordinates.lat, mapCoordinates.lng]} />
         </MapContainer>
 
-        {/* Accuracy indicator */}
+        
         {mapCoordinates.accuracy !== 'exact' && (
           <div className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-poppins ${
             mapCoordinates.accuracy === 'city' 
@@ -251,7 +251,7 @@ const VenueLocationMap = ({ venue }) => {
         )}
       </div>
       
-      {/* Location text */}
+      
       <div className="mt-2 text-center">
         <p className="font-poppins text-sm" style={{ color: theme.colors.text }}>
           {locationText}

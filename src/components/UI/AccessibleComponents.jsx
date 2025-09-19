@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { useKeyboardNavigation, useFocusTrap, useRovingTabIndex } from '../../hooks/useKeyboardNavigation';
 import { useTheme } from '../../context/ThemeContext';
 
-// Accessible Menu Component
+
 export const AccessibleMenu = memo(({ 
   items = [], 
   onItemSelect, 
@@ -49,7 +49,7 @@ export const AccessibleMenu = memo(({
 
 AccessibleMenu.displayName = 'AccessibleMenu';
 
-// Accessible Modal with Focus Trap
+
 export const AccessibleModal = memo(({ 
   isOpen, 
   onClose, 
@@ -110,7 +110,7 @@ export const AccessibleModal = memo(({
 
 AccessibleModal.displayName = 'AccessibleModal';
 
-// Accessible Tabs Component
+
 export const AccessibleTabs = memo(({ 
   tabs = [], 
   activeTab, 
@@ -125,7 +125,7 @@ export const AccessibleTabs = memo(({
 
   return (
     <div className={`w-full ${className}`}>
-      {/* Tab List */}
+      
       <div 
         role="tablist" 
         className="flex border-b"
@@ -151,7 +151,7 @@ export const AccessibleTabs = memo(({
         ))}
       </div>
 
-      {/* Tab Panels */}
+      
       {tabs.map((tab, index) => (
         <div
           key={tab.id || index}
@@ -171,7 +171,7 @@ export const AccessibleTabs = memo(({
 
 AccessibleTabs.displayName = 'AccessibleTabs';
 
-// Accessible Card Grid with Keyboard Navigation
+
 export const AccessibleCardGrid = memo(({ 
   items = [], 
   onItemSelect,
@@ -221,7 +221,7 @@ export const AccessibleCardGrid = memo(({
 
 AccessibleCardGrid.displayName = 'AccessibleCardGrid';
 
-// Skip Navigation Link
+
 export const SkipNavigation = memo(() => {
   const { theme } = useTheme();
   
@@ -253,7 +253,7 @@ export const SkipNavigation = memo(() => {
 
 SkipNavigation.displayName = 'SkipNavigation';
 
-// Screen Reader Announcements
+
 export const ScreenReaderAnnouncement = memo(({ message, priority = 'polite' }) => {
   return (
     <div
