@@ -6,16 +6,24 @@ import { useLoading } from "../../context/LoadingContext";
 import VenueCard from "./VenueCard";
 import SkeletonList from "../UI/SkeletonList";
 import ErrorMessage from "../UI/ErrorMessage";
+import AmenityIcons from "../UI/AmenityIcons";
 
 const VenuesList = memo(() => {
   const { theme, isDarkMode } = useTheme();
   const { setLoading, isLoading } = useLoading();
   const [searchParams, setSearchParams] = useSearchParams();
   const [venues, setVenues] = useState([]);
+  const [filteredVenues, setFilteredVenues] = useState([]);
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [, setIsSearching] = useState(false);
+  const [amenityFilters, setAmenityFilters] = useState({
+    wifi: false,
+    parking: false,
+    breakfast: false,
+    pets: false
+  });
   const debounceTimeoutRef = useRef(null);
 
   // Get state from URL params with fallbacks
@@ -25,6 +33,27 @@ const VenuesList = memo(() => {
   const sortOrder = searchParams.get("sortOrder") || "desc";
 
   const venuesPerPage = 12;
+
+  // Apply client-side amenity filtering
+  const applyAmenityFilters = useCallback((venuesList) => {
+    const hasActiveFilters = Object.values(amenityFilters).some(filter => filter);
+
+    if (!hasActiveFilters) {
+      return venuesList;
+    }
+
+    return venuesList.filter(venue => {
+      if (!venue.meta) return false;
+
+      // Check if venue has all selected amenities
+      if (amenityFilters.wifi && !venue.meta.wifi) return false;
+      if (amenityFilters.parking && !venue.meta.parking) return false;
+      if (amenityFilters.breakfast && !venue.meta.breakfast) return false;
+      if (amenityFilters.pets && !venue.meta.pets) return false;
+
+      return true;
+    });
+  }, [amenityFilters]);
 
   const fetchVenues = useCallback(async (page = 1) => {
     try {
@@ -50,7 +79,14 @@ const VenuesList = memo(() => {
         );
       }
 
-      setVenues(response.data || []);
+      const apiVenues = response.data || [];
+      setVenues(apiVenues);
+
+      // Apply client-side amenity filtering
+      const filtered = applyAmenityFilters(apiVenues);
+      setFilteredVenues(filtered);
+
+      // Set pagination based on API response (not filtered results)
       setTotalPages(response.meta?.pageCount || 0);
 
       setError("");
@@ -60,7 +96,7 @@ const VenuesList = memo(() => {
     } finally {
       setLoading('venues-list', false);
     }
-  }, [searchQuery, sortBy, sortOrder, setLoading]);
+  }, [searchQuery, sortBy, sortOrder, setLoading, applyAmenityFilters]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -71,6 +107,12 @@ const VenuesList = memo(() => {
   useEffect(() => {
     fetchVenues(currentPage);
   }, [currentPage, fetchVenues]);
+
+  // Re-apply filters when amenity filters change
+  useEffect(() => {
+    const filtered = applyAmenityFilters(venues);
+    setFilteredVenues(filtered);
+  }, [venues, applyAmenityFilters]);
 
   // Update URL params helper
   const updateParams = useCallback((newParams) => {
@@ -106,6 +148,14 @@ const VenuesList = memo(() => {
 
   const handlePageChange = useCallback((page) => {
     setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  const handleAmenityFilterChange = useCallback((amenity) => {
+    setAmenityFilters(prev => ({
+      ...prev,
+      [amenity]: !prev[amenity]
+    }));
   }, []);
 
   const handleSortChange = useCallback((newSort, newOrder = "desc") => {
@@ -251,6 +301,54 @@ const VenuesList = memo(() => {
             Highest Rated
           </button>
         </div>
+
+        {/* Amenity Filters */}
+        <div className="mt-6">
+          <div className="flex flex-wrap gap-2 justify-center items-center">
+            <span className="font-poppins text-sm mr-2" style={{ color: theme.colors.text }}>
+              Filter by amenities:
+            </span>
+            {[
+              { key: 'wifi', label: 'WiFi', component: AmenityIcons.WiFi },
+              { key: 'parking', label: 'Parking', component: AmenityIcons.Parking },
+              { key: 'breakfast', label: 'Breakfast', component: AmenityIcons.Breakfast },
+              { key: 'pets', label: 'Pets allowed', component: AmenityIcons.Pets }
+            ].map(({ key, label, component: IconComponent }) => (
+              <label
+                key={key}
+                className="flex items-center space-x-1.5 cursor-pointer font-poppins text-xs px-2 py-1.5 rounded transition-colors"
+                style={{
+                  backgroundColor: amenityFilters[key] ? theme.colors.primary : (isDarkMode ? '#3a3a3a' : '#f3f4f6'),
+                  color: amenityFilters[key] ? '#ffffff' : theme.colors.text,
+                }}
+              >
+                <input
+                  type="checkbox"
+                  checked={amenityFilters[key]}
+                  onChange={() => handleAmenityFilterChange(key)}
+                  className="sr-only"
+                />
+                <IconComponent
+                  size={14}
+                  color={amenityFilters[key] ? '#ffffff' : (isDarkMode ? theme.colors.text : '#6D7588')}
+                />
+                <span>{label}</span>
+              </label>
+            ))}
+          </div>
+
+          {/* Active filters indicator */}
+          {Object.values(amenityFilters).some(filter => filter) && (
+            <div className="mt-3 text-center">
+              <span className="font-poppins text-xs px-3 py-1 rounded-full" style={{
+                backgroundColor: isDarkMode ? '#3a3a3a' : '#f3f4f6',
+                color: theme.colors.text
+              }}>
+                {filteredVenues.length} of {venues.length} venues match your filters
+              </span>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Error Display */}
@@ -281,16 +379,33 @@ const VenuesList = memo(() => {
         </div>
       )}
 
-      {venues.length > 0 && (
+      {!isLoading('venues-list') && venues.length > 0 && filteredVenues.length === 0 && (
+        <div className="text-center py-12">
+          <h3
+            className="font-poppins text-xl mb-2"
+            style={{ color: theme.colors.text }}
+          >
+            No venues match your filters
+          </h3>
+          <p
+            className="font-poppins"
+            style={{ color: theme.colors.text, opacity: 0.7 }}
+          >
+            Try removing some amenity filters or search different terms.
+          </p>
+        </div>
+      )}
+
+      {filteredVenues.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-          {venues.map((venue) => (
+          {filteredVenues.map((venue) => (
             <VenueCard key={venue.id} venue={venue} />
           ))}
         </div>
       )}
 
       {/* Pagination */}
-      {totalPages > 1 && venues.length > 0 && (
+      {totalPages > 1 && filteredVenues.length > 0 && (
         <div className="flex justify-center items-center space-x-2 mt-8">
           {/* Previous button */}
           <button
