@@ -12,6 +12,7 @@ import { ToastProvider } from "./context/ToastContext";
 import Layout from "./components/Layout/Layout";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import ToastContainer from "./components/UI/ToastContainer";
+import useScrollToTop from "./hooks/useScrollToTop";
 
 // Pages
 import Home from "./pages/Home";
@@ -30,6 +31,7 @@ import NotFound from "./pages/NotFound";
 
 const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
+  useScrollToTop(); // Add global scroll-to-top
 
   return (
     <Routes>

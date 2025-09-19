@@ -6,10 +6,28 @@ const Home = () => {
   const { theme, isDarkMode } = useTheme();
   const [isSecondImageVisible, setIsSecondImageVisible] = useState(false);
   const [isGetStartedVisible, setIsGetStartedVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const secondImageRef = useRef(null);
   const getStartedRef = useRef(null);
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) {
+      setIsSecondImageVisible(true);
+      setIsGetStartedVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -42,7 +60,7 @@ const Home = () => {
         observer.unobserve(getStartedElement);
       }
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <div
@@ -61,10 +79,14 @@ const Home = () => {
 
           <div
             ref={secondImageRef}
-            className={`w-full max-w-2xl mx-auto transition-all duration-700 ease-out ${
-              isSecondImageVisible
-                ? "translate-x-0 opacity-100"
-                : "translate-x-full opacity-0"
+            className={`w-full max-w-2xl mx-auto ${
+              isMobile
+                ? ""
+                : `transition-all duration-700 ease-out ${
+                    isSecondImageVisible
+                      ? "translate-x-0 opacity-100"
+                      : "translate-x-full opacity-0"
+                  }`
             }`}
           >
             <img
@@ -77,10 +99,14 @@ const Home = () => {
 
         <div
           ref={getStartedRef}
-          className={`text-center py-20 transition-all duration-700 ease-out ${
-            isGetStartedVisible
-              ? "translate-x-0 opacity-100"
-              : "-translate-x-full opacity-0"
+          className={`text-center py-20 ${
+            isMobile
+              ? ""
+              : `transition-all duration-700 ease-out ${
+                  isGetStartedVisible
+                    ? "translate-x-0 opacity-100"
+                    : "-translate-x-full opacity-0"
+                }`
           }`}
         >
           <Link

@@ -16,9 +16,6 @@ const VenueDetailsPage = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Scroll to top when component mounts or id changes
-    window.scrollTo(0, 0);
-
     const fetchVenue = async () => {
       try {
         setLoading(true);
