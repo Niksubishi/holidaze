@@ -12,6 +12,7 @@ import { ToastProvider } from "./context/ToastContext";
 import Layout from "./components/Layout/Layout";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import ToastContainer from "./components/UI/ToastContainer";
+import BackToTop from "./components/UI/BackToTop";
 import useScrollToTop from "./hooks/useScrollToTop";
 
 import Home from "./pages/Home";
@@ -109,6 +110,7 @@ function App() {
                 <AppRoutes />
               </Layout>
               <ToastContainer />
+              <BackToTop />
             </Router>
           </AuthProvider>
         </ToastProvider>

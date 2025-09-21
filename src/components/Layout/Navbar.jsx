@@ -7,7 +7,7 @@ import ThemeToggle from "../UI/ThemeToggle";
 
 const Navbar = memo(() => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { isAuthenticated, isVenueManager } = useAuth();
+  const { isAuthenticated, isVenueManager, user } = useAuth();
   const { isDarkMode, theme } = useTheme();
   const location = useLocation();
 
@@ -182,7 +182,10 @@ const Navbar = memo(() => {
                   <NavLink to="/my-bookings">My Bookings</NavLink>
                 </div>
                 <div className="py-2 border-t border-gray-400 pt-4">
-                  <NavLink to="/profile">Profile</NavLink>
+                  <NavLink to={`/profile/${user.name}`}>View Profile</NavLink>
+                </div>
+                <div className="py-2">
+                  <NavLink to="/profile">Edit Profile</NavLink>
                 </div>
               </>
             )}
@@ -201,7 +204,10 @@ const Navbar = memo(() => {
                   <NavLink to="/venues">Venues</NavLink>
                 </div>
                 <div className="py-2 border-t border-gray-400 pt-4">
-                  <NavLink to="/profile">Profile</NavLink>
+                  <NavLink to={`/profile/${user.name}`}>View Profile</NavLink>
+                </div>
+                <div className="py-2">
+                  <NavLink to="/profile">Edit Profile</NavLink>
                 </div>
               </>
             )}
