@@ -6,6 +6,12 @@ A modern accommodation booking platform built with React, featuring venue browsi
 **Project:** FED2 Exam Project  
 **Institution:** Noroff School of Technology and Digital Media
 
+**Test Login**
+Username: brucewayne@stud.noroff.no
+Password: Apple123
+
+Or create a new account using (choiceofname)@stud.noroff.no and password.
+
 ## 📋 Table of Contents
 
 - [Overview](#overview)
