@@ -25,7 +25,7 @@ const BookingForm = memo(({ venue, onBookingSuccess }) => {
     return (
       <div className="p-6 rounded-lg" style={{ backgroundColor: getCardBackground(isDarkMode) }}>
         <h3 className="font-poppins text-xl mb-4" style={{ color: theme.colors.text }}>Book This Venue</h3>
-        <p className="font-poppins mb-4" style={{ color: theme.colors.text, opacity: 0.8 }}>
+        <p className="font-poppins mb-4" style={{ color: theme.colors.text }}>
           Please sign up or log in to book this venue.
         </p>
         <a
@@ -217,12 +217,12 @@ const BookingForm = memo(({ venue, onBookingSuccess }) => {
       <div className="mb-4">
         <div className="flex items-center justify-between">
           <span className="font-poppins text-lg" style={{ color: theme.colors.text }}>${venue.price}</span>
-          <span className="font-poppins text-sm" style={{ color: theme.colors.text, opacity: 0.8 }}>per night</span>
+          <span className="font-poppins text-sm" style={{ color: theme.colors.text }}>per night</span>
         </div>
       </div>
 
       <div className="mb-6">
-        <h4 className="font-poppins text-sm mb-3" style={{ color: theme.colors.text, opacity: 0.9 }}>
+        <h4 className="font-poppins text-sm mb-3" style={{ color: theme.colors.text }}>
           Select Your Dates
         </h4>
         <AvailabilityCalendar
@@ -308,7 +308,7 @@ const BookingForm = memo(({ venue, onBookingSuccess }) => {
             }}
             required
           />
-          <p className="font-poppins text-xs mt-1" style={{ color: theme.colors.text, opacity: 0.6 }}>
+          <p className="font-poppins text-xs mt-1" style={{ color: theme.colors.text }}>
             Maximum {venue.maxGuests} guests allowed
           </p>
         </div>

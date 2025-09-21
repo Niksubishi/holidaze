@@ -59,7 +59,7 @@ const VenueCard = memo(({ venue }) => {
   const amenitiesComponent = useMemo(() => {
     if (!amenitiesData) return null;
 
-    const greyColor = isDarkMode ? theme.colors.text : "#6D7588";
+    const greyColor = theme.colors.text;
 
     return (
       <div className="mt-2">
@@ -81,7 +81,7 @@ const VenueCard = memo(({ venue }) => {
           {amenitiesData.length > 3 && (
             <span
               className="text-xs"
-              style={{ color: isDarkMode ? theme.colors.text : '#6D7588' }}
+              style={{ color: theme.colors.text }}
             >
               +{amenitiesData.length - 3} more
             </span>
@@ -127,7 +127,7 @@ const VenueCard = memo(({ venue }) => {
 
         <p
           className="font-poppins text-sm mb-2"
-          style={{ color: isDarkMode ? theme.colors.text : '#6D7588' }}
+          style={{ color: theme.colors.text }}
         >
           {formattedLocation}
         </p>
@@ -142,7 +142,7 @@ const VenueCard = memo(({ venue }) => {
             </span>
             <span
               className="font-poppins text-sm ml-1"
-              style={{ color: isDarkMode ? theme.colors.text : '#6D7588' }}
+              style={{ color: theme.colors.text }}
             >
               / night
             </span>
@@ -159,7 +159,7 @@ const VenueCard = memo(({ venue }) => {
               </svg>
               <span
                 className="font-poppins text-sm"
-                style={{ color: isDarkMode ? theme.colors.text : '#6D7588' }}
+                style={{ color: theme.colors.text }}
               >
                 {formattedRating}
               </span>
@@ -169,7 +169,7 @@ const VenueCard = memo(({ venue }) => {
 
         <p
           className="font-poppins text-xs mb-2"
-          style={{ color: isDarkMode ? theme.colors.text : '#6D7588' }}
+          style={{ color: theme.colors.text }}
         >
           {guestText}
         </p>

@@ -191,7 +191,7 @@ const VenuesList = memo(() => {
 
   const inactiveButtonStyle = useMemo(() => ({
     backgroundColor: isDarkMode ? "#132F3D" : "#f3f4f6",
-    color: isDarkMode ? "#9ca3af" : theme.colors.text,
+    color: theme.colors.text,
   }), [isDarkMode, theme.colors.text]);
 
   return (
@@ -310,7 +310,7 @@ const VenuesList = memo(() => {
                 />
                 <IconComponent
                   size={14}
-                  color={amenityFilters[key] ? '#ffffff' : (isDarkMode ? theme.colors.text : '#6D7588')}
+                  color={amenityFilters[key] ? '#ffffff' : theme.colors.text}
                 />
                 <span>{label}</span>
               </label>
@@ -346,7 +346,7 @@ const VenuesList = memo(() => {
           </h3>
           <p
             className="font-poppins"
-            style={{ color: theme.colors.text, opacity: 0.7 }}
+            style={{ color: theme.colors.text }}
           >
             {searchQuery
               ? "Try adjusting your search terms."
@@ -365,7 +365,7 @@ const VenuesList = memo(() => {
           </h3>
           <p
             className="font-poppins"
-            style={{ color: theme.colors.text, opacity: 0.7 }}
+            style={{ color: theme.colors.text }}
           >
             Try removing some amenity filters or search different terms.
           </p>

@@ -38,7 +38,6 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
   const renderAmenities = () => {
     if (!venue.meta) return null;
 
-    const greyColor = "#9ca3af";
     const amenities = [];
     if (venue.meta.wifi) amenities.push({ name: "WiFi", icon: "WiFi" });
     if (venue.meta.parking) amenities.push({ name: "Parking", icon: "Parking" });
@@ -49,7 +48,7 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
       return (
         <div className="mb-6">
           <h3 className="font-poppins text-lg mb-3" style={{ color: theme.colors.text }}>Amenities</h3>
-          <p className="font-poppins" style={{ color: theme.colors.text, opacity: 0.7 }}>
+          <p className="font-poppins" style={{ color: theme.colors.text }}>
             No specific amenities listed
           </p>
         </div>
@@ -64,8 +63,8 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
             const IconComponent = AmenityIcons[amenity.icon];
             return (
               <div key={index} className="flex items-center space-x-3">
-                <IconComponent size={20} color={greyColor} />
-                <span className="font-poppins" style={{ color: theme.colors.text, opacity: 0.8 }}>{amenity.name}</span>
+                <IconComponent size={20} color={theme.colors.text} />
+                <span className="font-poppins" style={{ color: theme.colors.text }}>{amenity.name}</span>
               </div>
             );
           })}
@@ -225,7 +224,7 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
               {venue.owner.name}
             </button>
             {venue.owner.bio && (
-              <p className="font-poppins text-sm mt-1" style={{ color: theme.colors.text, opacity: 0.8 }}>
+              <p className="font-poppins text-sm mt-1" style={{ color: theme.colors.text }}>
                 {venue.owner.bio}
               </p>
             )}
@@ -249,7 +248,7 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
               </h1>
 
               <div className="flex items-center justify-between mb-4">
-                <p className="font-poppins" style={{ color: theme.colors.text, opacity: 0.8 }}>{formatLocation()}</p>
+                <p className="font-poppins" style={{ color: theme.colors.text }}>{formatLocation()}</p>
                 {venue.rating > 0 && (
                   <div className="flex items-center">
                     <svg
@@ -268,7 +267,7 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
               </div>
 
               <div className="flex items-center space-x-4 mb-4">
-                <span className="font-poppins" style={{ color: theme.colors.text, opacity: 0.8 }}>
+                <span className="font-poppins" style={{ color: theme.colors.text }}>
                   Max {venue.maxGuests} guest{venue.maxGuests !== 1 ? "s" : ""}
                 </span>
               </div>
@@ -279,7 +278,7 @@ const VenueDetails = ({ venue, onBookingSuccess }) => {
                   <h3 className="font-poppins text-lg mb-3" style={{ color: theme.colors.text }}>
                     About this venue
                   </h3>
-                  <p className="font-poppins leading-relaxed" style={{ color: theme.colors.text, opacity: 0.8 }}>
+                  <p className="font-poppins leading-relaxed" style={{ color: theme.colors.text }}>
                     {venue.description}
                   </p>
                 </div>
