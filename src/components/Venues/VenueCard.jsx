@@ -179,7 +179,7 @@ const VenueCard = memo(({ venue }) => {
             <button
               onClick={(e) => handleOwnerClick(e, venue.owner.name)}
               className="font-poppins text-xs hover:text-opacity-80 transition-colors cursor-pointer"
-              style={{ color: '#3D808A' }}
+              style={{ color: isDarkMode ? theme.colors.text : theme.colors.navLinks }}
             >
               Hosted by {venue.owner.name}
             </button>

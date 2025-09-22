@@ -239,45 +239,45 @@ const VenuesList = memo(() => {
           <button
             onClick={() => handleSortChange("created", "desc")}
             className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer ${
-              sortButtonStates.newest ? "bg-primary text-white" : ""
+              sortButtonStates.newest ? "bg-primary" : ""
             }`}
-            style={sortButtonStates.newest ? {} : inactiveButtonStyle}
+            style={sortButtonStates.newest ? { color: "#000000" } : inactiveButtonStyle}
           >
             Newest
           </button>
           <button
             onClick={() => handleSortChange("created", "asc")}
             className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer ${
-              sortButtonStates.oldest ? "bg-primary text-white" : ""
+              sortButtonStates.oldest ? "bg-primary" : ""
             }`}
-            style={sortButtonStates.oldest ? {} : inactiveButtonStyle}
+            style={sortButtonStates.oldest ? { color: "#000000" } : inactiveButtonStyle}
           >
             Oldest
           </button>
           <button
             onClick={() => handleSortChange("price", "asc")}
             className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer ${
-              sortButtonStates.cheapest ? "bg-primary text-white" : ""
+              sortButtonStates.cheapest ? "bg-primary" : ""
             }`}
-            style={sortButtonStates.cheapest ? {} : inactiveButtonStyle}
+            style={sortButtonStates.cheapest ? { color: "#000000" } : inactiveButtonStyle}
           >
             Cheapest
           </button>
           <button
             onClick={() => handleSortChange("price", "desc")}
             className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer ${
-              sortButtonStates.mostExpensive ? "bg-primary text-white" : ""
+              sortButtonStates.mostExpensive ? "bg-primary" : ""
             }`}
-            style={sortButtonStates.mostExpensive ? {} : inactiveButtonStyle}
+            style={sortButtonStates.mostExpensive ? { color: "#000000" } : inactiveButtonStyle}
           >
             Most Expensive
           </button>
           <button
             onClick={() => handleSortChange("rating", "desc")}
             className={`px-4 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer ${
-              sortButtonStates.highestRated ? "bg-primary text-white" : ""
+              sortButtonStates.highestRated ? "bg-primary" : ""
             }`}
-            style={sortButtonStates.highestRated ? {} : inactiveButtonStyle}
+            style={sortButtonStates.highestRated ? { color: "#000000" } : inactiveButtonStyle}
           >
             Highest Rated
           </button>
@@ -388,7 +388,7 @@ const VenuesList = memo(() => {
             className="px-3 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             style={{
               backgroundColor: currentPage === 1 ? inactiveButtonStyle.backgroundColor : theme.colors.primary,
-              color: currentPage === 1 ? inactiveButtonStyle.color : "#ffffff",
+              color: currentPage === 1 ? inactiveButtonStyle.color : "#000000",
             }}
           >
             ← Previous
@@ -417,7 +417,7 @@ const VenuesList = memo(() => {
                     className="px-3 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer min-w-[40px]"
                     style={{
                       backgroundColor: currentPage === pageNum ? theme.colors.primary : inactiveButtonStyle.backgroundColor,
-                      color: currentPage === pageNum ? "#ffffff" : inactiveButtonStyle.color,
+                      color: currentPage === pageNum ? "#000000" : inactiveButtonStyle.color,
                     }}
                   >
                     {pageNum}
@@ -439,7 +439,7 @@ const VenuesList = memo(() => {
             className="px-3 py-2 rounded-lg font-poppins text-sm transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             style={{
               backgroundColor: currentPage === totalPages ? inactiveButtonStyle.backgroundColor : theme.colors.primary,
-              color: currentPage === totalPages ? inactiveButtonStyle.color : "#ffffff",
+              color: currentPage === totalPages ? inactiveButtonStyle.color : "#000000",
             }}
           >
             Next →
