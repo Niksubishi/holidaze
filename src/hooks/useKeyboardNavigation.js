@@ -304,10 +304,12 @@ export const useRovingTabIndex = (items = [], initialIndex = 0) => {
 
 export const useAnnouncements = () => {
   const [announcement, setAnnouncement] = useState('');
+  const [ariaLive, setAriaLive] = useState('polite');
   const announcementRef = useRef(null);
 
   const announce = useCallback((message, priority = 'polite') => {
-    setAnnouncement(''); 
+    setAnnouncement('');
+    setAriaLive(priority);
     setTimeout(() => {
       setAnnouncement(message);
     }, 10);
@@ -318,7 +320,7 @@ export const useAnnouncements = () => {
     announcementRef,
     announcementProps: {
       ref: announcementRef,
-      'aria-live': 'polite',
+      'aria-live': ariaLive,
       'aria-atomic': true,
       className: 'sr-only'
     },

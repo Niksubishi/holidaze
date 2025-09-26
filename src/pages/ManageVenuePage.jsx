@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { venuesAPI } from "../api/venues.js";
 import { bookingsAPI } from "../api/bookings.js";
 import { useAuth } from "../context/AuthContext";
@@ -14,7 +14,6 @@ const ManageVenuePage = () => {
   const { id: venueId } = useParams();
   const { user } = useAuth();
   const { theme, isDarkMode } = useTheme();
-  const navigate = useNavigate();
   const [venue, setVenue] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

@@ -52,7 +52,6 @@ const MyVenues = () => {
       setShowConfirmModal(false);
       setVenueToDelete(null);
 
-      setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
       setError(err.message || "Failed to delete venue");
       setShowConfirmModal(false);

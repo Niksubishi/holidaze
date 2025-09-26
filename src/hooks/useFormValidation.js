@@ -174,11 +174,6 @@ export const useFormValidation = (validationSchema = {}) => {
   }, [errors, validateField, values, validationSchema]);
 
   
-  const setTouched = useCallback((fieldName) => {
-    setTouched(prev => ({ ...prev, [fieldName]: true }));
-  }, []);
-
-  
   const getFieldProps = useCallback((fieldName) => ({
     value: values[fieldName] || '',
     onChange: (e) => setValue(fieldName, e.target.value),

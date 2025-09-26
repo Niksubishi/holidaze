@@ -3,6 +3,7 @@ import { useState, useCallback, useEffect, useMemo } from 'react';
 
 export const imageOptimization = {
   
+  // eslint-disable-next-line no-unused-vars
   generateOptimizedUrl: (originalUrl, options = {}) => {
     
     if (!originalUrl || !originalUrl.startsWith('http')) return originalUrl;
@@ -17,6 +18,7 @@ export const imageOptimization = {
   },
 
   
+  // eslint-disable-next-line no-unused-vars
   generateSrcSet: (originalUrl) => {
     
     
@@ -46,6 +48,7 @@ export const imageOptimization = {
   },
 
   
+  // eslint-disable-next-line no-unused-vars
   createBlurPlaceholder: (originalUrl, quality = 10) => {
     
     
