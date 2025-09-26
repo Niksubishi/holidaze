@@ -28,7 +28,8 @@ export const tokenManager = {
   set: (token) => {
     try {
       localStorage.setItem("holidaze_token", token);
-    } catch (error) {
+    } catch {
+      // Silently ignore localStorage errors
     }
   },
 
@@ -36,7 +37,8 @@ export const tokenManager = {
     try {
       localStorage.removeItem("holidaze_token");
       localStorage.removeItem("holidaze_user");
-    } catch (error) {
+    } catch {
+      // Silently ignore localStorage errors
     }
   },
 };
@@ -54,14 +56,16 @@ export const userManager = {
   set: (userData) => {
     try {
       localStorage.setItem("holidaze_user", JSON.stringify(userData));
-    } catch (error) {
+    } catch {
+      // Silently ignore localStorage errors
     }
   },
 
   remove: () => {
     try {
       localStorage.removeItem("holidaze_user");
-    } catch (error) {
+    } catch {
+      // Silently ignore localStorage errors
     }
   },
 };
