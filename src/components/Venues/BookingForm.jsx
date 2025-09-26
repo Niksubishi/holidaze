@@ -7,7 +7,7 @@ import { useToast } from "../../context/ToastContext";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import ErrorMessage from "../UI/ErrorMessage";
 import AvailabilityCalendar from "../UI/AvailabilityCalendar";
-import { getCardBackground, getInputBackground, getInputBorderColor, getInputTextColor, getSecondaryBackground } from "../../utils/theme.js";
+import { getCardBackground, getInputBackground, getSecondaryBackground } from "../../utils/theme.js";
 
 const BookingForm = memo(({ venue, onBookingSuccess }) => {
   const { isAuthenticated } = useAuth();
@@ -20,23 +20,6 @@ const BookingForm = memo(({ venue, onBookingSuccess }) => {
     guests: 1,
   });
   const [error, setError] = useState("");
-
-  if (!isAuthenticated) {
-    return (
-      <div className="p-6 rounded-lg" style={{ backgroundColor: getCardBackground(isDarkMode) }}>
-        <h3 className="font-poppins text-xl mb-4" style={{ color: theme.colors.text }}>Book This Venue</h3>
-        <p className="font-poppins mb-4" style={{ color: theme.colors.text }}>
-          Please sign up or log in to book this venue.
-        </p>
-        <a
-          href="/auth"
-          className="inline-block px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors"
-        >
-          Sign Up / Login
-        </a>
-      </div>
-    );
-  }
 
   const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
@@ -184,31 +167,24 @@ const BookingForm = memo(({ venue, onBookingSuccess }) => {
     }
   };
 
-  const formatDateRange = (dateFrom, dateTo) => {
-    const start = new Date(dateFrom).toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric',
-      year: 'numeric'
-    });
-    const end = new Date(dateTo).toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric',
-      year: 'numeric'
-    });
-    return `${start} - ${end}`;
-  };
-
-  const unavailableDateRanges = useMemo(() => {
-    if (!venue.bookings || venue.bookings.length === 0) return [];
-    
-    const today = new Date();
-    return venue.bookings
-      .filter(booking => new Date(booking.dateTo) > today)
-      .sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom))
-      .slice(0, 5);
-  }, [venue.bookings]);
-
   const { totalPrice, nights } = pricingData;
+
+  if (!isAuthenticated) {
+    return (
+      <div className="p-6 rounded-lg" style={{ backgroundColor: getCardBackground(isDarkMode) }}>
+        <h3 className="font-poppins text-xl mb-4" style={{ color: theme.colors.text }}>Book This Venue</h3>
+        <p className="font-poppins mb-4" style={{ color: theme.colors.text }}>
+          Please sign up or log in to book this venue.
+        </p>
+        <a
+          href="/auth"
+          className="inline-block px-6 py-3 bg-primary text-white font-poppins rounded-lg hover:bg-opacity-90 transition-colors"
+        >
+          Sign Up / Login
+        </a>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 rounded-lg" style={{ backgroundColor: getCardBackground(isDarkMode) }}>

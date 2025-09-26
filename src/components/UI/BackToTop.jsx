@@ -3,7 +3,7 @@ import { useTheme } from '../../context/ThemeContext';
 
 const BackToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const { theme, isDarkMode } = useTheme();
+  const { theme } = useTheme();
 
   useEffect(() => {
     const toggleVisibility = () => {

@@ -95,7 +95,7 @@ const VenuesList = memo(() => {
   useEffect(() => {
     setCurrentPage(1);
     fetchVenues(1);
-  }, [sortBy, sortOrder, searchQuery]);
+  }, [sortBy, sortOrder, searchQuery, fetchVenues]);
 
   useEffect(() => {
     fetchVenues(currentPage);
@@ -310,7 +310,7 @@ const VenuesList = memo(() => {
                 />
                 <IconComponent
                   size={14}
-                  color={amenityFilters[key] ? '#ffffff' : theme.colors.text}
+                  color={amenityFilters[key] ? '#000000' : theme.colors.text}
                 />
                 <span>{label}</span>
               </label>

@@ -24,7 +24,7 @@ const VenueCard = memo(({ venue }) => {
 
     const parts = [location.city, location.country].filter(Boolean);
     return parts.length > 0 ? parts.join(", ") : "Location not specified";
-  }, [venue.location]);
+  }, [venue]);
 
   const amenitiesData = useMemo(() => {
     if (!venue.meta) return null;
@@ -89,7 +89,7 @@ const VenueCard = memo(({ venue }) => {
         </div>
       </div>
     );
-  }, [amenitiesData, isDarkMode, theme.colors.text]);
+  }, [amenitiesData, theme.colors.text]);
 
   return (
     <Link

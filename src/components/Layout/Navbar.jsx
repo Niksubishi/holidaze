@@ -43,7 +43,7 @@ const Navbar = memo(() => {
         <NavLink to="/venues">Venues</NavLink>
       </>
     ),
-    [NavLink]
+    []
   );
 
   const customerLinks = useMemo(
@@ -53,7 +53,7 @@ const Navbar = memo(() => {
         <NavLink to="/my-bookings">My Bookings</NavLink>
       </>
     ),
-    [NavLink]
+    []
   );
 
   const managerLinks = useMemo(
@@ -71,7 +71,7 @@ const Navbar = memo(() => {
         <NavLink to="/create-venue">Create Venue</NavLink>
       </>
     ),
-    [NavLink, theme.colors.navLinks]
+    [theme.colors.navLinks]
   );
 
   const logoSrc = useMemo(

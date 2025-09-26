@@ -4,6 +4,7 @@ import { profilesAPI } from "../api/profiles.js";
 
 const AuthContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -30,7 +31,7 @@ export const AuthProvider = ({ children }) => {
           const updatedUser = response.data;
           setUser(updatedUser);
           userManager.set(updatedUser);
-        } catch (error) {
+        } catch {
           setUser(storedUser);
         }
       }
@@ -51,7 +52,7 @@ export const AuthProvider = ({ children }) => {
       const updatedUser = response.data;
       setUser(updatedUser);
       userManager.set(updatedUser);
-    } catch (error) {
+    } catch {
       setUser(userData);
       userManager.set(userData);
     }

@@ -63,7 +63,7 @@ const MyBookings = () => {
       setBookingToCancel(null);
       setTimeout(() => setError(""), 5000);
     }
-  }, [bookingToCancel]);
+  }, [bookingToCancel, showSuccess]);
 
   const handleCloseModal = useCallback(() => {
     setShowConfirmModal(false);

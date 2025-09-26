@@ -28,7 +28,6 @@ const OptimizedImage = memo(({
     optimizedUrl,
     srcSet,
     sizes,
-    blurPlaceholder,
     isLoaded: imageLoaded,
     hasError: imageError
   } = useImageOptimization(currentSrc, {
@@ -44,7 +43,6 @@ const OptimizedImage = memo(({
     src: lazySrc,
     isLoaded: lazyLoaded,
     hasError: lazyError,
-    shouldLoad,
     handleLoad: handleLazyLoad,
     handleError: handleLazyError
   } = useLazyImage(lazy ? optimizedUrl : null, {
@@ -82,14 +80,6 @@ const OptimizedImage = memo(({
     ...style
   }), [isDarkMode, style]);
 
-  
-  const imageStyle = useMemo(() => ({
-    transition: 'opacity 0.3s ease-in-out',
-    opacity: isLoaded ? 1 : 0,
-    ...style
-  }), [isLoaded, style]);
-
-  
   if (hasError) {
     return (
       <div

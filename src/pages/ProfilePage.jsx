@@ -49,7 +49,6 @@ const ProfilePage = () => {
     }
 
     if (error) setError("");
-    if (success) setSuccess("");
   };
 
   const validateForm = () => {
@@ -132,7 +131,6 @@ const ProfilePage = () => {
       updateUser(response.data);
       showSuccess("Profile updated successfully!");
 
-      setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
       setError(err.message || "Failed to update profile");
     } finally {
@@ -429,7 +427,6 @@ const ProfilePage = () => {
                     venueManager: user?.venueManager || false,
                   });
                   setError("");
-                  setSuccess("");
                 }}
                 className="px-6 py-3 font-poppins rounded-lg transition-colors cursor-pointer"
                 style={{

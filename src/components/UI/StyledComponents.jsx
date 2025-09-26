@@ -99,7 +99,6 @@ export const Card = forwardRef(({
   ...props 
 }, ref) => {
   const cardStyles = useCardStyles(interactive);
-  const styles = useThemeStyles();
 
   const hoverClass = hover ? 'hover:shadow-lg hover:-translate-y-1' : '';
   const interactiveClass = interactive ? 'cursor-pointer' : '';
@@ -119,19 +118,20 @@ export const Card = forwardRef(({
 Card.displayName = 'Card';
 
 
-export const Text = ({ 
-  variant = 'primary', 
-  children, 
-  className = '', 
-  as: Component = 'p',
-  ...props 
+export const Text = ({
+  variant = 'primary',
+  children,
+  className = '',
+  as = 'p',
+  ...props
 }) => {
   const styles = useThemeStyles();
   const textStyle = styles.text[variant] || styles.text.primary;
+  const Component = as;
 
   return (
-    <Component 
-      className={`font-poppins ${className}`} 
+    <Component
+      className={`font-poppins ${className}`}
       style={textStyle}
       {...props}
     >

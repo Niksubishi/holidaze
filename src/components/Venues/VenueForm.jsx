@@ -83,10 +83,10 @@ const VenueForm = ({ mode = "create", venueId = null }) => {
     };
 
     fetchVenue();
-  }, [isEditMode, venueId]);
+  }, [isEditMode, venueId, clearError, handleApiError]);
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, checked } = e.target;
 
     if (name.startsWith("meta.")) {
       const metaField = name.split(".")[1];
@@ -122,7 +122,6 @@ const VenueForm = ({ mode = "create", venueId = null }) => {
     }
 
     if (error) clearError();
-    if (success) setSuccess("");
   };
 
   const handleMediaChange = (index, field, value) => {
