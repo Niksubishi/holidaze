@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { venuesAPI } from "../api/venues.js";
-import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import VenueDetails from "../components/Venues/VenueDetails";
 import SkeletonVenueDetails from "../components/UI/SkeletonVenueDetails";
