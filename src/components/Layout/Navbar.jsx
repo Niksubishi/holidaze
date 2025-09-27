@@ -12,28 +12,32 @@ const Navbar = memo(() => {
   const location = useLocation();
 
   const isActivePage = useCallback(
-    (path) => location.pathname === path,
+    (path) => {
+      if (path === "/") {
+        return location.pathname === "/";
+      }
+      return location.pathname.startsWith(path);
+    },
     [location.pathname]
   );
 
   const NavLink = useCallback(
-    ({ to, children, className = "" }) => (
-      <Link
-        to={to}
-        className={`font-poppins hover:opacity-75 transition-colors relative ${className}`}
-        style={{ color: theme.colors.navLinks }}
-        onClick={() => setIsMobileMenuOpen(false)}
-      >
-        {children}
-        {isActivePage(to) && (
-          <div
-            className="absolute -bottom-4 left-0 right-0 h-0.5"
-            style={{ backgroundColor: theme.colors.navLinks }}
-          ></div>
-        )}
-      </Link>
-    ),
-    [theme.colors.navLinks, isActivePage, setIsMobileMenuOpen]
+    ({ to, children, className = "" }) => {
+      const isActive = isActivePage(to);
+      return (
+        <Link
+          to={to}
+          className={`font-poppins hover:opacity-75 transition-colors ${
+            isActive ? 'font-semibold' : 'font-normal'
+          } ${className}`}
+          style={{ color: theme.colors.navLinks }}
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          {children}
+        </Link>
+      );
+    },
+    [theme.colors.navLinks, setIsMobileMenuOpen, isActivePage]
   );
 
   const loggedOutLinks = useMemo(
@@ -43,7 +47,7 @@ const Navbar = memo(() => {
         <NavLink to="/venues">Venues</NavLink>
       </>
     ),
-    []
+    [NavLink]
   );
 
   const customerLinks = useMemo(
@@ -53,7 +57,7 @@ const Navbar = memo(() => {
         <NavLink to="/my-bookings">My Bookings</NavLink>
       </>
     ),
-    []
+    [NavLink]
   );
 
   const managerLinks = useMemo(
@@ -71,7 +75,7 @@ const Navbar = memo(() => {
         <NavLink to="/create-venue">Create Venue</NavLink>
       </>
     ),
-    [theme.colors.navLinks]
+    [theme.colors.navLinks, NavLink]
   );
 
   const logoSrc = useMemo(
