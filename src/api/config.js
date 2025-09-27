@@ -78,7 +78,7 @@ const classifyError = (response, data) => {
     case 401:
       return {
         type: ErrorTypes.AUTHENTICATION,
-        message: "Please sign in to continue.",
+        message: data?.message || "Invalid email or password. Please check your credentials and try again.",
       };
 
     case 403:
@@ -128,6 +128,7 @@ const shouldRetry = (error, attempt, maxRetries) => {
   if (attempt >= maxRetries) return false;
 
   if (
+    error.status &&
     error.status >= 400 &&
     error.status < 500 &&
     error.type !== ErrorTypes.RATE_LIMIT
@@ -192,7 +193,7 @@ export const makeRequest = async (url, options = {}, customRetries = null) => {
           throw apiError;
         }
 
-        throw apiError;
+        lastError = apiError;
       }
 
       return data;
@@ -210,6 +211,8 @@ export const makeRequest = async (url, options = {}, customRetries = null) => {
           throw networkError;
         }
         lastError = networkError;
+      } else {
+        lastError = error;
       }
 
       if (attempt === maxRetries || !shouldRetry(lastError, attempt, maxRetries)) {
